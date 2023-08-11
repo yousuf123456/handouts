@@ -102,7 +102,13 @@ export const authOptions : AuthOptions = {
       }
       
       return Promise.resolve(session)
-  },
+    },
+
+    async redirect(params): Promise<string> {
+      return params.url.startsWith(params.baseUrl) 
+      ? Promise.resolve(params.url)
+      : Promise.resolve(params.baseUrl)
+    }
   },
 
   debug : process.env.NODE_ENV === "development",
