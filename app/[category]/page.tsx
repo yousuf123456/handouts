@@ -1,0 +1,67 @@
+
+import React, { Suspense } from 'react'
+import Loading from './loading';
+
+import { SearchedProducts } from './components/SearchedProducts';
+import { Facets } from './components/Facets';
+import { searchProducts } from '../actions/searchProducts';
+import { IParams } from '../types';
+import { Header } from './components/Header';
+import { ReduxProvider } from '../context/ReduxProvider';
+import { getCategory } from '../actions/getCategory';
+import { getCategoryTree } from '../utils/getCategoryTree';
+import { formatCategoryParam } from '../utils/formatCategoryParam';
+
+interface Params {
+  category : string
+}
+
+export default async function SearchPage(
+  { searchParams, params } : {searchParams : IParams, params : Params},
+){
+  const data = await searchProducts(searchParams, params.category);
+
+  const categoryData = params.category !== "search" ? await getCategory({category : formatCategoryParam({ toRetrieve : true, category : params.category })}) : null;
+  const categoryTreeData = categoryData ? getCategoryTree(categoryData.rawCategoryData, null) : null;
+  const fullCategoryTreeData = categoryData ? getCategoryTree([...categoryData.rawCategoryData, ...categoryData.descendants], categoryData.parent.parentId) : null;
+
+  const body = {
+    searchTerm : searchParams.q,
+    category : params.category
+  }
+
+  const res = await fetch("http://localhost:3000/api/getFacets", {
+    method : "POST",
+    body : JSON.stringify(body)
+  });
+
+  const facetsData = await res.json();
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <div className='lg:flex h-full w-full mt-8'>
+        <div className='hidden lg:block'>
+          <Facets
+            facets={facetsData[0].facet} 
+            categoryTreeData={fullCategoryTreeData}
+          />
+        </div>
+
+        <div className='px-4 flex flex-col gap-3 w-full'>
+          <ReduxProvider>
+            <Header 
+              searchTerm={searchParams.q}
+              facets={facetsData[0].facet}
+              categoryTree={categoryTreeData}
+              count={facetsData[0].count.lowerBound}
+            />
+          </ReduxProvider>
+
+          <SearchedProducts
+            products={data}
+          />
+        </div>
+      </div>    
+    </Suspense>
+  )
+}

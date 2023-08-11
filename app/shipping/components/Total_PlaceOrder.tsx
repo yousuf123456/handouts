@@ -1,0 +1,138 @@
+"use client"
+import React, { useState } from 'react'
+
+import { Button } from '@/app/components/Button'
+import TotalTable from '@/app/components/TotalTable'
+import { useAppDispatch, useAppSelector } from '@/app/store/store'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { CartItemProductType, PackageType } from '@/app/types'
+import { useTotal } from '@/app/hooks/useTotal'
+import { formatCartItems } from '@/app/utils/formatCartItems'
+import { Order } from '@prisma/client'
+import { getProductPrice } from '@/app/utils/getProductPrice'
+import axios from 'axios'
+import BackdropLoader from '@/app/components/BackdropLoader'
+import { flushCart } from '@/app/store/features/cartSlice'
+import { stat } from 'fs'
+import { getFormatedCartItemTotal } from '@/app/utils/getFormatedCartItemTotal'
+
+interface Total_PlaceOrderProps {
+    product : CartItemProductType[] | null
+}
+
+export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({ 
+    product
+}) => {
+    const dispatch = useAppDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const searchParams = useSearchParams();
+    const fromCart = searchParams.get("fromCart") === "true";
+    const quantity = searchParams.get("quantity");
+    const combination = searchParams.get("combination");
+    
+    const cartItems = useAppSelector(state=> state.cart.cartItems);
+
+    const selectedShippingAddress = useAppSelector(state=> state.shipping.selectedShippingAddress);
+    const selectedBillingAddress = useAppSelector(state=> state.shipping.selectedBillingAddress);
+    const selectedEmailTo = useAppSelector(state=> state.shipping.email);
+
+    const productToBeFormatted = [{
+        quantity: parseInt(quantity!),
+        selectedCombination: combination !== "undefined" && combination !== null ? JSON.parse(combination) : null,
+        id: "any",
+        userId: "any",
+        productId: "any",
+        product : product ? product[0] : null
+    }]
+
+    //@ts-ignore
+    const formatedProducts = !fromCart ? formatCartItems(productToBeFormatted) : formatCartItems(cartItems);
+    const { subTotal, productsAmmount } = useTotal(!fromCart ? formatedProducts[0].cartItems : cartItems);
+
+    const products = !fromCart ? formatedProducts[0].cartItems : cartItems;
+
+    const router = useRouter();
+
+    const onPlaceOrder = ()=> {
+        setIsLoading(true);
+
+        const packagesData = formatedProducts.map((formatedProduct, i)=> {
+            const orderedProducts = formatedProduct.cartItems.map((cartItem, i)=> {
+                const orderedProduct = {
+                    status : "Payment Pending",
+                    quantity : cartItem.quantity,
+                    selectedCombination : cartItem.selectedCombination,
+                    priceAtOrderTime : Math.round(getProductPrice(cartItem)),
+                    product : {
+                        id : cartItem.product.id,
+                        image : cartItem.product.image,
+                        name : cartItem.product.name,
+                        storeName : cartItem.product.storeName,
+                        storeId : cartItem.product.storeId
+                    }
+                }
+
+                return orderedProduct
+            })
+
+            const Package = {
+                ammount : getFormatedCartItemTotal(formatedProduct),
+                storeId : formatedProduct.storeId, 
+                status : "Payment Pending", 
+                orderedProducts : {
+                    create : orderedProducts
+                },
+            }
+
+            return Package
+        })
+
+        const storesAssociatedToOrder = formatedProducts.map((formatedProduct)=> ({id : formatedProduct.storeId}));
+        
+        const orderData = {
+            totalAmmount : Math.round(subTotal),
+            totalQuantity : productsAmmount,
+            shippingAddress : selectedShippingAddress,
+            billingAddress : selectedBillingAddress,
+            emailTo : selectedEmailTo
+        }
+
+        axios.post("../../api/placeOrder", {
+            orderData,
+            packagesData,
+            storesAssociatedToOrder,
+            fromCart
+        })
+        .then((res)=> {
+            if(fromCart) dispatch(flushCart())
+            router.push(`/payment?checkoutOrderId=${res.data.id}`)
+        })
+        .catch((e)=> console.log(e))
+        .finally(()=> setIsLoading(false))
+    }
+
+  return (
+    <>
+    <div className='w-full flex flex-col gap-3 justify-start items-start'>
+        <TotalTable 
+            subTotal={subTotal}
+            productsAmmount={productsAmmount}
+            labels={["Sub Total", "Shipping Total", "Total"]}
+        />
+
+        <Button 
+            className='bg-green-500 hover:bg-green-600'
+            Disabled={!selectedBillingAddress || !selectedShippingAddress}
+            onClick={onPlaceOrder}
+        >
+            Place Order
+        </Button>
+    </div>
+
+    <BackdropLoader 
+        open={isLoading}
+    />
+    </>
+  )
+}
