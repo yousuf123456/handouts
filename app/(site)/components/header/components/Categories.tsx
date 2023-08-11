@@ -93,9 +93,8 @@ export const Categories = () => {
                 <div className={catsCardCs}>
                     {
                         categories.map((category: any)=> (
-                            <Link href={`/${formatCategoryParam({toPut : true, category : category[0].name})}`}>
+                            <Link key={category}  href={`/${formatCategoryParam({toPut : true, category : category[0].name})}`}>
                                 <div 
-                                    key={category} 
                                     onMouseEnter={()=>selectCat(category[0].children, category[0].name)} 
                                     onMouseLeave={(e)=>deselectCat(category[0].children, category[0].name, e)} 
                                     className={cn('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(category[0].name) && "bg-blue-100")}
@@ -119,8 +118,8 @@ export const Categories = () => {
                         >
                             {
                                 selectedCatChilds.map((child: any, i: number)=> (
-                                    <Link href={`/${formatCategoryParam({toPut : true, category : child.name})}`}>
-                                        <div key={i} onMouseEnter={()=>selectCat(child.children, child.name)} onMouseLeave={(e)=>deselectCat(child.children, child.name, e)} className={clsx('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(child.name) && "bg-blue-100")}>
+                                    <Link key={i} href={`/${formatCategoryParam({toPut : true, category : child.name})}`}>
+                                        <div onMouseEnter={()=>selectCat(child.children, child.name)} onMouseLeave={(e)=>deselectCat(child.children, child.name, e)} className={clsx('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(child.name) && "bg-blue-100")}>
                                             <p className='text-sm font-medium text-slate-700'>
                                                 { child.name }
                                             </p>
