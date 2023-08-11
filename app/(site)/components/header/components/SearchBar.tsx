@@ -3,11 +3,11 @@
 import { getAutoCompleteSuggestions } from '@/app/actions/getAutoCompleteSuggestions'
 import { Button } from '@/app/components/Button'
 import { Input } from '@/app/components/Input'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { HiSearch } from "react-icons/hi"
 import { SuggestionsFeed } from './SuggestionsFeed'
+import { useRouter } from 'next/navigation'
 
 export const SearchBar = () => {
 
@@ -22,22 +22,13 @@ export const SearchBar = () => {
 
     const searchTerm = watch("search");
 
-    // useEffect(()=>{
-    //     if (searchTerm) {
-    //         axios.post("../../../../api/getAutoCompleteSuggestions", {
-    //             searchTerm : searchTerm
-    //         })
-    //         .then((res) => {
-    //             setSuggestions(res.data);
-    //         })
-    //     }
-    // }, [searchTerm])
+    const router = useRouter();
 
     const onSubmit : SubmitHandler<FieldValues> = (data) => {
         const searchQuery = data.search
-        const url = `http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}&from=input`;
-        window.location.href = url;
-        //Write the search logic here..
+        router.push(`/search?q=${searchQuery}&from=input`)
+        // const url = `http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}&from=input`;
+        // window.location.href = url;
     }
 
   return (
