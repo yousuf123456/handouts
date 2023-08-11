@@ -30,7 +30,7 @@ export default async function SearchPage(
     category : params.category
   }
 
-  const res = await fetch("http://localhost:3000/api/getFacets", {
+  const res = await fetch("https://handouts-21hc2v6ov-muhammadyousuf554456-gmailcom.vercel.app/api/getFacets", {
     method : "POST",
     body : JSON.stringify(body)
   });
