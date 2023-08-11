@@ -1,8 +1,10 @@
 import { SpinnerLoader } from '@/app/components/SpinnerLoader';
+import { formatCategoryParam } from '@/app/utils/formatCategoryParam';
 import { cn } from '@/lib/utils';
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
 import clsx from 'clsx';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { HiChevronDown, HiChevronRight } from 'react-icons/hi'
 
@@ -91,28 +93,41 @@ export const Categories = () => {
                 <div className={catsCardCs}>
                     {
                         categories.map((category: any)=> (
-                            <div key={category} onMouseEnter={()=>selectCat(category[0].children, category[0].name)} onMouseLeave={(e)=>deselectCat(category[0].children, category[0].name, e)} className={cn('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(category[0].name) && "bg-blue-100")}>
-                                <p className='text-sm font-medium text-slate-700'>
-                                    { category[0].name }
-                                </p>
+                            <Link href={`/${formatCategoryParam({toPut : true, category : category[0].name})}`}>
+                                <div 
+                                    key={category} 
+                                    onMouseEnter={()=>selectCat(category[0].children, category[0].name)} 
+                                    onMouseLeave={(e)=>deselectCat(category[0].children, category[0].name, e)} 
+                                    className={cn('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(category[0].name) && "bg-blue-100")}
+                                >
+                                    <p className='text-sm font-medium text-slate-700'>
+                                        { category[0].name }
+                                    </p>
 
-                                <HiChevronRight className={cn('w-6 h-6 text-themeBlue opacity-0 group-hover:opacity-100', selectedCatsNames.includes(category[0].name) && "opacity-100", category[0].children.length === 0 && "group-hover:opacity-0")} />
-                            </div>
+                                    <HiChevronRight className={cn('w-6 h-6 text-themeBlue opacity-0 group-hover:opacity-100', selectedCatsNames.includes(category[0].name) && "opacity-100", category[0].children.length === 0 && "group-hover:opacity-0")} />
+                                </div>
+                            </Link>
                         ))
                     }
                 </div>
                 {
                     selectedCatsChilds.map((selectedCatChilds: any, i: number)=> (
-                        <div key={i} onMouseLeave={(e)=>deselectCat(selectedCatChilds, selectedCatsNames[i], e)} className={cn(catsCardCs, "border-l-[1px] relative -left-2")}>
+                        <div 
+                            key={i} 
+                            onMouseLeave={(e)=>deselectCat(selectedCatChilds, selectedCatsNames[i], e)} 
+                            className={cn(catsCardCs, "border-l-[1px] relative -left-2")}
+                        >
                             {
                                 selectedCatChilds.map((child: any, i: number)=> (
-                                    <div key={i} onMouseEnter={()=>selectCat(child.children, child.name)} onMouseLeave={(e)=>deselectCat(child.children, child.name, e)} className={clsx('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(child.name) && "bg-blue-100")}>
-                                        <p className='text-sm font-medium text-slate-700'>
-                                            { child.name }
-                                        </p>
+                                    <Link href={`/${formatCategoryParam({toPut : true, category : child.name})}`}>
+                                        <div key={i} onMouseEnter={()=>selectCat(child.children, child.name)} onMouseLeave={(e)=>deselectCat(child.children, child.name, e)} className={clsx('p-2 flex justify-between hover:bg-blue-100 group', selectedCatsNames.includes(child.name) && "bg-blue-100")}>
+                                            <p className='text-sm font-medium text-slate-700'>
+                                                { child.name }
+                                            </p>
 
-                                        <HiChevronRight className={cn('w-6 h-6 text-themeBlue opacity-0 group-hover:opacity-100', selectedCatsNames.includes(child.name) && "opacity-100", child.children.length === 0 && "group-hover:opacity-0")} />
-                                    </div>
+                                            <HiChevronRight className={cn('w-6 h-6 text-themeBlue opacity-0 group-hover:opacity-100', selectedCatsNames.includes(child.name) && "opacity-100", child.children.length === 0 && "group-hover:opacity-0")} />
+                                        </div>
+                                    </Link>
                                 ))
                             }    
                         </div>
