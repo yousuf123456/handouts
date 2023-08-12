@@ -8,12 +8,14 @@ interface OrderRequestsState  {
         reason : string;
     }[];
     feedback : string;
+    proofImages : string[];
     isAgreedToPolicies : boolean;
 };
 
 const initialState : OrderRequestsState = {
     selectedOrderedProducts : [],
     isAgreedToPolicies : false,
+    proofImages : [],
     feedback : "",
 };
 
@@ -67,6 +69,14 @@ const OrderRequestsSlice = createSlice({
 
         setIsAgreedToPolicies : (state, action: PayloadAction<boolean>)=> {
             state.isAgreedToPolicies = action.payload
+        },
+
+        addProofImage : (state, action: PayloadAction<string>)=>{
+            state.proofImages.push(action.payload);
+        },
+
+        removeProofImage : (state, action: PayloadAction<string>)=> {
+            state.proofImages = state.proofImages.filter((img)=> img !== action.payload);
         }
     }
 });
@@ -74,6 +84,8 @@ const OrderRequestsSlice = createSlice({
 export default OrderRequestsSlice.reducer
 export const {
     setFeedback,
+    addProofImage,
+    removeProofImage,
     setRequestReason,
     selectOrderedProduct,
     setIsAgreedToPolicies,

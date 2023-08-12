@@ -3,7 +3,7 @@ import React from 'react'
 import { Heading } from '@/app/(site)/components/Heading'
 import { Container } from '@/app/user/components/Container'
 import { Layout } from '@/app/user/components/Layout'
-import { OrderCancellationForm } from './components/OrderCancellationForm'
+import { OrderRequestForm } from './components/OrderRequestForm'
 
 
 interface SearchParams {
@@ -23,7 +23,7 @@ export default async function RequestPage ({ searchParams, params } : { searchPa
                     { searchParams.type === "Cancellation" ? "Cancellation Request" : "Return Request"}
                 </Heading>
 
-                <OrderCancellationForm
+                <OrderRequestForm
                     type={searchParams.type}
                     orderId={params.orderId}
                 />

@@ -5,6 +5,9 @@ import { Timeline } from './Timeline'
 import { Order_OrderRequestActionPanel } from './Order_OrderRequestActionPanel'
 import { OrderRequest_OrderedProductsList } from './OrderRequest_OrderedProductsList'
 
+import Image from "next/image"
+import { ReturnRequestProofs } from './ReturnRequestProofs'
+
 interface Order_OrderRequestCardProps {
   order? : OrderType,
   isOrderRequest? : boolean,
@@ -43,6 +46,16 @@ export const Order_OrderRequestCard: React.FC<Order_OrderRequestCardProps> = ({
           orderedProducts={request?.orderedProducts}
         />
       </div>
+
+      {
+        isOrderRequest && orderRequestType === "Returns" &&
+        <ReturnRequestProofs
+          //@ts-ignore
+          feedback={request?.orderFeedback}
+          //@ts-ignore
+          proofImages={request?.proofImages}
+        />
+      }
     </div>
   )
 }

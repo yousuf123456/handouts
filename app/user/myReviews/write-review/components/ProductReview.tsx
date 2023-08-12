@@ -10,6 +10,7 @@ import { ReviewImages } from './ReviewImages'
 import clsx from 'clsx'
 import { compact } from 'lodash'
 import Image from 'next/image'
+import { imageConfigDefault } from 'next/dist/shared/lib/image-config'
 
 interface ProductReviewProps {
   href? : string;
@@ -57,6 +58,16 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
 3. Product kay experience ke bary main batayen`
 
   const showFormsCondition = !hideForms && review !== undefined && setReview !== undefined && images !== undefined && setImages !== undefined
+
+  const addImage = (img: string)=> {
+    setImages && setImages((prev)=> [...prev, img]);
+  }
+
+  const removeImage = (img: string)=> {
+    const updatedImages = images?.filter((image)=> image !== img);
+
+    setImages && setImages(updatedImages || []);
+  }
 
   return (
     <div className={clsx('w-full flex gap-3 items-start')}>
@@ -121,7 +132,8 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
           showFormsCondition && (
             <ReviewImages 
               images={images}
-              setImages={setImages}
+              addImage={addImage}
+              removeImage={removeImage}
             />
           )
         }

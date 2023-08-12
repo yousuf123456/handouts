@@ -165,6 +165,7 @@ export type OrderedProductType = {
     priceAtOrderTime : number;
     hasBeenReviewed : boolean;
     cancellationRequestId : string;
+    returnRequestId : string;
     selectedCombination : Prisma.JsonValue;
     returnReason : string | null | undefined;
     cancellationReason : string | null | undefined;

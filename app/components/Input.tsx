@@ -61,6 +61,7 @@ export const Input: React.FC<InputProps> = ({
  }) => {
   return (
     <input
+        id='searchBar'
         {...register(id, {
             required
         })}

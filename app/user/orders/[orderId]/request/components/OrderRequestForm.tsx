@@ -5,13 +5,14 @@ import { FeedbackForm } from './FeedbackForm';
 import { Policies } from './Policies';
 import { SubmitRequest } from './SubmitRequest';
 import { ReduxProvider } from '@/app/context/ReduxProvider';
+import { ProductImagesForm } from './ProductImagesForm';
 
-interface OrderCancellationFormProps {
+interface OrderRequestFormProps {
     orderId : string;
     type : "Cancellation" | "Return";
 }
 
-export const OrderCancellationForm: React.FC<OrderCancellationFormProps> = async({
+export const OrderRequestForm: React.FC<OrderRequestFormProps> = async({
     orderId,
     type
 }) => {
@@ -35,6 +36,8 @@ export const OrderCancellationForm: React.FC<OrderCancellationFormProps> = async
             />
 
             <FeedbackForm />
+
+            {type === "Return" && <ProductImagesForm />}
 
             <Policies />
 
