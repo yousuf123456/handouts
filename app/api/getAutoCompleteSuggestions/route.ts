@@ -17,13 +17,6 @@ export async function POST(req: Request) {
                     }
                 }
             },
-
-            {
-                $group: {
-                  _id: '$name',
-                  name: { $first: '$name' }
-                }
-            },
     
             {
                 $limit : 8
@@ -31,15 +24,15 @@ export async function POST(req: Request) {
     
             {
                 $project : {
-                    name : 1
+                    name : 1,
                 }
             }
         ]
     
-        const autoCompleteSuggestions = await prisma.category.aggregateRaw({
+        const autoCompleteSuggestions = await prisma.keyword.aggregateRaw({
             pipeline : pipeline
         }) as unknown as {name : string}[];
-    
+
         return NextResponse.json(autoCompleteSuggestions);
     }
     

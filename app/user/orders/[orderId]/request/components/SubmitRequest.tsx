@@ -8,6 +8,7 @@ import { getUpdatedPackages } from '@/app/utils/getUpdatedPackages'
 import { useRouter } from 'next/navigation'
 
 import axios from 'axios'
+import productMinorInfoSlice from '@/app/store/features/productMinorInfoSlice'
 interface SubmitRequestProps {
   packages : PackageType[];
   orderId : string;
@@ -24,6 +25,7 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
 
   const selectedOrderedProducts = useAppSelector(state=> state.orderRequests.selectedOrderedProducts);
   const isAgreedToPolicies = useAppSelector(state=> state.orderRequests.isAgreedToPolicies);
+  const proofImages = useAppSelector(state=> state.orderRequests.proofImages);
   const feedback = useAppSelector(state=> state.orderRequests.feedback);
 
   const reasonNotGiven = selectedOrderedProducts.filter((orderedProduct)=> orderedProduct.reason.length === 0);
@@ -42,6 +44,7 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
       updatedPackages : updatedPackagesWithUpdatedStatus,
       updatedOrderedProducts : updatedOrderedProducts,
       orderFeedback : feedback,
+      proofImages : proofImages,
       orderId : orderId,
       type : type
     })

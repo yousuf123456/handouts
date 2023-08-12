@@ -2,7 +2,7 @@ import React from 'react'
 
 import { FormattedCurrency } from '@/app/components/FormattedCurrency'
 import { ProductImage } from '@/app/components/ProductImage'
-import { CartItemType, OrderedProductType, StatusType } from '@/app/types'
+import { CartItemType, OrderedProductType, StatusType, ReturnStatusType } from '@/app/types'
 import { KeyValuePairInfo } from './KeyValuePairInfo'
 import { Status } from './Status'
 
@@ -13,6 +13,7 @@ import { Refund_ReviewCta } from './Refund_ReviewCta'
 
 interface OrderRequest_OrderedProductCardProps {
     orderedProduct : OrderedProductType | CartItemType;
+    hideShowMoreDetailsCta? : boolean;
     showOnlyCancelStatus? : boolean;
     showCancelButton? : boolean;
     hideCancelButton? : boolean;
@@ -24,6 +25,7 @@ interface OrderRequest_OrderedProductCardProps {
 }
 
 export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProductCardProps> = ({
+    hideShowMoreDetailsCta,
     showOnlyCancelStatus,
     showCancelButton,
     hideCancelButton,
@@ -42,9 +44,20 @@ export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProdu
     const orderedProductCIT = orderedProduct as CartItemType
     
     //@ts-ignore
-    const orderedProductStatus = orderedProduct.status as StatusType
+    const orderedProductStatus = orderedProduct.status
 
     const isCancelled = orderedProductStatus === "Cancelled" || orderedProductStatus === "Cancellation in Process"
+    const isReturned = [
+        "Return in Process",
+        "Approved",
+        "Rejected",
+        "Refund Pending",
+        "Refunded"
+    ].includes(orderedProductStatus);
+
+    const cancellationId = orderedProductOPT.cancellationRequestId;
+    const returnId = orderedProductOPT.returnRequestId;
+    const moreDetailsHref = `/user/${returnId ? "returns" : "cancellations"}/${cancellationId || returnId}`
 
   return (
     <div className={clsx('w-full h-20 flex items-start justify-between')}>
@@ -68,8 +81,8 @@ export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProdu
                                 showOnlyCancelStatus={showOnlyCancelStatus}
                             />
                             {
-                                isCancelled && 
-                                <CtaLink href={`/user/cancellations/${orderedProductOPT.cancellationRequestId}`}>
+                                !hideShowMoreDetailsCta && (isCancelled || isReturned) && 
+                               <CtaLink href={moreDetailsHref}>
                                     <p className='text-sm font-semibold text-themeBlue'>More Details</p>
                                 </CtaLink>
                             }

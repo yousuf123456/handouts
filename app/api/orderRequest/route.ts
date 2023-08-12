@@ -10,6 +10,7 @@ type ReqType = {
     type : "Cancellation" | "Return",
     updatedPackages : PackageType[], 
     orderFeedback : string,
+    proofImages : string[],
     orderId : string,
 }
 
@@ -42,6 +43,7 @@ export async function POST(req: Request){
         const { 
             type,
             orderId,
+            proofImages,
             orderFeedback,
             updatedPackages,
             updatedOrderedProducts
@@ -76,6 +78,7 @@ export async function POST(req: Request){
             request = await prisma.returnRequest.create({
                 data : {
                     status : requestStatus,
+                    proofImages : proofImages,
                     orderFeedback : orderFeedback,
                     
                     requester : {

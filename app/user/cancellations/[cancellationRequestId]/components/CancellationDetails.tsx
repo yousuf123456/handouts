@@ -1,6 +1,6 @@
 import { getUserCancellationRequests } from '@/app/actions/getUserCancellationRequests';
 import { CancellationRequestType } from '@/app/types';
-import { Package_CancellationProductsCard } from '@/app/user/orders/[orderId]/components/Package_CancellationProductsCard';
+import { Package_RequestProductsCard } from '@/app/user/orders/[orderId]/components/Package_RequestProductsCard';
 import { Order_OrderRequestActionPanel } from '@/app/user/orders/components/Order_OrderRequestActionPanel';
 import { Timeline } from '@/app/user/orders/components/Timeline';
 import React from 'react'
@@ -32,7 +32,7 @@ export const CancellationDetails: React.FC<CancellationDetailsProps> = async({
       />
 
       <div className='mt-6'>
-        <Package_CancellationProductsCard
+        <Package_RequestProductsCard
           orderRequestType="Cancellation"
           request={cancellationRequest}
           isOrderRequest={true}

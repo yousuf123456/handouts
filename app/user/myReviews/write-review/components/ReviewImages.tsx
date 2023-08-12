@@ -10,12 +10,14 @@ import { AlertDialogModel } from '@/app/components/AlertDialog';
 
 interface ReviewImagesProps {
   images : string[]
-  setImages : React.Dispatch<React.SetStateAction<string[]>>
+  addImage : (img: string)=> void,
+  removeImage : (img: string)=> void
 }
 
 export const ReviewImages: React.FC<ReviewImagesProps> = ({
   images,
-  setImages
+  addImage,
+  removeImage
 }) => {
 
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +35,7 @@ export const ReviewImages: React.FC<ReviewImagesProps> = ({
       data: body
     })
     .then((res)=> {
-      setImages((prev)=> [...prev, res.data.data.url])
+      addImage(res.data.data.url)
     })
     .catch((e)=> console.log(e))
     .finally(()=> setIsLoading(false))
@@ -45,7 +47,7 @@ export const ReviewImages: React.FC<ReviewImagesProps> = ({
   }
 
   const onRemovePic = (img: string)=> {
-    setImages((prev)=> prev.filter((prevImg)=> prevImg !== img))
+    removeImage(img)
   }
 
   return (

@@ -5,7 +5,7 @@ import { OrderProgressTracker } from './OrderProgressTracker'
 import { PackageCardHeader } from './PackageCardHeader';
 import { PackageProductsList } from './PackageProductsList';
 
-interface Package_CancellationProductsCardProps {
+interface Package_RequestProductsCardProps {
     Package? : PackageType;
     packageNumber? : number;
     isOrderRequest? : boolean;
@@ -13,7 +13,7 @@ interface Package_CancellationProductsCardProps {
     request? : CancellationRequestType | ReturnRequestType;
 }
 
-export const Package_CancellationProductsCard: React.FC<Package_CancellationProductsCardProps> = ({
+export const Package_RequestProductsCard: React.FC<Package_RequestProductsCardProps> = ({
     request,
     Package,
     packageNumber,
@@ -44,8 +44,8 @@ export const Package_CancellationProductsCard: React.FC<Package_CancellationProd
             {
                 !orderHasBeenCancelled &&
                 <OrderProgressTracker 
-                    approved={!!returnRequest.approved}
-                    rejected={!!returnRequest.rejected}
+                    approved={!!returnRequest?.approved}
+                    rejected={!!returnRequest?.rejected}
                     status={Package?.status as StatusType}
                     orderRequestStatus={request?.status}
                     orderRequestType={orderRequestType}

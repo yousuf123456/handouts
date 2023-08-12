@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { getUserReturnRequests } from '@/app/actions/getUserReturnRequests'
-import { Package_CancellationProductsCard } from '@/app/user/orders/[orderId]/components/Package_CancellationProductsCard'
+import { Package_RequestProductsCard } from '@/app/user/orders/[orderId]/components/Package_RequestProductsCard'
 import { Order_OrderRequestActionPanel } from '@/app/user/orders/components/Order_OrderRequestActionPanel'
 import { Timeline } from '@/app/user/orders/components/Timeline'
 import { ReturnRequestType } from '@/app/types'
+import { ReturnRequestProofs } from '@/app/user/orders/components/ReturnRequestProofs'
 
 interface ReturnDetailsProps {
     returnRequestId : string
@@ -40,10 +41,18 @@ export const ReturnDetails: React.FC<ReturnDetailsProps> = async({
       />
 
       <div className='mt-6'>
-        <Package_CancellationProductsCard
+        <Package_RequestProductsCard
           orderRequestType="Return"
           isOrderRequest={true}
           request={returnRequest}
+        />
+      </div>
+
+      <div className='mt-4'>
+        <ReturnRequestProofs
+          size="large"
+          feedback={returnRequest.orderFeedback}
+          proofImages={returnRequest.proofImages}
         />
       </div>
     </div>

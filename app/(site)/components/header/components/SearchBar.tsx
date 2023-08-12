@@ -8,10 +8,12 @@ import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { HiSearch } from "react-icons/hi"
 import { SuggestionsFeed } from './SuggestionsFeed'
 import { useRouter } from 'next/navigation'
+import clsx from 'clsx'
+import { cn } from '@/app/utils/cn'
 
 export const SearchBar = () => {
 
-    const { register, watch, handleSubmit } = useForm<FieldValues>({
+    const { register, watch, setValue, handleSubmit } = useForm<FieldValues>({
         defaultValues : {
             search : ""
         }
@@ -21,18 +23,40 @@ export const SearchBar = () => {
     const [suggestions, setSuggestions] = useState([]);
 
     const searchTerm = watch("search");
+    useEffect(()=> {
+        if(!searchTerm.length) return
+
+        const body = {
+            searchTerm : searchTerm
+        }
+
+        fetch("http://localhost:3000/api/getAutoCompleteSuggestions", {
+            method : "post",
+            body : JSON.stringify(body)
+        })
+        .then(async(res)=> {
+            const suggestions = await res.json();
+            setSuggestions(suggestions);
+        })
+    }, [searchTerm])
+
+    useEffect(()=> {
+        if(!isAutocompleteOpen) setSuggestions([])
+    }, [isAutocompleteOpen])
 
     const router = useRouter();
-
     const onSubmit : SubmitHandler<FieldValues> = (data) => {
-        const searchQuery = data.search
+        const searchBar = document.getElementById("searchBar");
+        searchBar?.blur();
+
+        setIsAutocompleteOpen(false);
+        const searchQuery = data.search;
         router.push(`/search?q=${searchQuery}&from=input`)
-        // const url = `http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}&from=input`;
-        // window.location.href = url;
     }
 
   return (
-    <div className='w-full relative flex flex-col gap-0'>
+    <>
+    <div className='w-full relative flex flex-col gap-0 z-[99]'>
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className='relative flex gap-0 w-full'>
                 <div className='w-full p-0.5 rounded-l-[3px] bg-gradient-to-r from-themeBlue to-cyan-300'>
@@ -41,7 +65,6 @@ export const SearchBar = () => {
                         type='text'
                         autoComplete='off'
                         onFocus={()=>setIsAutocompleteOpen(true)}
-                        onBlur={()=>setIsAutocompleteOpen(false)}
                         required={true}
                         placeholder='Search in handouts'
                         register={register}
@@ -55,11 +78,19 @@ export const SearchBar = () => {
             </div>
         </form>
 
-        {/* {
+        {
             isAutocompleteOpen && (
-                <SuggestionsFeed suggestions={suggestions} />
+                <SuggestionsFeed 
+                    onClick={(query)=>{
+                        setIsAutocompleteOpen(false)
+                        setValue("search", query)
+                    }}
+                    suggestions={suggestions} 
+                />
             )
-        } */}
+        }
     </div>
+    {<div onClick={()=>setIsAutocompleteOpen(false)} className={cn('fixed inset-0 bg-black transition-all duration-300 ease-out', isAutocompleteOpen ? "bg-opacity-25 z-50 pointer-events-auto" : "bg-opacity-0 z-[-10] pointer-events-none" )}/>}
+    </>
   )
 }

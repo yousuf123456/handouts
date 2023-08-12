@@ -5,6 +5,7 @@ import { EmptyState } from '../../components/EmptyState';
 import { RiArrowGoBackFill } from 'react-icons/ri';
 import { Order_OrderRequestCard } from '../../orders/components/Order_OrderRequestCard';
 import { ReturnRequestType } from '@/app/types';
+import { ReturnRequestCard } from './ReturnRequestCard';
 
 export const Returns = async() => {
     const returnRequests = await getUserReturnRequests() as unknown as ReturnRequestType[];
@@ -22,11 +23,9 @@ export const Returns = async() => {
     <div className='flex flex-col gap-0'>
       {
         returnRequests.map((returnRequest, i)=> (
-          <Order_OrderRequestCard
+          <ReturnRequestCard
             key={i}
-            request={returnRequest as unknown as ReturnRequestType}
-            orderRequestType="Returns"
-            isOrderRequest={true}
+            returnRequest={returnRequest as unknown as ReturnRequestType}
           />
         ))
       }
