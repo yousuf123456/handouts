@@ -8,17 +8,17 @@ export const Categories = () => {
 
   return (
     <div>
-        <Heading>
-            Categories
-        </Heading>
+      <Heading>
+        Categories
+      </Heading>
 
-        <div className='w-full flex gap-2 justify-between overflow-auto scrollbar-none'>
-          {
-            categoryColumns.map((categoryColumn, i) => (
-              <CategoryColumn key={i} columnData={categoryColumn} />
-            ))
-          }
-        </div>
+      <div className='w-full flex gap-2 justify-between overflow-auto scrollbar-none'>
+        {
+          categoryColumns.map((categoryColumn, i) => (
+            <CategoryColumn key={i} columnData={categoryColumn} />
+          ))
+        }
+      </div>
     </div>
   )
 }

@@ -4,25 +4,23 @@ import React, { useEffect, useState } from 'react'
 import Image from "next/image"
 
 import { AverageStats } from './AverageStats'
-import { getAverageRating } from '@/app/utils/getAverageRating'
 import { RatingStars } from '@/app/components/RatingStars'
 import { Carousel } from 'react-responsive-carousel'
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi'
 import { CombinationsType, ProductInfo, VariantsType } from '@/app/types'
-import { Avatar } from '@/app/components/Avatar'
-import {format} from "date-fns"
-import { CtaLink } from '@/app/(site)/components/CtaLink'
 import { ProductVariants } from './ProductVariants'
 import { ProductCTAs } from './ProductCTAs'
 import { useAppDispatch } from '@/app/store/store'
 import { setAvgRating, setDetailedRatingsCount, setQuestionsCount, setRatingsCount } from '@/app/store/features/productMinorInfoSlice'
 
-import find from "lodash/find"
-import clsx from 'clsx'
 import { ProductPrice } from '@/app/components/ProductPrice'
 import { Quantity } from '@/app/components/Quantity'
 import { getPriceInfo } from '@/app/utils/getPriceInfo'
 import { ProductSideInfo } from './productSideInfo/ProductSideInfo'
+
+import find from "lodash/find"
+import clsx from 'clsx'
+import axios from 'axios'
 
 interface ProductInformationProps {
     product : ProductInfo
@@ -31,6 +29,21 @@ interface ProductInformationProps {
 export const ProductInformation: React.FC<ProductInformationProps> = ({
     product
 }) => {
+
+    useEffect(()=> {
+        const productData = {
+            categoryTreeData : product.categoryTreeData,
+            description : product.description,
+            attributes : product.attributes,
+            keywords : product.keywords,
+            name : product.name
+        }
+
+        axios.post("../../../api/browsingHistoryAdd", {
+            productData : productData,
+            productId : product.id
+        })
+    }, [])
 
     const [quantity, setQuantity] = useState(1);
     const [selectedIndex, setSelectedIndex] = useState(0);

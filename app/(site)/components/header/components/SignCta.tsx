@@ -6,10 +6,12 @@ import React, { useEffect, useState } from 'react'
 import { CtaLink } from '../../CtaLink';
 import { useAppDispatch } from '@/app/store/store';
 import { setCartItemsCount } from '@/app/store/features/cartSlice';
+import { ProfileDropDownMenu } from './ProfileDropDownMenu';
 
 export const SignCta = () => {
-    const session = useSession();
     const [hasSetCount, setHasSetCount] = useState(false);
+
+    const session = useSession();
     const isLoggedIn = session.status === "authenticated";
     const dispatch = useAppDispatch();
 
@@ -25,17 +27,17 @@ export const SignCta = () => {
     <div>
         {
         isLoggedIn ? (
-            <div className='flex gap-3 items-center'>
-                <div className='relative w-8 h-8 rounded-full overflow-hidden'>
-                    <Avatar image={session.data.user?.image} />
-                </div>
+            <ProfileDropDownMenu>
+                <div className='flex gap-3 items-center cursor-pointer'>
+                    <div className='relative w-8 h-8 rounded-full overflow-hidden'>
+                        <Avatar image={session.data.user?.image} />
+                    </div>
 
-                <CtaLink href=''>
                     <p className='font-text font-semibold text-white hidden sm:block'>
-                        { session.data.user?.phone || session.data.user?.name }
+                       { session.data.user?.phone || session.data.user?.name }
                     </p>
-                </CtaLink>
-            </div>
+                </div>
+            </ProfileDropDownMenu>
         ) 
         : 
         (

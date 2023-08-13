@@ -4,21 +4,23 @@ import { AddressType } from "../types";
 
 export type getCurrentUserParameters = {
     updateCartItemCount? : boolean, 
-    byValue? : number, 
-    query? : any, 
-    getCart? : boolean, 
     getAddressDiary? : boolean, 
-    addAddress? : boolean, 
+    getBehaviourDoc? : boolean,
     removeAddress? : boolean,
-    address? : any, 
     editAddress? : boolean,
-    flushCart? : boolean
+    addAddress? : boolean, 
+    flushCart? : boolean,
+    byValue? : number, 
+    getCart? : boolean, 
+    address? : any, 
+    query? : any, 
 }
 
 export const getCurrentUser = async(parameters: getCurrentUserParameters={}) => {
 
     const {
         updateCartItemCount,
+        getBehaviourDoc,
         getAddressDiary,
         removeAddress,
         editAddress,
@@ -35,6 +37,21 @@ export const getCurrentUser = async(parameters: getCurrentUserParameters={}) => 
 
     if (!session?.user?.id || !session.user?.email) {
         return null
+    }
+
+    if(getBehaviourDoc){
+        const currentUser = await prisma.user.findUnique({
+            where : {
+                id : session.user.id
+            },
+
+            select : {
+                id : true,
+                behaviour : true
+            }
+        });
+
+        return currentUser
     }
 
     if(flushCart){

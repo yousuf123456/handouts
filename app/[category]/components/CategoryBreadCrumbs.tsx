@@ -1,23 +1,33 @@
 "use client"
 import { formatCategoryParam } from '@/app/utils/formatCategoryParam'
 import { getCategoryNames } from '@/app/utils/getCategoryNames'
+import { useParams, useSearchParams } from 'next/navigation'
+
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
-import { useSearchParams } from 'next/navigation'
-
 import React from 'react'
 import { HiChevronRight } from 'react-icons/hi'
+import clsx from 'clsx'
 
 interface CategoryBreadCrumbsProps {
-    categoryTree : any
+    categoryTree : any,
+    crumbColor? : string;
+    productName? : string;
+    seperatorColor? : string;
 }
 
 export const CategoryBreadCrumbs: React.FC<CategoryBreadCrumbsProps> = ({
-    categoryTree
+    seperatorColor,
+    categoryTree,
+    productName,
+    crumbColor
 }) => {
 
     const from = useSearchParams().get("from");
+    const category = useParams().category
+
+    const color = crumbColor || "#2998FF"
 
   return (
     <div>
@@ -25,19 +35,29 @@ export const CategoryBreadCrumbs: React.FC<CategoryBreadCrumbsProps> = ({
             categoryTree === null ? (
                 <Breadcrumbs separator={<HiChevronRight />}
                  aria-label="breadcrumb">
-                    <Link underline="hover" fontFamily={"var(--font-poppins)"} color="#2998FF" href="/">
+                    <Link underline="hover" fontFamily={"var(--font-poppins)"} color={color} href="/">
                         Home
                     </Link>
                     <Typography color="text.primary" fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
                 </Breadcrumbs>
             ): (
-                <Breadcrumbs separator={<HiChevronRight className='text-slate-300 w-5 h-5' />}>
-                    <Link underline="hover" fontFamily={"var(--font-poppins)"} color="#2998FF" href="/">
-                        Home
-                    </Link>
+                <Breadcrumbs separator={<HiChevronRight className={clsx('w-5 h-5', seperatorColor || "text-slate-300")} />}>
                     {
-                        getCategoryNames(categoryTree[0]).map((category, i)=> (
-                            <Link key={i} underline="hover" fontFamily={"var(--font-poppins)"} color="#2998FF" href={`/${formatCategoryParam({toPut : true, category : category.name})}`}>
+                        category &&
+                        <Link underline="hover" fontFamily={"var(--font-poppins)"} color={color} href="/">
+                            Home
+                        </Link>
+                    }
+                    {
+                        //Here category tree might be an array of array of categoryTreeData
+                        getCategoryNames(categoryTree[0] || categoryTree).map((category, i)=> (
+                            <Link 
+                                key={i} 
+                                color={color} 
+                                underline="hover" 
+                                fontFamily={"var(--font-poppins)"} 
+                                href={`/${formatCategoryParam({toPut : true, category : category.name})}`}
+                            >
                                 { category.name }
                             </Link>
                         ))
@@ -45,6 +65,10 @@ export const CategoryBreadCrumbs: React.FC<CategoryBreadCrumbsProps> = ({
                     {
                         from === "input" &&
                         <Typography color="text.primary" fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
+                    }
+                    {
+                        productName &&
+                        <Typography color="#64748b" fontFamily={"var(--font-poppins)"}>{ productName }</Typography>     
                     }
                 </Breadcrumbs>
             )

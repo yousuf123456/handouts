@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link';
 
-import { fullCategoryDiscountedProductType } from '../types';
+import { ProductCardType, fullCategoryDiscountedProductType } from '../types';
 import { priceLabel } from '../utils/priceLabel';
 import { RatingStars } from './RatingStars';
 
@@ -12,7 +12,7 @@ import { FormattedCurrency } from './FormattedCurrency';
 
 
 interface ProductCardProps {
-    product : fullCategoryDiscountedProductType;
+    product : ProductCardType | fullCategoryDiscountedProductType;
     showDiscountLabel? : boolean;
 }
 

@@ -1,14 +1,14 @@
-import prisma from "../libs/prismadb"
+
 import { Hero } from './components/Hero/Hero'
 import { FeaturedCategoriesList } from './components/featuredCategoriesList/FeaturedCategoriesList'
 import { FlashSaleProductsList } from './components/flashSaleProductsList/FlashSaleProductsList'
 import { CategoryDealsList } from './components/categoryDealsList/CategoryDealsList'
 import { ExclusiveSections } from './components/exclusiveSections/ExclusiveSections'
 import { Categories } from './components/categories/Categories'
-import { getCategory } from "../actions/getCategory"
+import { getRecomendedProducts } from "../actions/recomendations/getRecomendedProducts"
+import { RecomendedProducts } from './components/RecomendedProducts/RecomendedProducts'
 
-export default async function Home() {
-
+export default async function Home() {  
   return (
     <div className='w-full h-full bg-slate-100'>
       <Hero />
@@ -18,6 +18,7 @@ export default async function Home() {
         <CategoryDealsList />
         <ExclusiveSections />
         <Categories />
+        <RecomendedProducts />
       </div>
     </div>
   )
