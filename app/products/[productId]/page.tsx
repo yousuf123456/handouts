@@ -11,6 +11,8 @@ import { QuestionsLoading } from './components/containers/loadings/QuestionsLoad
 import { DetailsLoading } from './components/containers/loadings/DetailsLoading'
 import { ProductsFromStore } from './components/containers/ProductsFromStore'
 import { ProductsFromStoreLoading } from './components/containers/loadings/ProductsFromStoreLoading'
+import { SimilarProducts } from './components/containers/SimilarProducts'
+import { SimilarProductsLoading } from './components/containers/loadings/SimilarProductsLoading'
 
 interface IParams {
   productId : string
@@ -44,6 +46,10 @@ export default async function page({ params } : { params : IParams }) {
                 <Questions productId={params.productId}/>
               </Suspense>
             </Container>
+
+            <Suspense fallback={<SimilarProductsLoading />}>
+              <SimilarProducts productId={params.productId}/>
+            </Suspense>
           </div>
 
           <Suspense fallback={<ProductsFromStoreLoading />}>

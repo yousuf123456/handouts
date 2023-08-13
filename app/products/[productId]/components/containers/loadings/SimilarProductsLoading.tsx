@@ -1,15 +1,16 @@
-"use client"
+"use client";
+
 import { Heading } from '@/app/(site)/components/Heading'
 import LinearProgress from '@mui/material/LinearProgress'
 import React from 'react'
 
-export const ReviewsLoading = () => {
+export const SimilarProductsLoading = () => {
   return (
     <div className='flex flex-col gap-4'>
-      <Heading>
-          Rating and Reviews
-      </Heading>
-      <LinearProgress color="secondary" />
+        <Heading>
+            Similar Products
+        </Heading>
+        <LinearProgress color="secondary" />
     </div>
   )
 }

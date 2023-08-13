@@ -38,6 +38,20 @@ model User {
   searches Search[] @relation(fields: [searchIds], references: [id])
   cancellationRequests CancellationRequest[]
   returnRequests ReturnRequest[]
+
+  behaviour UserBehaviour?
+}
+
+model UserBehaviour {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @db.ObjectId @unique
+  user User @relation(fields: [userId], references: [id])
+
+  count Int @default(0)
+  
+  browsingHistory Json[]
+  browsingHistoryProductIds String[]
 }
 
 model Account {

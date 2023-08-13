@@ -5,20 +5,7 @@ import { ReduxProvider } from '@/app/context/ReduxProvider'
 import { Container } from '../Container'
 import { CategoriesType } from '@/app/types'
 import { getCategoryTree } from '@/app/utils/getCategoryTree'
-
-const renderCategory = (category : any) => {
-  const categoryInfo = [{name : category?.name, last : category?.children?.length === 0}];
-
-  if (category?.children?.length > 0) {
-    category.children.forEach((childCategory : any) => {
-      const childCategoryNames = renderCategory(childCategory);
-      categoryInfo.push(...childCategoryNames);
-    });
-  }
-
-  return categoryInfo;
-};
-
+import { CategoryBreadCrumbs } from '@/app/[category]/components/CategoryBreadCrumbs'
 
 interface InformationProps {
   productId : string
@@ -42,20 +29,11 @@ export const Information: React.FC<InformationProps> = async({
     <ReduxProvider>
       <div className='flex flex-col gap-2'>
         <div className='flex gap-1'>
-          {
-            renderCategory(categoryTree).map((category, index) => (
-              <p className='font-text text-rose-600 font-semibold tracking-wide' key={index}>
-                {category.name}
-                {
-                  !category.last && (
-                  <span className='ml-1 font-text text-rose-600 font-semibold'>
-                    \
-                  </span>
-                  )
-                }
-              </p>
-            ))
-          }
+          <CategoryBreadCrumbs
+            productName={productInfo.name}
+            categoryTree={categoryTree}
+            crumbColor='#f43f5e'
+          />
         </div>
 
         <div className='flex flex-col gap-6'>

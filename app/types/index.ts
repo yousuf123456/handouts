@@ -5,6 +5,16 @@ export type fullCategoryDiscountedProductType = (Product & {
     discount : Discount | null
 });
 
+export type ProductCardType = {
+    discount : Discount | null,
+    ratingsCount : number,
+    avgRating : number,
+    image : string,
+    price : number,
+    name : string,
+    id : string,
+}
+
 type MGdiscount = {
     _id: { $oid: string },
     name: string,
