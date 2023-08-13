@@ -33,8 +33,9 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = async({
 
         <ProductsListLayout>
             {
-                similarProducts.map((product)=> (
+                similarProducts.map((product, i)=> (
                     <ProductCard
+                        key={i}
                         product={product}
                     />
                 ))
