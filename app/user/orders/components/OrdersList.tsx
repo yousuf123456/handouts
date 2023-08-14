@@ -12,7 +12,7 @@ export const OrdersList: React.FC<OrdersListProps> = ({
   orders
 }) => {
 
-  if(!orders) {
+  if(!orders || !orders.length) {
     return (
       <div className='w-full h-full'>
         <EmptyState 

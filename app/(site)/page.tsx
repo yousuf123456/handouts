@@ -5,10 +5,11 @@ import { FlashSaleProductsList } from './components/flashSaleProductsList/FlashS
 import { CategoryDealsList } from './components/categoryDealsList/CategoryDealsList'
 import { ExclusiveSections } from './components/exclusiveSections/ExclusiveSections'
 import { Categories } from './components/categories/Categories'
-import { getRecomendedProducts } from "../actions/recomendations/getRecomendedProducts"
 import { RecomendedProducts } from './components/RecomendedProducts/RecomendedProducts'
+import { getRP } from '../actions/getRP'
 
 export default async function Home() {  
+
   return (
     <div className='w-full h-full bg-slate-100'>
       <Hero />
