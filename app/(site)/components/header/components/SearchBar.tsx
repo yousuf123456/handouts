@@ -30,7 +30,7 @@ export const SearchBar = () => {
             searchTerm : searchTerm
         }
 
-        fetch("http://localhost:3000/api/getAutoCompleteSuggestions", {
+        fetch("https://handouts-21hc2v6ov-muhammadyousuf554456-gmailcom.vercel.app/api/getAutoCompleteSuggestions", {
             method : "post",
             body : JSON.stringify(body)
         })
