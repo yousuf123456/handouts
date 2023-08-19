@@ -1,19 +1,33 @@
 "use client"
 
-import React, { useState } from 'react'
-import { HiChevronDown } from 'react-icons/hi'
+import React from 'react'
+
 import { CtaLink } from '../../CtaLink'
-import clsx from 'clsx'
 import { SignCta } from './SignCta'
 import { usePathname } from 'next/navigation'
 import { ReduxProvider } from '@/app/context/ReduxProvider'
-import { Button } from '@/app/components/Button'
-import { signOut } from 'next-auth/react'
 import { Categories } from './Categories'
 
 export const DesktopCTANavbar = () => {
 
-  const links = ["Hot Deals", "Orders", "Returns", "Customer Care"];
+  const links = [
+    {
+      name : "Hot Deals",
+      href : ""
+    },
+    {
+      name : "Orders",
+      href : "/user/orders"
+    },
+    {
+      name : "Returns",
+      href : "/user/returns"
+    },
+    {
+      name : "Customer Care",
+      href : ""
+    }
+  ];
 
   const isSignPage = usePathname() === "/user/sign"
 
@@ -27,9 +41,9 @@ export const DesktopCTANavbar = () => {
           <div className='hidden md:flex gap-4 items-center'>
             {
               links.map((link) => (
-                <CtaLink key={link} href=''>
+                <CtaLink key={link.name} href={link.href}>
                   <p className='whitespace-nowrap underline font-text text-sm font-medium text-white'>
-                    { link }
+                    { link.name }
                   </p>
                 </CtaLink>
               ))
@@ -44,9 +58,6 @@ export const DesktopCTANavbar = () => {
             <ReduxProvider>
               <SignCta />
             </ReduxProvider>
-            {/* <Button size={"sm"} onClick={()=> signOut()} >
-              Logout
-            </Button> */}
           </div>
         )
       }

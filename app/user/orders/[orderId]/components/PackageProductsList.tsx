@@ -31,8 +31,7 @@ export const PackageProductsList: React.FC<PackageProductsListProps> = ({
               showCancelButton={!isOrderRequest}
               orderedProduct={orderedProduct}
               hideCancelButton={isDelievered}
-              hideShowMoreDetailsCta={true}
-              showOnlyCancelStatus={true}
+              showOnlyRequestStatus={true}
               isDelievered={isDelievered}
               showReason={showReason}
             /> 

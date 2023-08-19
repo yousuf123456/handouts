@@ -21,7 +21,7 @@ export const Cancel: React.FC<CancelProps> = ({
   return (
     <>
         {
-            show && status !== "Cancelled" && status !== "Cancellation in Process" && 
+            show && 
             <div className='w-fit'>
                 <CtaLink href={`/user/orders/${params.orderId}/request?type=Cancellation`}>
                     <p className='text-sm font-medium text-red-500'>

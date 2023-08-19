@@ -210,3 +210,6 @@ export type ReturnRequestType = (ReturnRequest & {
 
 export type StatusType = "Payment Pending" | "Processing" | "Shipped" | "Delievered" | "Cancelled" | "Cancellation in Process";
 export type ReturnStatusType = "Return in Process" | "Approved" | "Rejected" | "Refund Pending" | "Refunded";
+
+export const cancellationSteps = ["Cancellation in Process", "Cancelled"]
+export const returnSteps = ["Return in Process", "Approved", "Rejected", "Refund Pending", "Refunded"]

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { CancellationRequestType, OrderedProductType, PackageType, ReturnRequestType, StatusType } from '@/app/types'
+import { CancellationRequestType, OrderedProductType, PackageType, ReturnRequestType, StatusType, cancellationSteps, returnSteps } from '@/app/types'
 import { OrderProgressTracker } from './OrderProgressTracker'
 import { PackageCardHeader } from './PackageCardHeader';
 import { PackageProductsList } from './PackageProductsList';
@@ -22,7 +22,9 @@ export const Package_RequestProductsCard: React.FC<Package_RequestProductsCardPr
 }) => {
 
     const orderedProducts = Package?.orderedProducts as unknown as OrderedProductType[] || request?.orderedProducts
-    const orderHasBeenCancelled = Package?.status === "Cancelled"
+
+    const packageInCancellationProcess = cancellationSteps.includes(Package?.status || "");
+    const packageInReturnProcess = returnSteps.includes(Package?.status || "");
 
     const isDelievered = Package?.status === "Delievered"
 
@@ -34,7 +36,7 @@ export const Package_RequestProductsCard: React.FC<Package_RequestProductsCardPr
                 !isOrderRequest &&
                 <PackageCardHeader
                     storeName={orderedProducts[0].product.storeName}
-                    orderHasBeenCancelled={orderHasBeenCancelled}
+                    hideTimeline={packageInCancellationProcess || packageInReturnProcess}
                     delieveredAt={Package?.delieveredAt}
                     packageNumber={packageNumber}
                     isDelievered={isDelievered}
@@ -42,7 +44,7 @@ export const Package_RequestProductsCard: React.FC<Package_RequestProductsCardPr
             }
 
             {
-                !orderHasBeenCancelled &&
+                !packageInCancellationProcess && !packageInReturnProcess &&
                 <OrderProgressTracker 
                     approved={!!returnRequest?.approved}
                     rejected={!!returnRequest?.rejected}

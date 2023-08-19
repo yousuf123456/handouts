@@ -5,7 +5,6 @@ import { Timeline } from './Timeline'
 import { Order_OrderRequestActionPanel } from './Order_OrderRequestActionPanel'
 import { OrderRequest_OrderedProductsList } from './OrderRequest_OrderedProductsList'
 
-import Image from "next/image"
 import { ReturnRequestProofs } from './ReturnRequestProofs'
 
 interface Order_OrderRequestCardProps {
@@ -23,7 +22,7 @@ export const Order_OrderRequestCard: React.FC<Order_OrderRequestCardProps> = ({
 }) => {
 
   return (
-    <div className='w-full border-b-[2px] border-slate-300 py-6'>
+    <div className='w-full border-b-[1px] border-slate-300 py-6'>
       <div className='w-full flex flex-col gap-0'>
         <Order_OrderRequestActionPanel
           orderId={order?.id}

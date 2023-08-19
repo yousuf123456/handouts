@@ -2,7 +2,7 @@ import React from 'react'
 
 import { FormattedCurrency } from '@/app/components/FormattedCurrency'
 import { ProductImage } from '@/app/components/ProductImage'
-import { CartItemType, OrderedProductType, StatusType, ReturnStatusType } from '@/app/types'
+import { CartItemType, OrderedProductType, StatusType, ReturnStatusType, cancellationSteps, returnSteps } from '@/app/types'
 import { KeyValuePairInfo } from './KeyValuePairInfo'
 import { Status } from './Status'
 
@@ -14,7 +14,7 @@ import { Refund_ReviewCta } from './Refund_ReviewCta'
 interface OrderRequest_OrderedProductCardProps {
     orderedProduct : OrderedProductType | CartItemType;
     hideShowMoreDetailsCta? : boolean;
-    showOnlyCancelStatus? : boolean;
+    showOnlyRequestStatus? : boolean;
     showCancelButton? : boolean;
     hideCancelButton? : boolean;
     isDelievered? : boolean;
@@ -26,7 +26,7 @@ interface OrderRequest_OrderedProductCardProps {
 
 export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProductCardProps> = ({
     hideShowMoreDetailsCta,
-    showOnlyCancelStatus,
+    showOnlyRequestStatus,
     showCancelButton,
     hideCancelButton,
     orderedProduct,
@@ -46,14 +46,8 @@ export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProdu
     //@ts-ignore
     const orderedProductStatus = orderedProduct.status
 
-    const isCancelled = orderedProductStatus === "Cancelled" || orderedProductStatus === "Cancellation in Process"
-    const isReturned = [
-        "Return in Process",
-        "Approved",
-        "Rejected",
-        "Refund Pending",
-        "Refunded"
-    ].includes(orderedProductStatus);
+    const isCancelled = cancellationSteps.includes(orderedProductStatus)
+    const isReturned = returnSteps.includes(orderedProductStatus);
 
     const cancellationId = orderedProductOPT.cancellationRequestId;
     const returnId = orderedProductOPT.returnRequestId;
@@ -78,7 +72,7 @@ export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProdu
                         <div className='flex gap-2 items-center'>
                             <Status
                                 status={orderedProductStatus} 
-                                showOnlyCancelStatus={showOnlyCancelStatus}
+                                showOnlyRequestStatus={showOnlyRequestStatus}
                             />
                             {
                                 !hideShowMoreDetailsCta && (isCancelled || isReturned) && 
@@ -100,7 +94,7 @@ export const OrderRequest_OrderedProductCard: React.FC<OrderRequest_OrderedProdu
                 }
 
                 <Cancel
-                    show={showCancelButton && !hideCancelButton}
+                    show={!isCancelled && !isReturned && showCancelButton && !hideCancelButton}
                     status={orderedProductStatus}
                 />
             </div>
