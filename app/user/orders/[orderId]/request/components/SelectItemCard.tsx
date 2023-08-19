@@ -76,7 +76,7 @@ export const SelectItemCard: React.FC<SelectItemCardProps> = ({
             <div className='w-full'>
                 <OrderRequest_OrderedProductCard 
                     orderedProduct={orderedProduct}
-                    showOnlyCancelStatus={true}
+                    showOnlyRequestStatus={true}
                     hidePrice={true}
                 />
             </div>
