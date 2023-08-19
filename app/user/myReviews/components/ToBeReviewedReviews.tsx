@@ -37,7 +37,7 @@ export const ToBeReviewedReviews: React.FC<ToBeReviewedReviewsProps> = async({
   return (
     <div className='flex flex-col gap-6'>
       <Heading>
-        My Reviews { "(" + count + ")" }
+        To Be Reviewed { "(" + count + ")" }
       </Heading>
       
       <div className='w-full flex flex-col gap-0'>

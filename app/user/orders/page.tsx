@@ -1,9 +1,11 @@
 
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import { Container } from '../components/Container'
 import { Layout } from '../components/Layout'
 import { Orders } from './components/Orders'
+import { Heading } from '@/app/(site)/components/Heading';
+import { Loading } from '../components/Loading';
 
 interface SearchParams {
   page : string | undefined;
@@ -13,9 +15,11 @@ export default async function OrdersPage({ searchParams }: { searchParams : Sear
   return (
     <Layout>
       <Container>
-        <Orders 
-          pageNumber={parseInt(searchParams.page || "0") || undefined}
-        />
+        <Suspense fallback={<Loading heading='My Orders'/>}>
+          <Orders 
+            pageNumber={parseInt(searchParams.page || "0") || undefined}
+          />
+        </Suspense>
       </Container>
     </Layout>
   )

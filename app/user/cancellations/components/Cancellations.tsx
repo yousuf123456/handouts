@@ -34,7 +34,7 @@ export const Cancellations: React.FC<CancellationsProps> = async({
   return (
     <div className='flex flex-col gap-6'>
       <Heading>
-        Cancellations { "(" + count + ")" }
+        My Cancellations { "(" + count + ")" }
       </Heading>
 
       <div className='flex flex-col gap-0'>

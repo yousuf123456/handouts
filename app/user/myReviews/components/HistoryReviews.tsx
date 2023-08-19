@@ -36,7 +36,7 @@ export const HistoryReviews: React.FC<HistoryReviewsProps> = async({
   return (
     <div className='flex flex-col gap-6'>
       <Heading>
-        My Reviews { "(" + count + ")" }
+        History Reviews { "(" + count + ")" }
       </Heading>
 
       <div className='w-full flex flex-col gap-0'>

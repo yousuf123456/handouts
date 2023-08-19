@@ -35,7 +35,7 @@ export const Returns: React.FC<ReturnsProps> = async({
   return (
     <div className='flex flex-col gap-6'>
       <Heading>
-        Returns { "(" + count + ")" }
+        My Returns { "(" + count + ")" }
       </Heading>
       
       <div className='flex flex-col gap-0'>

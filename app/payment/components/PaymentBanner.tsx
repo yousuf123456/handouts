@@ -9,14 +9,10 @@ import { OrderSummary } from './OrderSummary'
 export const PaymentBanner = () => {
   return (
     <div className='px-[15%] h-72 w-full flex flex-col gap-6 justify-center bg-slate-900'>
-      <div className='mt-4 relative w-full flex justify-between items-center'>
-        <NavigationItem Icon={RiWalletFill} label='From Checkout'/>
-        <NavigationItem Icon={HiCash} label='To Payment' isSelected={true}/>
-        <NavigationItem Icon={FaCheckCircle} label='Next Success'/>
-        
-        <div className='absolute w-full flex justify-center'>
-            <div className='absolute -top-3 w-[91%] h-0.5 bg-green-500 flex'/>
-        </div>
+      <div className='mt-4 flex gap-0 justify-center items-center'>
+        <NavigationItem Icon={RiWalletFill} className='bg-purple-600' lineClassName='from-purple-600 to-rose-600' label='From Checkout'/>
+        <NavigationItem Icon={HiCash} className='bg-rose-600' lineClassName='from-rose-600 to-green-600' label='To Payment' isSelected={true}/>
+        <NavigationItem Icon={FaCheckCircle} className='bg-green-500' label='Next Success' isLast={true}/>
       </div>
 
       <div className='w-full flex justify-center'>

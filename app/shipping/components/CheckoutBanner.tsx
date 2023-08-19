@@ -21,14 +21,10 @@ export const CheckoutBanner = ({
 
   return (
     <div className='py-4 w-full h-80 flex flex-col justify-between items-center bg-slate-900'>
-      <div className='relative px-[15%] w-full flex justify-between items-center'>
-        <NavigationItem Icon={RiShoppingCart2Fill} label={`From ${fromCart ? "Cart" : "Shopping"}`}/>
-        <NavigationItem Icon={RiWalletFill} label='To Checkout' isSelected={true}/>
-        <NavigationItem Icon={HiCash} label='Next Payment'/>
-        
-        <div className='absolute w-full flex'>
-          <div className='absolute -top-3 left-6 w-[63%] h-0.5 bg-green-500 flex'/>
-        </div>
+      <div className='mt-3 flex gap-0 justify-center items-center'>
+        <NavigationItem Icon={RiShoppingCart2Fill} className='bg-green-500' lineClassName='from-green-500 to-purple-600' label={`From ${fromCart ? "Cart" : "Shopping"}`}/>
+        <NavigationItem Icon={RiWalletFill} className='bg-purple-600' lineClassName='from-purple-600 to-rose-600' label='To Checkout' isSelected={true}/>
+        <NavigationItem Icon={HiCash} className='bg-rose-600' label='Next Payment' isLast={true}/>
       </div>
 
       <div className='mb-3 w-full flex gap-16 items-start px-24'>
