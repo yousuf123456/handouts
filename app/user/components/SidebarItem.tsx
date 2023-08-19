@@ -36,13 +36,15 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({
         !isLogout ? (
             <CtaLink href={href}>
                 <div 
-                    className={"flex gap-4 items-center cursor-pointer group"}
+                    className={"relative flex gap-4 items-center cursor-pointer group"}
                 >
-                    <Icon className={clsx('w-7 h-7 group-hover:text-blue-600',secondConditionalClassName, conditionalClassName)}/>
+                    <Icon className={clsx('w-7 h-7 group-hover:text-blue-600', secondConditionalClassName, conditionalClassName)}/>
         
                     <h2 className={clsx('text-base font-text font-semibold group-hover:text-blue-600', conditionalClassName, secondConditionalClassName)}>
                         { label }
                     </h2>
+
+                    <div className={clsx('absolute -bottom-1 left-0 h-[3px] w-0 bg-blue-600 transition-all group-hover:w-full', isSelected && "w-full")}/>
                 </div>
             </CtaLink>
 
