@@ -1,13 +1,30 @@
-import { getUserReviews } from '@/app/actions/getUserReviews'
 import React from 'react'
+
+import { getUserReviews } from '@/app/actions/getUserReviews'
 import { EmptyState } from '../../components/EmptyState';
 import { FaSmile } from 'react-icons/fa';
 import { HistoryReviewCard } from './HistoryReviewCard';
+import { Heading } from '@/app/(site)/components/Heading';
+import { HistoryReviewType } from '@/app/types';
+import { Pagination } from '@mui/material';
+import { PaginationControl } from '../../components/PaginationControl';
+import { REVIEWS_PER_PAGE } from '@/app/constants/consts';
 
-export const HistoryReviews = async() => {
-  const historyReviews = await getUserReviews({ toBeReviewedReviews : false });
+interface HistoryReviewsProps {
+  pageNumber : number | undefined;
+}
 
-  if(!historyReviews?.length){
+export const HistoryReviews: React.FC<HistoryReviewsProps> = async({
+  pageNumber
+  
+}) => {
+  const {
+    data, 
+    count
+
+  } = await getUserReviews({ toBeReviewedReviews : false, page : pageNumber }) as unknown as {data : HistoryReviewType[], count : number};
+
+  if(!data?.length){
     return (
       <EmptyState 
         Icon={FaSmile}
@@ -17,15 +34,27 @@ export const HistoryReviews = async() => {
   }
 
   return (
-    <div className='w-full flex flex-col gap-0'>
-      {
-        historyReviews.map((review, i)=> (
-          <HistoryReviewCard 
-            key={i}
-            review={review}
-          />
-        ))
-      }
+    <div className='flex flex-col gap-6'>
+      <Heading>
+        My Reviews { "(" + count + ")" }
+      </Heading>
+
+      <div className='w-full flex flex-col gap-0'>
+        {
+          data.map((review, i)=> (
+            <HistoryReviewCard 
+              key={i}
+              review={review}
+            />
+          ))
+        }
+      </div>
+
+      <PaginationControl
+        count={count}
+        offset={true}
+        ITEMS_PER_PAGE={REVIEWS_PER_PAGE}
+      />
     </div>
   )
 }

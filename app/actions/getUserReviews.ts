@@ -1,14 +1,19 @@
 import prisma from "../libs/prismadb"
-import { OrderedProductType } from "../types";
+
+import { REVIEWS_PER_PAGE } from "../constants/consts";
+import { HistoryReviewType, OrderedProductType } from "../types";
 import { getCurrentUser } from "./getCurrentUser";
+import { getOffsetPaginationQuery, getPaginationQuery } from "./getUserOrders";
 
 type Parameters = {
+    page? : number | undefined;
     toBeReviewedReviews? : boolean;
 }
 
 export const getUserReviews = async(paramters: Parameters = {})=> {
 
     const {
+        page,
         toBeReviewedReviews
 
     } = paramters
@@ -18,88 +23,71 @@ export const getUserReviews = async(paramters: Parameters = {})=> {
 
     
     if(toBeReviewedReviews) {
-        const ToBeReviewedReviews = await prisma.order.findMany({
-            where : {
-                OR : [
-                    {
-                        packages : {
-                            some : {
-                                status : "Delievered",
-                                orderedProducts : {
-                                    some : {
-                                        hasBeenReviewed : false
-                                    }
-                                }
-                            },
-                        },
-                    }
-                ]
+        let query: any = {
+            orderBy : {
+                id : "desc"
             },
-    
-            include : {
-                packages : {
-                    where : {
-                        status : "Delievered"
-                    },
-    
-                    include : {
-                        orderedProducts : {
-                            where : {
-                                cancellationRequest : null
-                            }
-                        }
+
+            where : {
+                status : "Delievered",
+                hasBeenReviewed : false,
+                
+                package : {
+                    order : {
+                        customerId : currentUser.id
                     }
                 }
-            }
-        });
-        return ToBeReviewedReviews;
+            },
+
+            take : REVIEWS_PER_PAGE
+        }
+
+        const updatedQuery = getOffsetPaginationQuery({page, query: {...query}, ITEMS_PER_PAGE : REVIEWS_PER_PAGE});
+
+        const ToBeReviewedReviews = await prisma.$transaction([
+            prisma.orderedProduct.count({
+                where : query.where
+            }),
+
+            prisma.orderedProduct.findMany(updatedQuery)
+        ])
+
+        const ToBeReviewedReviewsData = ToBeReviewedReviews[1] as OrderedProductType[];
+        const ToBeReviewedReviewsCount = ToBeReviewedReviews[0] || 0;
+
+        return {
+            data : ToBeReviewedReviewsData,
+            count : ToBeReviewedReviewsCount
+        };
     }
 
-    const ToBeReviewedReviews = await prisma.order.findMany({
+    
+    const hasBeenReviewedOrderedProducts = await prisma.orderedProduct.findMany({
         where : {
-            OR : [
-                {
-                    packages : {
-                        some : {
-                            status : "Delievered"
-                        },
-                    },
-                }
-            ]
-        },
+            status : "Delievered",
 
-        include : {
-            packages : {
-                where : {
-                    status : "Delievered"
-                },
-
-                include : {
-                    orderedProducts : {
-                        where : {
-                            cancellationRequest : null
-                        }
-                    }
+            package : {
+                order : {
+                    customerId : currentUser.id
                 }
             }
+        },
+    }) as OrderedProductType[]; 
+    
+    const delieveredProductInfo = hasBeenReviewedOrderedProducts.map((orderedProduct)=> {
+        return {
+            id : orderedProduct.product.id,
+            purchasedAt : orderedProduct.createdAt
         }
-    });
-
-    const delieveredProductInfo = ToBeReviewedReviews.map((toBeReviewedOrder)=> {
-        return toBeReviewedOrder.packages.map((Package)=> {
-            const orderedProducts = Package.orderedProducts as unknown as OrderedProductType[]
-            return orderedProducts.map((orderedProduct)=> {
-                return {
-                    id : orderedProduct.product.id,
-                    purchasedAt : toBeReviewedOrder.createdAt
-                }
-            })[0]
-        })[0]
     })
+    
+    const delieveredProductIds = delieveredProductInfo.map((productInfo)=> productInfo.id);
 
-    const delieveredProductIds = delieveredProductInfo.map((productInfo)=> productInfo.id)
+    let query = {
+        orderBy : {
+            id : "desc"
+        },
 
-    const HistoryReviews = await prisma.ratingAndReview.findMany({
         where : {
             userId : currentUser.id,
             productId : { in : delieveredProductIds }
@@ -114,20 +102,35 @@ export const getUserReviews = async(paramters: Parameters = {})=> {
                     storeName : true
                 }
             }
-        }
-    });
+        },
 
-    const withPurchasedDateHistoryReviews = HistoryReviews.map((review)=> {
+        take : REVIEWS_PER_PAGE
+    }
+
+    const updatedQuery = getOffsetPaginationQuery({ query : {...query}, page, ITEMS_PER_PAGE : REVIEWS_PER_PAGE })
+    
+    const HistoryReviews = await prisma.$transaction([
+        prisma.ratingAndReview.count({where : query.where}),
+        prisma.ratingAndReview.findMany(updatedQuery)
+    ])
+
+    const HistoryReviewsData = HistoryReviews[1] as HistoryReviewType[]
+    const HistoryReviewsCount = HistoryReviews[0]
+
+    const withPurchasedDateHistoryReviews = HistoryReviewsData.map((review)=> {
         const updatedHistoryReview = {
             ...review,
             product : {
                 ...review.product,
                 purchasedAt : delieveredProductInfo.filter((productInfo) => productInfo.id === review.product.id)[0].purchasedAt
             }
-        }
+        } 
         
         return updatedHistoryReview
     })
 
-    return withPurchasedDateHistoryReviews
+    return {
+        data : withPurchasedDateHistoryReviews,
+        count : HistoryReviewsCount
+    }
 }

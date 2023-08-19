@@ -20,7 +20,7 @@ export const ToBeReviewedProductCard: React.FC<ToBeReviewedProductCardProps> = (
 }) => {
 
   return (
-    <div className='px-0 pr-44 py-3 w-full border-b-2 border-slate-300'>
+    <div className='px-0 pr-36 py-3 w-full border-b-2 border-slate-300'>
       <div className='flex flex-col gap-2'>
         <PurchasedTimeline 
           purchasedAt={purchasedAt}

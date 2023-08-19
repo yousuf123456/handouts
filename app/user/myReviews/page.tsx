@@ -9,8 +9,9 @@ import { ToggleBar } from './components/ToggleBar';
 export const revalidate = 0;
 
 interface SearchParams {
-  toBeReviewed : string;
   isHistory : string;
+  toBeReviewed : string;
+  page : string | undefined;
 }
 
 export default async function MyReviewsPage({ searchParams } : { searchParams : SearchParams }) {
@@ -22,14 +23,17 @@ export default async function MyReviewsPage({ searchParams } : { searchParams : 
     <Layout>
       <Container>
         <div className='h-full flex flex-col gap-6'>
-          <Heading>
-            My Reviews
-          </Heading>
-
           <ToggleBar />
 
           {
-            toBeReviewed ? <ToBeReviewedReviews /> : <HistoryReviews />
+            toBeReviewed ? 
+            <ToBeReviewedReviews 
+              pageNumber={parseInt(searchParams.page || "0")}
+            /> 
+            : 
+            <HistoryReviews 
+              pageNumber={parseInt(searchParams.page || "0")}
+            />
           }
         </div>
       </Container>

@@ -2,6 +2,7 @@ import { NoQuestions_ReviewsMessage } from './../app/products/[productId]/compon
 import { Product, Store } from "@prisma/client";
 import prisma from "../app/libs/prismadb"
 import { faker } from '@faker-js/faker';
+import { OrderedProductType } from '@/app/types';
 
 export const getCategory = async(category: string | undefined)=> {
 
@@ -354,98 +355,139 @@ async function main() {
     //     }
     // }
     
-    const categories = [
-      {
-        name : "Home",
-        children : {
-          create : {
-            name : "Wall Arts",
-            children : {
-              create : {
-                name : "Picture Frames"
-              }
-            }
+
+    //sep
+
+
+    // const categories = [
+    //   {
+    //     name : "Home",
+    //     children : {
+    //       create : {
+    //         name : "Wall Arts",
+    //         children : {
+    //           create : {
+    //             name : "Picture Frames"
+    //           }
+    //         }
+    //       }
+    //     }
+    //   },
+
+    //   {
+    //     name : "Decor",
+    //     children : {
+    //       create : {
+    //         name : "Beds",
+    //         children : {
+    //           create : {
+    //             name : "Bed Sheets"
+    //           }
+    //         }
+    //       }
+    //     }
+    //   },
+
+    //   {
+    //     name : "Paintings",
+    //     children : {
+    //       create : {
+    //         name : "Oil Painting"
+    //       }
+    //     }
+    //   },
+
+    //   {
+    //     name : "Hand Arts",
+    //     children : {
+    //       create : {
+    //         name : "Calliography"
+    //       }
+    //     }
+    //   },
+
+    //   {
+    //     name : "Lounge",
+    //     children : {
+    //       create : {
+    //         name : "Comfort",
+    //         children : {
+    //           create : {
+    //             name : "Sofas"
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // ]
+
+    // const categoriesNames = await prisma.category.findMany({
+    //   where : {
+    //     name : { in : ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"] }
+    //   }
+    // });
+
+
+    // const categoriesTreeData = await Promise.all(categoriesNames.map(async(categoryName, i)=> {
+    //   const categoryData = await getCategory(categoryName.name);
+
+    //   return categoryData
+    // }));
+
+    // const names = ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"]
+
+    // const products = await prisma.product.findMany({ skip : 80, take : 20 })
+    // const productsIds = products.map((product)=> product.id)
+
+    // await prisma.product.updateMany({
+    //   where : {
+    //     id : {
+    //       in : productsIds
+    //     }
+    //   },
+
+    //   data : {
+    //     category : categoriesTreeData[4]?.parent.name,
+    //     categoryTreeData : categoriesTreeData[4]?.rawCategoryData
+    //   }
+    // })
+
+
+
+    // sep
+
+
+    const ToBeReviewedReviews = await prisma.orderedProduct.findMany({
+      include : {
+        package : {
+          include : {
+            order : true
           }
         }
-      },
-
-      {
-        name : "Decor",
-        children : {
-          create : {
-            name : "Beds",
-            children : {
-              create : {
-                name : "Bed Sheets"
-              }
-            }
-          }
-        }
-      },
-
-      {
-        name : "Paintings",
-        children : {
-          create : {
-            name : "Oil Painting"
-          }
-        }
-      },
-
-      {
-        name : "Hand Arts",
-        children : {
-          create : {
-            name : "Calliography"
-          }
-        }
-      },
-
-      {
-        name : "Lounge",
-        children : {
-          create : {
-            name : "Comfort",
-            children : {
-              create : {
-                name : "Sofas"
-              }
-            }
-          }
-        }
-      }
-    ]
-
-    const categoriesNames = await prisma.category.findMany({
-      where : {
-        name : { in : ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"] }
       }
     });
 
-
-    const categoriesTreeData = await Promise.all(categoriesNames.map(async(categoryName, i)=> {
-      const categoryData = await getCategory(categoryName.name);
-
-      return categoryData
-    }));
-
-    const names = ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"]
-
-    const products = await prisma.product.findMany({ skip : 80, take : 20 })
-    const productsIds = products.map((product)=> product.id)
-
-    await prisma.product.updateMany({
-      where : {
-        id : {
-          in : productsIds
+    const delieveredProductInfo = ToBeReviewedReviews.map((orderedProduct)=> {
+        return {
+          id : orderedProduct.id,
+          purchasedAt : orderedProduct.package.order.createdAt
         }
-      },
-
-      data : {
-        category : categoriesTreeData[4]?.parent.name,
-        categoryTreeData : categoriesTreeData[4]?.rawCategoryData
-      }
     })
+
+    // const delieveredProductIds = delieveredProductInfo.map((productInfo)=> productInfo.id);
+
+    delieveredProductInfo.forEach(async(info)=> {
+      await prisma.orderedProduct.update({
+        where : {
+          id : info.id
+        },
+  
+        data : {
+          createdAt : info.purchasedAt
+        }
+      })
+    })
+
 }
 
 

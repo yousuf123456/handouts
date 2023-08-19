@@ -19,13 +19,13 @@ export const ReviewCta: React.FC<ReviewCtaProps> = ({
     const searchParams = `orderedProductId=${orderedProductId}&productId=${productId}&isHistory=${isHistory}`
 
   return (
-    <div className='pt-2 flex-shrink-0 flex flex-col justify-between'>
+    <div className='pt-2 flex-shrink-0 w-48 flex flex-col justify-between'>
         <div className='flex gap-2 items-center'>
-            <p className='text-xs font-text text-slate-500'>
+            <p className='flex-shrink-0 text-xs font-text text-slate-500'>
                 Sold By
             </p>
 
-            <p className='font-text text-sm text-themeBlue'>
+            <p className='font-text text-sm text-themeBlue line-clamp-1'>
                 {
                     storeName
                 }

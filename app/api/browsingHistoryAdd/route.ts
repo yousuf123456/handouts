@@ -24,6 +24,10 @@ export async function POST(req: Request){
     try{
         const currentUser = await getCurrentUser({ getBehaviourDoc : true }) as UserWithBehaviourDoc;
 
+        if(!currentUser || !currentUser.id){
+            return new NextResponse("Unauthorized User");
+        }
+
         const {productData, productId} = await req.json();
 
         if(!currentUser.behaviour){

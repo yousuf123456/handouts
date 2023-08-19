@@ -2,6 +2,7 @@
 import { CtaLink } from '@/app/(site)/components/CtaLink'
 import { Button } from '@/app/components/Button'
 import { LoadingButton } from '@/app/components/LoadingButton'
+import { Textarea } from '@/components/ui/textarea'
 import { Question } from '@prisma/client'
 import axios from 'axios'
 import clsx from 'clsx'
@@ -52,14 +53,14 @@ export const AskQuestionForm: React.FC<AskQuestionFormProps> = ({
     if (!isSignIn) {
         return (
             <p className='text-sm font-text'>
-            <CtaLink href=''>
-            <span className='mr-2 underline text-themeBlue'>Login</span>
-            </CtaLink> 
-            or 
-            <CtaLink href=''>
-                <span className='mx-2 underline text-themeBlue'>Create Handouts Accout</span>
-            </CtaLink> 
-            to ask a question about this product.
+                <CtaLink href='/user/sign?type=SIGN%20IN'>
+                    <span className='mr-2 underline text-themeBlue'>Login</span>
+                </CtaLink> 
+                or 
+                <CtaLink href='/user/sign?type=SIGN%20UP'>
+                    <span className='mx-2 underline text-themeBlue'>Create Handouts Accout</span>
+                </CtaLink> 
+                to ask a question about this product.
             </p>
         )
     }
@@ -71,32 +72,14 @@ export const AskQuestionForm: React.FC<AskQuestionFormProps> = ({
         </h1>
 
         <div className='w-full flex flex-col gap-2'>
-            <div className='relative w-5/6'>
-                <textarea 
-                    className={clsx(`
-                    px-4
-                    py-2 
-                    w-full  
-                    rounded-sm 
-                    border-[2px] 
-                    font-text
-                    resize-none 
-                    transition-all 
-                    focus-visible:h-32 
-                    focus-visible:outline-0
-                    focus-visible:border-green-500
-                    placeholder:font-text
-                    placeholder:font-medium
-                    placeholder:text-base
-                    `,
-                    question.length > 0 ? "h-28 border-green-500" : "h-14 border-green-200 "
-                    )} 
-                    value={question}
-                    onChange={(e)=>setQuestion(e.target.value)}
-                    placeholder='Ask a question' 
+            <div className='relative'>
+                <Textarea 
                     maxLength={300}
+                    value={question}
+                    onChange={(e)=> setQuestion(e.target.value)}
                 />
-                <p className='absolute text-sm bottom-3 right-3'>{question.length + "/300"}</p>
+                
+                <p className='absolute text-xs bottom-2 right-3'>{question.length + "/300"}</p>
             </div>
 
             <div className='w-fit'>

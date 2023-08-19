@@ -1,20 +1,19 @@
 import React from 'react'
 import { Container } from '../components/Container'
 import { Layout } from '../components/Layout'
-import { Heading } from '@/app/(site)/components/Heading'
 import { Cancellations } from './components/Cancellations'
 
-export default async function CancellationsPage (){
+interface SearchParams {
+  page : string | undefined;
+}
+
+export default async function CancellationsPage ({ searchParams }: { searchParams : SearchParams }){
   return (
     <Layout>
       <Container>
-        <div className='flex flex-col gap-6'>
-          <Heading>
-            Cancellations
-          </Heading>
-
-          <Cancellations />
-        </div>
+        <Cancellations 
+          pageNumber={parseInt(searchParams.page || "0")}
+        />
       </Container>
     </Layout>
   )
