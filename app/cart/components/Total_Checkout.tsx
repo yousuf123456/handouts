@@ -7,6 +7,7 @@ import { Button } from '@/app/components/Button'
 import { useRouter } from "next/navigation"
 import { useAppSelector } from '@/app/store/store'
 import { useTotal } from '@/app/hooks/useTotal'
+import clsx from 'clsx'
 
 export const Total_Checkout = () => {
     const router = useRouter();
@@ -15,6 +16,7 @@ export const Total_Checkout = () => {
     }
 
     const cartItems = useAppSelector(state=> state.cart.cartItems)
+
     const {subTotal, productsAmmount} = useTotal(cartItems);
 
   return (
@@ -26,9 +28,10 @@ export const Total_Checkout = () => {
             paddingLeft={4}
         />
         <Button 
-            variant={"default"} 
-            className='bg-green-500 text-white hover:bg-green-600'
             onClick={onClick}
+            variant={"default"} 
+            Disabled={!cartItems.length}
+            className={clsx('bg-green-500 text-white', !cartItems.length ? "hover:bg-green-500" : "hover:bg-green-600")}
         >
             Checkout
         </Button>

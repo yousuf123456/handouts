@@ -9,18 +9,14 @@ import { ReduxProvider } from '@/app/context/ReduxProvider'
 
 export const CartBanner = () => {
   return (
-    <div className='px-[15%] h-72 w-full flex flex-col justify-center bg-slate-900'>
-      <div className='mt-4 relative w-full flex justify-between items-center'>
-        <NavigationItem Icon={RiStore3Fill} label='From Shop'/>
-        <NavigationItem Icon={RiShoppingCart2Fill} label='To Cart' isSelected={true}/>
-        <NavigationItem Icon={RiWalletFill} label='Next Checkout'/>
-        
-        <div className='absolute w-full flex justify-center'>
-            <div className='absolute -top-3 w-[91%] h-0.5 bg-green-500 flex'/>
-        </div>
+    <div className='px-[15%] h-72 w-full flex flex-col justify-center gap-12 bg-slate-900'>
+      <div className='mt-4 relative flex gap-0 justify-center items-center'>
+        <NavigationItem Icon={RiStore3Fill} className='bg-yellow-500' lineClassName='from-yellow-500 to-green-500' label='From Shop'/>
+        <NavigationItem Icon={RiShoppingCart2Fill} className='bg-green-500' lineClassName='from-green-500 to-purple-500' label='To Cart' isSelected={true}/>
+        <NavigationItem Icon={RiWalletFill} className='bg-purple-600' label='Next Checkout' isLast={true}/>
       </div>
 
-      <div className='mb-8 w-full flex flex-col items-end gap-4'>
+      <div className='w-full flex flex-col items-end gap-4'>
         <ReduxProvider>
           <Total_Checkout />
         </ReduxProvider>

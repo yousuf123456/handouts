@@ -155,7 +155,7 @@ export const getProductReviewsById = async(parameters : Parameters = {}) => {
     ]
 
     const paginationPipeline = getPaginationPipeline({page, prevPage, cursor, sortBy, direction, pipeline: [...pipeline], tieBreaker});
-    console.log(paginationPipeline)
+
     const productReviews = await prisma.ratingAndReview.aggregateRaw({
         pipeline : paginationPipeline
     });
