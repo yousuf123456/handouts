@@ -11,13 +11,11 @@ import { store, useAppSelector } from '@/app/store/store';
 
 interface ProductQuestionsProps {
     initialQuestions : Question[] | null,
-    // initialQuestionsCount : number | undefined,
     productId : string
 }
 
 export const ProductQuestions: React.FC<ProductQuestionsProps> = ({
     initialQuestions,
-    // initialQuestionsCount,
     productId
 }) => {
     const initialQuestionsCount = useAppSelector(state=>state.productMinorInfo.questionsCount);
@@ -69,7 +67,7 @@ export const ProductQuestions: React.FC<ProductQuestionsProps> = ({
         
         {
             questions?.length !== 0 && (
-                <CtaLink href=''>
+                <CtaLink href={`/products/${productId}/questions`}>
                     <p className='font-text font-semibold underline text-themeBlue'>
                         View All
                     </p>

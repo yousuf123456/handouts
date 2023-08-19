@@ -149,7 +149,7 @@ model Product {
   details String[]
   category String?
   categoryTreeData Json[]
-  avgRating Int @default(0)
+  avgRating Float @default(0)
   ratingsSum Int @default(0)
   ratingsCount Int @default(0)
   //Ratings count of each specific rating number
@@ -229,6 +229,7 @@ model Package {
 
 model OrderedProduct {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
   status String
   cancellationReason String?
   returnReason String?

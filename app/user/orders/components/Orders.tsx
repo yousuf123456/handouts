@@ -5,28 +5,17 @@ import { getUserOrders } from '@/app/actions/getUserOrders';
 import { OrdersList } from './OrdersList';
 import { PaginationControl } from '../../components/PaginationControl';
 import { OrderType } from '@/app/types';
+import { ORDERS_PER_PAGE } from '@/app/constants/consts';
 
 interface OrdersProps {
-  cursor : string | undefined;
-  prevPage : number | undefined;
   pageNumber : number | undefined;
 }
 
-export async function Orders({ pageNumber, prevPage,cursor }: OrdersProps){
+export async function Orders({ pageNumber }: OrdersProps){
   const {
     orders,
     count
-  } = await getUserOrders({ page : pageNumber, prevPage : prevPage, cursor : cursor });
-
-  const getLastOrder = ()=> {
-    if(orders) return orders[orders.length - 1]
-    else return null
-  }
-
-  const getFirstOrder = ()=> {
-    if(orders) return orders[0]
-    else return null
-  }
+  } = await getUserOrders({ page : pageNumber });
 
   return (
     <div className='w-full h-full flex flex-col gap-6'>
@@ -39,10 +28,9 @@ export async function Orders({ pageNumber, prevPage,cursor }: OrdersProps){
       />
 
       <PaginationControl 
-        pageNumber={pageNumber}
-        //@ts-ignore
-        lastOrderId={getLastOrder()?.id || undefined}
-        firstOrderId={getFirstOrder()?.id || undefined}
+        count={count}
+        offset={true}
+        ITEMS_PER_PAGE={ORDERS_PER_PAGE}
       />
     </div>
   )

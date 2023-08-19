@@ -163,6 +163,7 @@ export type AddressType = {
 export type OrderedProductType = {
     id : string;
     status : string;
+    createdAt : Date;
     quantity : number;
     packageId : string;
     product : {
@@ -180,6 +181,16 @@ export type OrderedProductType = {
     returnReason : string | null | undefined;
     cancellationReason : string | null | undefined;
 }
+
+export type HistoryReviewType = (RatingAndReview & {
+    product: {
+        purchasedAt: Date;
+        image: string | null;
+        id: string;
+        name: string;
+        storeName: string;
+    };
+})
 
 export type PackageType = (Package & {
     orderedProducts : OrderedProduct[]

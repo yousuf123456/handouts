@@ -12,19 +12,19 @@ import { LoadingButton } from '@/app/components/LoadingButton';
 import { PasswordRequirements } from './components/PasswordRequirements';
 import { useRequirmentsMatcher } from '@/app/hooks/useRequirmentsMatcher';
 import { Controller } from 'react-hook-form';
-import { SignInResponse, signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { toast } from 'react-hot-toast';
-import { usePathname, useRouter } from 'next/navigation';
 
 interface IParams {
-    callbackUrl : string
+    type? : "SIGN IN" | "SIGN UP";
+    callbackUrl : string;
 }
 
 export default function Sign({ searchParams } : {searchParams : IParams}) {
-    const [signInOrSignUp, setSignInOrSignUp] = useState<"SIGN IN" | "SIGN UP">("SIGN UP");
-    const [show, setShow] = useState(false);
+    const [signInOrSignUp, setSignInOrSignUp] = useState<"SIGN IN" | "SIGN UP">(searchParams.type || "SIGN UP");
     const [isFocused, setIsFocused] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [show, setShow] = useState(false);
 
     const { register, watch, reset, control, handleSubmit } = useForm<FieldValues>({
         defaultValues : {
@@ -168,7 +168,12 @@ export default function Sign({ searchParams } : {searchParams : IParams}) {
                                         control={control}
                                         name='birthDay'
                                         render={({ field }) => (
-                                            <DateChooser field={field} isLoading={isLoading} disabled={isLoading} label="Pick a Date" />
+                                            <DateChooser 
+                                                field={field} 
+                                                isLoading={isLoading} 
+                                                disabled={isLoading} 
+                                                label="Pick a Date" 
+                                            />
                                         )}
                                     />
                                 </div>
@@ -179,7 +184,14 @@ export default function Sign({ searchParams } : {searchParams : IParams}) {
                                         control={control}
                                         name='gender'
                                         render={({field}) => (
-                                            <SelectOptions field={field} isLoading={isLoading} disabled={isLoading} label='Gender' options={options} />
+                                            <SelectOptions 
+                                                field={field} 
+                                                isLoading={isLoading} 
+                                                disabled={isLoading} 
+                                                label='Gender' 
+                                                placeHolder='Gender'
+                                                options={options} 
+                                            />
                                         )} 
                                     />
                                 </div>
@@ -211,7 +223,7 @@ export default function Sign({ searchParams } : {searchParams : IParams}) {
                     <LoadingButton 
                         onClick={handleSubmit(onSubmit)}
                         isLoading={isLoading} 
-                        className='font-text font-medium bg-themeBlue hover:bg-blue-600'
+                        className='flex justify-center font-text font-medium bg-themeBlue hover:bg-blue-600'
                     >
                         {signInOrSignUp === "SIGN UP" ? "Create My Handouts Account" : "Login"}
                     </LoadingButton>

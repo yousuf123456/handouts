@@ -4,18 +4,19 @@ import { Container } from '../components/Container'
 import { Heading } from '@/app/(site)/components/Heading'
 import { Returns } from './components/Returns'
 
-export default async function ReturnsPage() {
+interface SearchParams {
+  page : string | undefined;
+}
+
+export default async function ReturnsPage({ searchParams } : { searchParams : SearchParams }) {
+
   return (
     <Layout>
-        <Container>
-            <div className='flex flex-col gap-6'>
-                <Heading>
-                    Returns
-                </Heading>
-
-                <Returns />
-            </div>
-        </Container>
+      <Container>
+        <Returns 
+          pageNumber={parseInt(searchParams.page || "0")}
+        />
+      </Container>
     </Layout>
   )
 }

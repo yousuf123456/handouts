@@ -6,12 +6,26 @@ import { EmptyState } from '../../components/EmptyState';
 import { FaSmile } from "react-icons/fa"
 import { ToBeReviewedProductCard } from './ToBeReviewedProductCard';
 import { OrderType, OrderedProductType } from '@/app/types';
+import { Heading } from '@/app/(site)/components/Heading';
+import { PaginationControl } from '../../components/PaginationControl';
+import { REVIEWS_PER_PAGE } from '@/app/constants/consts';
 
-export const ToBeReviewedReviews = async() => {
+interface ToBeReviewedReviewsProps {
+  pageNumber : number | undefined
+}
 
-  const toBeReviewedProductOrders = await getUserReviews({ toBeReviewedReviews : true }) as OrderType[];
+export const ToBeReviewedReviews: React.FC<ToBeReviewedReviewsProps> = async({
+  pageNumber,
 
-  if(!toBeReviewedProductOrders?.length){
+}) => {
+
+  const {
+    data,
+    count
+
+  } = await getUserReviews({ toBeReviewedReviews : true, page : pageNumber }) as { data : OrderedProductType[], count : number };
+
+  if(!data?.length){
     return (
       <EmptyState 
         Icon={FaSmile}
@@ -21,20 +35,28 @@ export const ToBeReviewedReviews = async() => {
   }
 
   return (
-    <div className='w-full flex flex-col gap-0'>
-      {
-        toBeReviewedProductOrders.map((toBeReviewedProductOrder, i)=> (
-          toBeReviewedProductOrder.packages.map((Package)=> (
-            Package.orderedProducts.map((orderedProduct, i)=> (
-              <ToBeReviewedProductCard 
-                key={i}
-                purchasedAt={toBeReviewedProductOrder.createdAt}
-                toBeReviewedProduct={orderedProduct as unknown as OrderedProductType}
-              />
-            ))
+    <div className='flex flex-col gap-6'>
+      <Heading>
+        My Reviews { "(" + count + ")" }
+      </Heading>
+      
+      <div className='w-full flex flex-col gap-0'>
+        {
+          data.map((orderedProduct, i)=> (
+            <ToBeReviewedProductCard
+              key={i}
+              purchasedAt={orderedProduct.createdAt}
+              toBeReviewedProduct={orderedProduct}
+            />
           ))
-        ))
-      }
+        }
+      </div>
+
+      <PaginationControl
+        count={count}
+        offset={true}
+        ITEMS_PER_PAGE={REVIEWS_PER_PAGE}
+      />
     </div>
   )
 }

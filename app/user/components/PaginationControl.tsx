@@ -1,43 +1,118 @@
 "use client"
 
+import { getSearchParamsArray } from '@/app/products/[productId]/customer-reviews/utils/getSearchParamsArray';
+import { Button } from '@/components/ui/button';
 import Pagination from '@mui/material/Pagination'
-import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { HiChevronLeft } from 'react-icons/hi';
 
 interface PaginationControlProps {
-    pageNumber : number | undefined;
-    lastOrderId : string | undefined;
-    firstOrderId : string | undefined;
+    count : number;
+    offset? : boolean;
+    ITEMS_PER_PAGE : number;
+    jumpingDisabled? : boolean;
+    firstItemTieBreaker? : string | undefined;
+    lastItemTieBreaker? : string | undefined;
+    lastCursor? : string | number | undefined;
+    firstCursor? : string | number | undefined;
 }
 
 export const PaginationControl: React.FC<PaginationControlProps> = ({
-    pageNumber,
-    lastOrderId,
-    firstOrderId
+    count,
+    offset,
+    lastCursor,
+    firstCursor,
+    ITEMS_PER_PAGE,
+    jumpingDisabled,
+    lastItemTieBreaker,
+    firstItemTieBreaker,
 }) => {
 
-    const [currentPage, setCurrentPage] = useState(pageNumber || 1);
+    const searchParams = useSearchParams();
+    const page = parseInt(searchParams.get("page") || "0");
+
+    const [currentPage, setCurrentPage] = useState(page || 1);
+
+    useEffect(()=> {
+        setCurrentPage(page || 1)
+    }, [page])
 
     const router = useRouter();
     const pathname = usePathname();
 
-    const handleChange = (e:any, page: number)=>{
+    const isHistory = searchParams.get("isHistory");
+    const toBeReviewed = searchParams.get("toBeReviewed");
+    const sortBy = searchParams.get("sortBy")
+    
+    const handleChange = (e :any, page : number, prev? : boolean, next? : boolean)=>{
         if(currentPage === page) return
 
-        const cursor = (page > currentPage) ? lastOrderId : firstOrderId
-        router.push(`${pathname}?page=${page}&prevPage=${currentPage}&cursor=${cursor}`)
+        const paramsToRemove = ["page", "prevPage", "cursor", "tieBreaker"]
+        let oldSearchParamsArray = getSearchParamsArray(searchParams, paramsToRemove);
+        
+        const nextPageToGo = page !== 0 ? page : (next ? currentPage + 1 : currentPage - 1)
 
-        setCurrentPage(page)
+        const cursor = (nextPageToGo > currentPage) ? lastCursor : firstCursor
+
+        let searchParamsArray = [
+            `page=${nextPageToGo}`,
+        ]
+
+        if(!offset) searchParamsArray = [
+            ...searchParamsArray,
+            `prevPage=${currentPage}`,
+            `cursor=${cursor}`,
+        ]
+
+        const tieBreaker = (nextPageToGo > currentPage) ? lastItemTieBreaker : firstItemTieBreaker
+        if(sortBy) searchParamsArray.push(`tieBreaker=${tieBreaker}`)
+
+        if(isHistory && toBeReviewed) searchParamsArray = [
+            `toBeReviewed=${toBeReviewed}`,
+            `isHistory=${isHistory}`,
+            ...searchParamsArray
+        ]
+
+        searchParamsArray = [
+            ...searchParamsArray,
+            ...oldSearchParamsArray
+        ]
+
+        const searchParamsString = searchParamsArray.join("&");
+
+        router.push(`${pathname}?${searchParamsString}`)
+
+        setCurrentPage(nextPageToGo)
     }
+
+    const noOfPages = Math.ceil(count / ITEMS_PER_PAGE);
 
   return (
     <div className='w-full flex justify-end'>
-        <Pagination 
-            count={10} 
-            color='primary' 
-            shape="rounded" 
-            onChange={handleChange}
-        />
+        {
+            jumpingDisabled && 
+            <div className='flex gap-4'>
+                <Button disabled={currentPage === 1} variant="outline" onClick={()=> handleChange(0, 0, true, false)}>
+                    <HiChevronLeft className='w-4 h-4 mr-2'/> Previous
+                </Button>
+
+                <Button disabled={currentPage === 2} variant="outline" onClick={()=> handleChange(0, 0, false, true)}>
+                    Next <HiChevronLeft className='w-4 h-4 ml-2 rotate-180'/> 
+                </Button>
+            </div>
+        }
+
+        {
+            !jumpingDisabled && noOfPages !== 1 &&
+            <Pagination 
+                color='primary' 
+                shape="rounded" 
+                count={noOfPages} 
+                onChange={handleChange}
+                page={page || 1}
+            />
+        }
     </div>
   )
 }

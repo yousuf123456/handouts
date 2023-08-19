@@ -13,10 +13,6 @@ export default async function CancellationRequestDetailsPage({ params } : { para
     <Layout>
         <Container>
             <div className='flex flex-col gap-6'>
-                <Heading>
-                    Cancellation Details
-                </Heading>
-
                 <CancellationDetails 
                     cancellationRequestId={params.cancellationRequestId}
                 />

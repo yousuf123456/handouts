@@ -27,7 +27,7 @@ export const CheckoutBanner = ({
         <NavigationItem Icon={HiCash} label='Next Payment'/>
         
         <div className='absolute w-full flex'>
-          <div className='absolute -top-3 left-6 w-[65%] h-0.5 bg-green-500 flex'/>
+          <div className='absolute -top-3 left-6 w-[63%] h-0.5 bg-green-500 flex'/>
         </div>
       </div>
 
