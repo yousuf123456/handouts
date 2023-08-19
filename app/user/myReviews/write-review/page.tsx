@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Layout } from '../../components/Layout';
 import { Container } from '../../components/Container';
 import { WriteReview } from './components/WriteReview';
 import { Heading } from '@/app/(site)/components/Heading';
+import { SpinnerLoading } from '../../components/SpinnerLoading';
 
 export const revalidate = 0;
 
@@ -18,14 +19,16 @@ export default async function WriteReviewPage ({ searchParams }: { searchParams 
   return (
     <Layout>
       <Container>
-        <div className='flex flex-col gap-6'>
+        <div className='h-full flex flex-col gap-6'>
           <Heading>
             Write Review
           </Heading>
 
-          <WriteReview 
-            searchParams={searchParams}
-          />
+          <Suspense fallback={<SpinnerLoading />}>
+            <WriteReview 
+              searchParams={searchParams}
+            />
+          </Suspense>
         </div>
       </Container>
     </Layout>

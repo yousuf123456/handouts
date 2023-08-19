@@ -9,7 +9,7 @@ interface PackageCardHeaderProps {
     packageNumber? : number; 
     isDelievered? : boolean;
     delieveredAt? : Date | null;
-    orderHasBeenCancelled? : boolean;
+    hideTimeline? : boolean;
 }
 
 export const PackageCardHeader: React.FC<PackageCardHeaderProps> = ({
@@ -17,7 +17,7 @@ export const PackageCardHeader: React.FC<PackageCardHeaderProps> = ({
     isDelievered,
     packageNumber,
     delieveredAt,
-    orderHasBeenCancelled
+    hideTimeline
 }) => {
   return (
     <div className='px-2 py-1 w-full flex justify-between items-center bg-white'>
@@ -32,7 +32,7 @@ export const PackageCardHeader: React.FC<PackageCardHeaderProps> = ({
             </div>
 
             {
-                !orderHasBeenCancelled &&
+                !hideTimeline &&
                 <div className='mt-4'>
                     {
                         <GetBy_DelieveredTimeline 

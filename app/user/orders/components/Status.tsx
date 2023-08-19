@@ -1,8 +1,8 @@
-import { StatusType } from '@/app/types'
+import { StatusType, cancellationSteps, returnSteps } from '@/app/types'
 import clsx from 'clsx'
 import React from 'react'
 
-export const Status = ({ status, showOnlyCancelStatus }: { status : StatusType, showOnlyCancelStatus? : boolean }) => {
+export const Status = ({ status, showOnlyRequestStatus }: { status : StatusType, showOnlyRequestStatus? : boolean }) => {
 
   const styles = {
     "Payment Pending" : "bg-yellow-100 text-yellow-500",
@@ -17,8 +17,8 @@ export const Status = ({ status, showOnlyCancelStatus }: { status : StatusType, 
   return (
     <>
     {
-      showOnlyCancelStatus ? (
-        status === "Cancelled" || status === "Cancellation in Process" && 
+      showOnlyRequestStatus ? (
+        (cancellationSteps.includes(status) || returnSteps.includes(status)) && 
         <div className={clsx('w-fit h-fit px-3 py-1 rounded-md', styles[status])}>
           <p className='text-xs font-medium'>
             { status }
