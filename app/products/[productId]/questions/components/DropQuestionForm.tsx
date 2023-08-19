@@ -3,9 +3,12 @@ import React, { useState } from 'react'
 
 import { LoadingButton } from '@/app/components/LoadingButton';
 import { Textarea } from '@/components/ui/textarea';
-import axios from 'axios';
 import { Question } from '@prisma/client';
 import { PRODUCTS_QUESTIONS_PER_PAGE } from '@/app/constants/consts';
+
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { CtaLink } from '@/app/(site)/components/CtaLink';
 
 interface DropQuestionFormProps {
     productId : string;
@@ -43,6 +46,23 @@ export const DropQuestionForm: React.FC<DropQuestionFormProps> = ({
             }
         })
         .finally(()=>setIsLoading(false))
+    }
+
+    const session = useSession();
+
+    if(session.status === "unauthenticated") {
+        return (
+            <p className='text-sm font-text'>
+                <CtaLink href='/user/sign?type=SIGN%20IN'>
+                    <span className='mr-2 underline text-themeBlue'>Login</span>
+                </CtaLink> 
+                or 
+                <CtaLink href='/user/sign?type=SIGN%20UP'>
+                    <span className='mx-2 underline text-themeBlue'>Create Handouts Accout</span>
+                </CtaLink> 
+                to ask a question about this product.
+            </p>   
+        )
     }
 
   return (

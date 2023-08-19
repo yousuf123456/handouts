@@ -42,7 +42,7 @@ export const SignCta = () => {
         : 
         (
             <div className='flex h-full gap-2 sm:gap-4 items-center'>
-            <Link href={"/user/sign"}>
+            <Link href={"/user/sign?type=SIGN%20IN"}>
                 <p className='font-bold text-sm font-text cursor-pointer hover:text-indigo-800'>
                     Login
                 </p>
@@ -50,7 +50,7 @@ export const SignCta = () => {
 
             <p>|</p>
 
-            <Link href={"/user/sign"}>
+            <Link href={"/user/sign?type=SIGN%20UP"}>
                 <p className='whitespace-nowrap font-bold text-sm font-text cursor-pointer hover:text-indigo-800'>
                     Sign Up
                 </p>
