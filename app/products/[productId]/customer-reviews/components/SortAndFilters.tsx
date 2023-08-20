@@ -1,21 +1,13 @@
 "use client"
-import { SelectOptions } from '@/app/components/SelectOptions'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React from 'react'
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import { SelectOptions } from '@/app/components/SelectOptions'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { RatingAndReview } from '@prisma/client'
 import { FaArrowUp, FaFlask } from 'react-icons/fa'
 import { getSearchParamsArray } from '../utils/getSearchParamsArray'
+import { filterOptions, sortOptions } from '@/app/constants/selectOptions'
 
 interface SortAndFiltersProps {
     lastReview : RatingAndReview;
@@ -28,62 +20,6 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
     firstReview,
     goingBack
 }) => {
-
-    const sortOptions = [
-        {
-            label : "Recent", 
-            searchParam : `sortBy=rating`,
-            remove : true
-        },
-        {
-            label : "Rating: High To Low", 
-            searchParam : `sortBy=rating&direction=desc`,
-            remove : false
-        },
-        {
-            label : "Rating: Low To High", 
-            searchParam : `sortBy=rating&direction=asc`,
-            remove : false
-        }
-    ]
-
-    const filterOptions = [
-        {
-            label : "All Stars",
-            searchParam : "filter=1",
-            remove : true
-        },
-
-        {
-            label : "5 Star",
-            searchParam : "filter=5",
-            remove : false
-        },
-
-        {
-            label : "4 Star",
-            searchParam : "filter=4",
-            remove : false
-        },
-
-        {
-            label : "3 Star",
-            searchParam : "filter=3",
-            remove : false
-        },
-
-        {
-            label : "2 Star",
-            searchParam : "filter=2",
-            remove : false
-        },
-
-        {
-            label : "1 Star",
-            searchParam : "filter=1",
-            remove : false
-        }
-    ]
 
     const searchParams = useSearchParams();
     const pathname = usePathname();
@@ -136,23 +72,12 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
             </div>
 
             <div className='flex-shrink-0'>
-                <Select defaultValue={sortDefaultValue} onValueChange={onSort}>
-                    <SelectTrigger className="w-full h-[38px] bg-slate-100 outline-none gap-2 placeholder:text-slate-500">
-                        <SelectValue placeholder={"Sort"} />
-                    </SelectTrigger>
-                    <SelectContent className={("w-full z-[1000] max-h-72 overflow-y-auto")}>
-                        <SelectGroup>
-                        <SelectLabel> Sort </SelectLabel>
-                        {
-                            sortOptions.map((option) => (
-                                <SelectItem key={option.label} value={option.label}>
-                                    {option.label}
-                                </SelectItem>
-                            ))
-                        }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                <SelectOptions
+                    label='Sort'
+                    onChange={onSort}
+                    linkOptions={sortOptions}
+                    defaultValue={sortDefaultValue}
+                />
             </div>
         </div>
         
@@ -162,23 +87,12 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
                 <p className='text-sm font-semibold text-slate-500'>Filter</p>
             </div>
             <div className='flex-shrink-0'>
-                <Select defaultValue={filterDefaultValue} onValueChange={onFilter}>
-                    <SelectTrigger className="w-full h-[38px] bg-slate-100 outline-none gap-2 placeholder:text-slate-500">
-                        <SelectValue placeholder={"Filter"} />
-                    </SelectTrigger>
-                    <SelectContent className={("w-full z-[1000] max-h-72 overflow-y-auto")}>
-                        <SelectGroup>
-                        <SelectLabel> Filter </SelectLabel>
-                        {
-                            filterOptions.map((option) => (
-                                <SelectItem key={option.label} value={option.label}>
-                                    {option.label}
-                                </SelectItem>
-                            ))
-                        }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                <SelectOptions
+                    label='Filter'
+                    onChange={onFilter}
+                    linkOptions={filterOptions}
+                    defaultValue={filterDefaultValue}
+                />
             </div>
         </div>
     </div>

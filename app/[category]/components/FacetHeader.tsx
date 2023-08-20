@@ -20,7 +20,7 @@ export const FacetHeader: React.FC<FacetHeaderProps> = ({
         </h3>
 
         <HiChevronDown 
-            className={clsx('w-4 h-4 lg:w-5 lg:h-5 font-bold text-slate-900 cursor-pointer', collapsed && "rotate-180")}
+            className={clsx('w-4 h-4 font-bold text-slate-900 cursor-pointer', collapsed && "rotate-180")}
             onClick={()=> setIsCollapsed((prev) => !prev)}
         />
     </div>

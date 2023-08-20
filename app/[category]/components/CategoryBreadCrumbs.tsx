@@ -7,7 +7,7 @@ import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import { HiChevronRight } from 'react-icons/hi'
+import { HiChevronRight } from 'react-icons/hi2'
 import clsx from 'clsx'
 
 interface CategoryBreadCrumbsProps {
@@ -29,19 +29,23 @@ export const CategoryBreadCrumbs: React.FC<CategoryBreadCrumbsProps> = ({
 
     const color = crumbColor || "#2998FF"
 
+    const typoGraphyColor = "#737373"
+
+    const seperatorCs = clsx('w-4 h-4', seperatorColor || "text-slate-500") 
+
   return (
     <div>
         {
             categoryTree === null ? (
-                <Breadcrumbs separator={<HiChevronRight />}
+                <Breadcrumbs separator={<HiChevronRight className={seperatorCs}/>}
                  aria-label="breadcrumb">
                     <Link underline="hover" fontFamily={"var(--font-poppins)"} color={color} href="/">
                         Home
                     </Link>
-                    <Typography color="text.primary" fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
+                    <Typography color={typoGraphyColor} fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
                 </Breadcrumbs>
             ): (
-                <Breadcrumbs separator={<HiChevronRight className={clsx('w-5 h-5', seperatorColor || "text-slate-300")} />}>
+                <Breadcrumbs separator={<HiChevronRight className={seperatorCs} />}>
                     {
                         category &&
                         <Link underline="hover" fontFamily={"var(--font-poppins)"} color={color} href="/">
@@ -64,7 +68,7 @@ export const CategoryBreadCrumbs: React.FC<CategoryBreadCrumbsProps> = ({
                     }
                     {
                         from === "input" &&
-                        <Typography color="text.primary" fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
+                        <Typography color={typoGraphyColor} fontFamily={"var(--font-poppins)"}>Searched Products</Typography>
                     }
                     {
                         productName &&
