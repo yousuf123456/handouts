@@ -32,7 +32,7 @@ export const Facets: React.FC<FacetsProps> = ({
   });
 
   return (
-    <div className='flex-shrink-0 w-64 bg-white lg:border-r-2'>
+    <div className='flex-shrink-0 w-64 bg-white'>
       <div className='py-8 px-4'>
         <div className='flex flex-col gap-6'>
           <ReduxProvider>

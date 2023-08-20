@@ -13,31 +13,36 @@ import {
 } from "@/components/ui/select"
 import clsx from "clsx";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
 interface SelectOptionsProps {
   onChange? : (e: any)=> void;
   defaultValue? : string;
+  linkOptions? : {
+    label : string;
+    searchParam : string;
+  }[];
   placeHolder? : string;
   isLoading? : boolean;
   required? : boolean;
   disabled? : boolean;
-  options : string[];
+  options? : string[];
   label : string;
   field? : any;
 }
  
 export const SelectOptions: React.FC<SelectOptionsProps> = ({
-  label,
-  placeHolder,
   defaultValue,
-  onChange,
-  options,
+  placeHolder,
+  linkOptions,
+  isLoading,
   disabled,
   required,
-  isLoading,
+  onChange,
+  options,
+  label,
   field
 }) => {
+
+  const itemsToMapOver = options || linkOptions as any
 
   return (
     <Select 
@@ -50,16 +55,16 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
       }}
       defaultValue={defaultValue}
     >
-      <SelectTrigger className="w-full h-[38px] gap-2 bg-slate-100 outline-none placeholder:text-slate-500">
+      <SelectTrigger className="w-full h-[38px] gap-2 bg-slate-100 placeholder:text-slate-500">
         <SelectValue onChange={()=> console.log("heloo")} placeholder={placeHolder} />
       </SelectTrigger>
       <SelectContent className={clsx("w-full z-[1000] max-h-72 overflow-y-auto", isLoading && "opacity-60")}>
         <SelectGroup>
           <SelectLabel>{ label }</SelectLabel>
           {
-            options?.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
+            itemsToMapOver?.map((option: any, i: number) => (
+              <SelectItem key={i} value={option.label || option}>
+                {option.label || option}
               </SelectItem>
             ))
           }

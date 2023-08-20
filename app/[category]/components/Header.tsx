@@ -1,5 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
+
 import { Seperator } from '@/app/components/Seperator';
 import { useAppDispatch, useAppSelector } from '@/app/store/store';
 import { FaTimes } from "react-icons/fa"
@@ -12,6 +13,8 @@ import { Facets } from './Facets';
 import { CategoryBreadCrumbs } from './CategoryBreadCrumbs';
 
 import clsx from 'clsx';
+import { SelectOptions } from '@/app/components/SelectOptions';
+import { catalogSortOptions } from '@/app/constants/selectOptions';
 
 interface HeaderProps {
     searchTerm : string | undefined;
@@ -54,6 +57,10 @@ export const Header: React.FC<HeaderProps> = ({
         handleQueryChange(key, value)
     }
 
+    const onSort = (value: string)=> {
+        console.log(value)
+    }
+
   return (
     <>
     <div className='flex flex-col gap-2'>
@@ -63,11 +70,23 @@ export const Header: React.FC<HeaderProps> = ({
 
         <Seperator />
 
-        <div className='py-1 lg:py-3 w-full flex flex-col gap-0 justify-center'>
-            <div className='flex justify-between'>
-                <h2 className='text-sm text-slate-700 font-medium font-text lg:block hidden'>
-                    { count } Results
+        <div className='w-full flex flex-col gap-0 justify-center'>
+            <div className='flex items-center justify-between'>
+                <h2 className='text-sm text-slate-700 lg:block hidden line-clamp-1'>
+                    Showing results for the <span className='text-sm font-medium text-black'>{searchTerm}</span>
                 </h2>
+
+                <div className='pr-16 flex gap-2 items-center'>
+                    <p className='flex-shrink-0 text-sm text-slate-600'>
+                        Sort By
+                    </p>
+                    <SelectOptions
+                        label='Sort By'
+                        onChange={onSort}
+                        defaultValue='Best Match'
+                        linkOptions={catalogSortOptions}
+                    />
+                </div>
 
                 <div 
                     onClick={()=> setOpen((prev)=>!prev)} 
