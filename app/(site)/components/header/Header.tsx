@@ -5,8 +5,6 @@ import { Navbar } from './components/Navbar'
 import { DesktopCTANavbar } from './components/DesktopCTANavbar'
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import { BREAKPOINT } from '@/app/constants/consts';
-import { useBreakpoint } from '@/app/hooks/useBreakpoints';
 
 export const Header = () => {
   const pathname = usePathname();
