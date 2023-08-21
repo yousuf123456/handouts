@@ -5,8 +5,6 @@ import { PriceFacet } from './PriceFacet'
 import { RatingFacet } from './RatingFacet'
 import { ReduxProvider } from '@/app/context/ReduxProvider'
 import { useParams } from 'next/navigation'
-import { getCategory } from '@/app/actions/getCategory'
-import { formatCategoryParam } from '@/app/utils/formatCategoryParam'
 import { getCategoryNames } from '@/app/utils/getCategoryNames'
 
 interface FacetsProps {

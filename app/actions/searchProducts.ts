@@ -1,5 +1,4 @@
 
-import { PipelineStage } from "mongoose";
 import prisma from "../libs/prismadb"
 import { IParams } from "../types";
 import { getFilterObjects } from "../filter/getFilterObjects";

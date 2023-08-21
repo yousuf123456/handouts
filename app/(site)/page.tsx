@@ -6,7 +6,6 @@ import { CategoryDealsList } from './components/categoryDealsList/CategoryDealsL
 import { ExclusiveSections } from './components/exclusiveSections/ExclusiveSections'
 import { Categories } from './components/categories/Categories'
 import { RecomendedProducts } from './components/RecomendedProducts/RecomendedProducts'
-import { getRP } from '../actions/getRP'
 
 export default async function Home() {  
 
