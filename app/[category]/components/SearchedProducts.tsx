@@ -1,15 +1,19 @@
-import { searchProducts } from '@/app/actions/searchProducts';
-import { ProductCard } from '@/app/components/ProductCard';
-import React from 'react'
+"use client";
+import React, { useEffect } from 'react'
 import { SearchedProductsList } from './SearchedProductsList';
 import { FullProductType } from '@/app/types';
+import { CopySlash } from 'lucide-react';
+import axios from 'axios';
 
 interface SearchedProductsProps {
-    products : FullProductType[] | undefined,
+  products : FullProductType[] | undefined,
+  searchParams : any;
+  category : any;
 }
 
 export const SearchedProducts: React.FC<SearchedProductsProps> = ({
-    products
+  products,
+
 }) => {
 
   return (

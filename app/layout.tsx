@@ -5,6 +5,7 @@ import { Footer } from './(site)/components/footer/Footer'
 import { Header } from './(site)/components/header/Header'
 import { SessionProviderContext } from './context/SessionProviderContext'
 import { Inter, Poppins, Nunito } from 'next/font/google'
+import { QueryProvider } from './context/QueryProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,11 +41,15 @@ export default function RootLayout({
     <html lang="en" className={`${poppins.variable} ${nunito.variable}`}>
       <body className={`${inter.className}`}>
         <SessionProviderContext>
-          <Header />
-          <div className='sm:pt-[108px] md:pt-30 lg:pt-32'>
-            {children}
-          </div>
-          <Footer />
+          <QueryProvider>
+            <Header />
+
+            <div className='sm:pt-[108px] md:pt-30 lg:pt-32'>
+              {children}
+            </div>
+            
+            <Footer />
+          </QueryProvider>
         </SessionProviderContext>
       </body>
     </html>

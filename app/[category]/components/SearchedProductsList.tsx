@@ -1,7 +1,6 @@
 "use client";
-import { ProductCard } from '@/app/components/ProductCard'
-import { Prisma } from '@prisma/client';
 import React from 'react'
+import { ProductCard } from '@/app/components/ProductCard'
 
 interface SearchedProductsListProps {
     products :  any
