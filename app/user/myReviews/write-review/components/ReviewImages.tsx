@@ -6,7 +6,7 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { FaCamera, FaTimes } from "react-icons/fa"
-import { AlertDialogModel } from '@/app/components/AlertDialog';
+import  AlertDialogModel  from '@/app/components/AlertDialog';
 
 interface ReviewImagesProps {
   images : string[]
