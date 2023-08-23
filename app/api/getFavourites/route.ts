@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 
+import prisma from "../../libs/prismadb"
 
 export async function POST(req : Request){
     try{
@@ -10,7 +11,7 @@ export async function POST(req : Request){
             return new NextResponse("Unauthorized User", { status : 401 })
         }
 
-        const favouriteItems = await prisma?.user.findUnique({
+        const favouriteItems = await prisma.user.findUnique({
             where : {
                 id : currentUser.id
             },
