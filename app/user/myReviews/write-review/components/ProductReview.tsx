@@ -8,9 +8,9 @@ import { ProductImage } from '@/app/components/ProductImage'
 import { ReviewForm } from './ReviewForm'
 import { ReviewImages } from './ReviewImages'
 import clsx from 'clsx'
-import { compact } from 'lodash'
+
 import Image from 'next/image'
-import { imageConfigDefault } from 'next/dist/shared/lib/image-config'
+
 
 interface ProductReviewProps {
   href? : string;
