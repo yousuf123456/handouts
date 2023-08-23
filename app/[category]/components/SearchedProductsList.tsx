@@ -1,6 +1,7 @@
 "use client";
 import React from 'react'
 import { ProductCard } from '@/app/components/ProductCard'
+import { ProductsListLayout } from '@/app/components/ProductsListLayout';
 
 interface SearchedProductsListProps {
     products :  any
@@ -10,16 +11,21 @@ export const SearchedProductsList: React.FC<SearchedProductsListProps> = ({
     products
 }) => {
   return (
-    <div className='w-full flex flex-wrap gap-3 justify-between'>
+    <>
         {
-            products?.length ? (
-                products.map((product : any, i:number) => (
-                    <ProductCard 
-                        key={i} 
-                        product={product} 
-                        showDiscountLabel={false} 
-                    />
-                ))
+            products.length ? (
+                <div className='grid min-[540px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3'>
+                    {
+                        products.map((product : any, i:number) => (
+                            <ProductCard 
+                                key={i} 
+                                dynamic={true}
+                                product={product} 
+                                showDiscountLabel={false} 
+                            />
+                        ))
+                    } 
+                </div>
             )
             :
             (
@@ -30,6 +36,6 @@ export const SearchedProductsList: React.FC<SearchedProductsListProps> = ({
                 </div>
             )
         }
-    </div>
+    </>
   )
 }

@@ -2,6 +2,7 @@
 
 export const useRoutes = ()=> {
     const routes = {
+        home : "/",
         orders : "/user/orders",
         signInUp : "/user/sign",
         returns : "/user/returns",

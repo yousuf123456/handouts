@@ -2,9 +2,8 @@
 import { ProductPrice } from '@/app/components/ProductPrice'
 import { Quantity } from '@/app/components/Quantity'
 import { getPriceInfo } from '@/app/utils/getPriceInfo'
-import { CartItemProductType, CartItemType, Cart_FavouriteItemProductType, CombinationsType } from '@/app/types'
-import Image from 'next/image'
-import React, { useState } from 'react'
+import { CartItemType, Cart_FavouriteItemProductType, CombinationsType } from '@/app/types'
+import React, { useEffect, useState } from 'react'
 
 import { useAppDispatch } from '@/app/store/store'
 import { deleteCartItem, updateCartItem, incrementCartItemsCount, addCartItem } from '@/app/store/features/cartSlice'
@@ -13,17 +12,18 @@ import { FaTrash } from "react-icons/fa"
 
 import axios from 'axios';
 import { TooltipWrapper } from '@/app/components/TooltipWrapper'
-import { Button } from '@/app/components/Button'
 import { CtaLink } from '@/app/(site)/components/CtaLink'
 import { addFavouriteItem, deleteFavouriteItem } from '@/app/store/features/favouritesSlice'
 import { ShoppingCart, Heart } from 'lucide-react'
 import { toast } from 'react-hot-toast'
-import {AlertDialogModel} from '@/app/components/AlertDialog'
 
 import dynamic from "next/dynamic"
 import { ProductImage } from './ProductImage'
+import { useBreakpoint } from 'use-breakpoint'
+import { BREAKPOINTS } from '../constants/breakPoints'
 
 const DynamicBackdropLoader = dynamic(()=> import("@/app/components/BackdropLoader"));
+const AlertDialogModel = dynamic(()=> import("@/app/components/AlertDialog"))
 
 interface Cart_FavouriteItemCardProps {
     cartItem? : CartItemType,
@@ -40,6 +40,12 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
     const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+
+    const {minWidth} = useBreakpoint(BREAKPOINTS)
+
+    useEffect(()=> {
+        console.log(minWidth)
+    }, [minWidth])
 
     const dispatch = useAppDispatch();
 
@@ -126,14 +132,14 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
     } 
     = getPriceInfo(cartItem?.product || favouriteItem);
 
-    const namePriceClassName = 'text-base font-text font-semibold text-themeSecondary'
+    const nameClassName = 'text-sm sm:text-base tracking-tight sm:tracking-normal font-medium text-themeSecondary line-clamp-3'
     const selectedCombination = (cartItem?.selectedCombination) as CombinationsType
 
   return (
     <>
     <div className='w-full py-3 flex-shrink-0 border-b-2 border-slate-200'>
-        <div className='flex gap-0 items-start'>
-            <div className='relative w-28 h-28 rounded-sm overflow-hidden flex-shrink-0'>
+        <div className='flex gap-0 items-center'>
+            <div className='relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-sm overflow-hidden flex-shrink-0'>
                 <CtaLink href={`/products/${cartItem?.product?.id}`}>
                     <ProductImage 
                         src={cartItem?.product?.image || favouriteItem?.image || ""}
@@ -142,11 +148,11 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
             </div>
 
             <div className='w-full py-0 px-3'>
-                <div className='w-full flex gap-12 justify-between'>
-                    <div className='flex flex-col gap-4'>
+                <div className='w-full flex gap-0 sm:gap-12 justify-between'>
+                    <div className='w-full flex flex-col gap-4'>
                         <div className='flex flex-col'>
                             <CtaLink href={`/products/${cartItem?.product?.id || favouriteItem?.id}`}>
-                                <h2 className={namePriceClassName}>
+                                <h2 className={nameClassName}>
                                     {
                                         cartItem?.product?.name || favouriteItem?.name
                                     }
@@ -166,19 +172,54 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                             </CtaLink>
                         </div>
                         
-                        {
-                            !isFavouriteItem &&
-                            <Quantity 
-                                quantity={cartItem?.quantity!}
-                                isCartItem={true}
-                                onIncrease={onQuantityChange}
-                                onDecrease={onQuantityChange}
-                            />
-                        }
+                        <div className='w-full flex justify-between'>
+                            {/* Shown in small devices */}
+                            <div className='block sm:hidden'>
+                                <ProductPrice 
+                                    discountLabelsClassName='text-xs'
+                                    discountOff={discountOff}
+                                    productOnSale={productOnSale}
+                                    isPercentOff={isPercentOff}
+                                    discountOffLabel={discountOffLabel}
+                                    price={favouriteItem?.price || selectedCombination?.price || cartItem?.product?.price}
+                                    className='text-sm font-semibold text-themeSecondary'
+                                />
+                            </div>
+                            
+                            <div className='flex flex-col justify-between items-end gap-2'>
+                                {
+                                    !isFavouriteItem &&
+                                    <Quantity 
+                                        quantity={cartItem?.quantity!}
+                                        isCartItem={true}
+                                        onIncrease={onQuantityChange}
+                                        onDecrease={onQuantityChange}
+                                    />
+                                }
+                                
+                                {/* Shown in small devices */}
+                                <div className='sm:hidden'>
+                                    <AlertDialogModel 
+                                        title={isFavouriteItem ? 'Remove from favourites ?' : 'Remove from cart ?'}
+                                        desc={isFavouriteItem ? 'The product will be removed from your favourites.' : "This product will not be included in your order."}
+                                        actionClassName="bg-red-500 hover:bg-red-600"
+                                        actionLabel="Remove"
+                                        action={()=>{
+                                            isFavouriteItem ? onFavouriteItemDelete() : onCartItemDelete()
+                                            setOpen(false)
+                                        }}
+                                    >   
+                                        <div>
+                                            <FaTrash onClick={()=> setOpen(true)} className='w-3 h-3 text-red-500' />
+                                        </div>
+                                    </AlertDialogModel>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div className='flex gap-12 items-start'>
-                        <div className='flex flex-shrink-0 flex-col gap-3'>
+                        <div className='hidden sm:flex flex-shrink-0 flex-col gap-3'>
                             <ProductPrice 
                                 discountOff={discountOff}
                                 productOnSale={productOnSale}
@@ -190,9 +231,10 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                             />
                         </div>
                         
-
-                        <div className='mr-2 flex gap-3 items-center'>
-                            {
+                        <div className='hidden mr-2 sm:flex gap-3 items-center'>
+                            { 
+                                //Gets hidden in medium devices 
+                                (minWidth || 0) > 767 &&
                                 <AlertDialogModel 
                                     title={isFavouriteItem ? 'Add to Cart ?' :  'Add to favourites ?'}
                                     desc={`This product will be added to your ${isFavouriteItem ? "cart" : "favourites"}`}
@@ -212,22 +254,27 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                                     </div>
                                 </AlertDialogModel>
                             }
-                            <AlertDialogModel 
-                                title={isFavouriteItem ? 'Remove from favourites ?' : 'Remove from cart ?'}
-                                desc={isFavouriteItem ? 'The product will be removed from your favourites.' : "This product will not be included in your order."}
-                                actionClassName="bg-red-500 hover:bg-red-600"
-                                actionLabel="Remove"
-                                action={()=>{
-                                    isFavouriteItem ? onFavouriteItemDelete() : onCartItemDelete()
-                                    setOpen(false)
-                                }}
-                            >   
-                                <div>
-                                    <TooltipWrapper content='delete'>
-                                        <FaTrash onClick={()=> setOpen(true)} className='cursor-pointer w-4 h-4 text-red-500' />
-                                    </TooltipWrapper>
-                                </div>
-                            </AlertDialogModel>
+
+                            {
+                                //Gets Hidden in small devices and layout totally shifts
+                                (minWidth || 0) > 639 &&
+                                <AlertDialogModel 
+                                    title={isFavouriteItem ? 'Remove from favourites ?' : 'Remove from cart ?'}
+                                    desc={isFavouriteItem ? 'The product will be removed from your favourites.' : "This product will not be included in your order."}
+                                    actionClassName="bg-red-500 hover:bg-red-600"
+                                    actionLabel="Remove"
+                                    action={()=>{
+                                        isFavouriteItem ? onFavouriteItemDelete() : onCartItemDelete()
+                                        setOpen(false)
+                                    }}
+                                >   
+                                    <div>
+                                        <TooltipWrapper content='delete'>
+                                            <FaTrash onClick={()=> setOpen(true)} className='cursor-pointer w-4 h-4 text-red-500' />
+                                        </TooltipWrapper>
+                                    </div>
+                                </AlertDialogModel>
+                            }
                         </div>
                     </div>
                 </div>

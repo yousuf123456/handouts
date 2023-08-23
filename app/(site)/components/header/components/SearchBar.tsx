@@ -1,17 +1,24 @@
 "use client"
+import React, { useEffect, useState } from 'react'
 
-import { getAutoCompleteSuggestions } from '@/app/actions/getAutoCompleteSuggestions'
 import { Button } from '@/app/components/Button'
 import { Input } from '@/app/components/Input'
-import React, { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { HiSearch } from "react-icons/hi"
 import { SuggestionsFeed } from './SuggestionsFeed'
 import { useRouter } from 'next/navigation'
-import clsx from 'clsx'
 import { cn } from '@/app/utils/cn'
+import clsx from 'clsx'
 
-export const SearchBar = () => {
+interface SearchBar {
+    doWhiteBg? : boolean;
+    hideSuggestions? : boolean;
+}
+
+export const SearchBar: React.FC<SearchBar> = ({
+    doWhiteBg,
+    hideSuggestions
+}) => {
 
     const { register, watch, setValue, handleSubmit } = useForm<FieldValues>({
         defaultValues : {
@@ -24,6 +31,7 @@ export const SearchBar = () => {
 
     const searchTerm = watch("search");
     useEffect(()=> {
+        if(hideSuggestions) return
         if(!searchTerm.length) return
 
         const body = {
@@ -59,7 +67,7 @@ export const SearchBar = () => {
     <div className='w-full relative flex flex-col gap-0 z-[99]'>
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className='relative flex gap-0 w-full'>
-                <div className='w-full p-0.5 rounded-l-[3px] bg-gradient-to-r from-themeBlue to-cyan-300'>
+                <div className={clsx("w-full", !doWhiteBg && 'p-0.5 rounded-l-[3px] bg-gradient-to-r from-themeBlue to-cyan-300')}>
                     <Input 
                         id="search"
                         type='text'
@@ -68,18 +76,18 @@ export const SearchBar = () => {
                         required={true}
                         placeholder='Search in handouts'
                         register={register}
-                        className='rounded-l-[3px]'
+                        className={clsx('rounded-l-[2px]', doWhiteBg && "shadow-md")}
                     />
                 </div>
 
-                <Button aria-label='Search' type='submit' variant='default' className='relative left-[-2px] rounded-l-none rounded-r-[3px] w-10 h-10 flex justify-center items-center'>
-                    <HiSearch className='w-6 h-6 text-white font-bold' />
+                <Button aria-label='Search' type='submit' variant='default' className={cn('relative left-[-2px] rounded-l-none rounded-r-[2px] w-10 h-10 flex justify-center items-center', doWhiteBg && "h-9 bg-white hover:bg-white")}>
+                    <HiSearch className={clsx('w-6 h-6 font-bold', doWhiteBg ? "text-themeSecondary" : "text-white")} />
                 </Button>
             </div>
         </form>
 
         {
-            isAutocompleteOpen && (
+            !hideSuggestions && isAutocompleteOpen && (
                 <SuggestionsFeed 
                     onClick={(query)=>{
                         setIsAutocompleteOpen(false)

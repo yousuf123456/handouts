@@ -20,7 +20,7 @@ export const Hero = () => {
                 </h1>
             </div>
 
-            <Button size="xl" className='bg-black w-44 text-white hover:bg-slate-800'>
+            <Button size={"md"} className='bg-black w-36 sm:w-44 text-white hover:bg-slate-800'>
                 Shop Now
             </Button>
         </div>

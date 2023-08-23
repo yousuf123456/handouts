@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 
 import {
@@ -14,7 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-import { FaShopify, FaStar, FaTruck, FaUser } from 'react-icons/fa';
+import { FaHome, FaShopify, FaStar, FaTruck, FaUser } from 'react-icons/fa';
 import { useRoutes } from '@/app/hooks/useRoutes';
 import { HiLogout } from 'react-icons/hi';
 import { signOut } from 'next-auth/react';
@@ -24,14 +25,17 @@ import Link from 'next/link';
 
 interface ProfileDropDownMenuProps {
     children : React.ReactNode;
+    includeAllLinks? : boolean;
 }
 
 export const ProfileDropDownMenu: React.FC<ProfileDropDownMenuProps> = ({
     children,
+    includeAllLinks
 }) => {
 
     const iconCs = "mr-3 h-5 w-5";
     const {
+        home,
         orders,
         profile,
         returns,
@@ -52,6 +56,16 @@ export const ProfileDropDownMenu: React.FC<ProfileDropDownMenuProps> = ({
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup className='flex flex-col gap-1'>
+            {
+                includeAllLinks &&
+                <Link href={home}>
+                    <DropdownMenuItem>
+                        <FaHome className={cn(iconCs, "text-themeBlue")} />
+                        <span>Home</span>
+                    </DropdownMenuItem>
+                </Link>
+            }
+
             <Link href={profile}>
                 <DropdownMenuItem>
                     <FaUser className={cn(iconCs, "text-themeBlue")} />

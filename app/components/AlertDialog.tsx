@@ -9,7 +9,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "./Button"
+
 import { twMerge } from "tailwind-merge";
 
 interface AlertDialogProps {
@@ -21,7 +21,7 @@ interface AlertDialogProps {
   desc : string;
 }
  
-export function AlertDialogModel({
+export default function AlertDialogModel({
   title,
   desc,
   children,

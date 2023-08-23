@@ -44,7 +44,7 @@ export default function RootLayout({
           <QueryProvider>
             <Header />
 
-            <div className='sm:pt-[108px] md:pt-30 lg:pt-32'>
+            <div className='pt-0 sm:pt-[108px] md:pt-[120px] lg:pt-32'>
               {children}
             </div>
             
