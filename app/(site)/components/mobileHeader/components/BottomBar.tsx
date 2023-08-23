@@ -14,8 +14,9 @@ export const BottomBar = () => {
     <div className='fixed w-full h-14 flex items-center left-0 bottom-0 bg-white border-t-[1px] border-t-slate-400 z-[999]'>
         <div className='w-full flex justify-evenly'>
             {
-                links.map((link)=> (
+                links.map((link, i)=> (
                     <LinkOption 
+                        key={i}
                         isSelected={pathname.includes(link.href)}
                         link={link}
                     />
