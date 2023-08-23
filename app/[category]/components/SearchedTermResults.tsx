@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query"
 
 import Loading from '../loading';
 import axios from 'axios';
+import { NavigationPanel } from '@/app/components/NavigationPanel';
 
 function fetchSearchedProducts(searchParams:any, category:any) {
     const body = {
@@ -71,11 +72,14 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
 
     if((isLoading1 && fetchStatus !== "idle") || isLoading2) {
         return (
-            <Loading />
+          <Loading />
         )
     }
 
   return (
+    <div className='flex flex-col gap-0'>
+      <NavigationPanel showSearchBar={true}/>
+      
       <div className='lg:flex h-full w-full mt-8'>
         <div className='hidden lg:block'>
           <Facets
@@ -101,5 +105,6 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
           />
         </div>
       </div>
+    </div>
   )
 }

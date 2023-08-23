@@ -14,7 +14,6 @@ const InputProps = cva(
     ring-0
     ring-blue-500
     ring-inset
-    text-[14px]
     rounded-none
     font-medium
     font-text

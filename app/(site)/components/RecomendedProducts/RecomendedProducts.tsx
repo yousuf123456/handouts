@@ -7,7 +7,7 @@ export const RecomendedProducts = async() => {
   return (
     <div className='flex flex-col gap-3'>
         <Heading>
-            Just for you
+          Just for you
         </Heading>
 
         <RecomendedProductsList />

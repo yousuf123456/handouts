@@ -9,15 +9,19 @@ import { RatingStars } from './RatingStars';
 import { getPriceInfo } from '../utils/getPriceInfo';
 import { ProductImage } from './ProductImage';
 import { FormattedCurrency } from './FormattedCurrency';
+import { cn } from '../utils/cn';
+import clsx from 'clsx';
 
 
 interface ProductCardProps {
     product : ProductCardType | fullCategoryDiscountedProductType;
     showDiscountLabel? : boolean;
+    dynamic? : boolean;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ 
     product, 
+    dynamic,
     showDiscountLabel 
 }) => {
 
@@ -31,10 +35,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
     //@ts-ignore
     const productId = product?.id || product?._id?.$oid
-
+//36 sm40 lg48
   return (
     <Link href={`/products/${productId}`}>
-        <div className='mb-2 relative group w-36 sm:w-40 lg:w-48 flex flex-col gap-2 bg-white rounded-[2px] transition-all pb-2 overflow-hidden hover:shadow-cardHoverShadow'>
+        <div className={cn('mb-2 relative group flex flex-col gap-2 bg-white rounded-[2px] transition-all pb-2 overflow-hidden hover:shadow-cardHoverShadow', dynamic ? "w-full" : "w-36 sm:w-40 lg:w-48")}>
             {
                 productOnSale() && showDiscountLabel && (
                     <div className='transition-all absolute bg-rose-500 rounded-tl-sm py-1 px-2 top-0 left-0 z-50'>
@@ -44,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     </div>
                 )
             }
-            <div className='relative h-36 sm:h-40 lg:h-48 overflow-hidden'>
+            <div className={clsx('relative overflow-hidden', dynamic ? "aspect-square w-auto h-auto" : "h-36 sm:h-40 lg:h-48")}>
                 <ProductImage 
                     src={product.image!}
                     loading='lazy'

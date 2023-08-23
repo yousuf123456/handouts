@@ -38,7 +38,7 @@ export const DesktopCTANavbar = () => {
 
         {
         !isSignPage && (
-          <div className='hidden md:flex gap-4 items-center'>
+          <div className='hidden min-[920px]:flex gap-4 items-center'>
             {
               links.map((link) => (
                 <CtaLink key={link.name} href={link.href}>

@@ -7,12 +7,13 @@ import { Button } from '@/app/components/Button'
 import { Favourites } from './Favourites'
 import { SignCta } from './SignCta'
 import { ReduxProvider } from '@/app/context/ReduxProvider'
+import { RiShoppingCart2Fill } from 'react-icons/ri'
 
 export const Navbar = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='w-full md:py-4 pb-0 px-4 sm:px-8 lg:px-12 h-[48px] sm:h-[68px] md:h-20 bg-white min-[420px]:gap-3 sm:gap-6 flex items-center justify-between'>
+      <div className='w-full md:py-4 pb-0 px-4 sm:px-8 lg:px-12 h-[48px] sm:h-[68px] md:h-20 bg-white min-[420px]:gap-3 lg:gap-6 flex items-center justify-between'>
           <div className='flex gap-2 lg:gap-3 items-center'>
             <div className='relative w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10'>
               <Image
@@ -38,13 +39,13 @@ export const Navbar = () => {
           </div>
 
           <div className='flex ml-2 sm:mx-4 gap-3 md:gap-4 sm:justify-between items-center max-sm:mr-4 max-sm:flex-grow max-sm:flex max-sm:justify-end'>
-            <div className='hidden sm:block'>
+            <div className='hidden min-[920px]:block'>
               <Favourites />
             </div>
 
             <div>
               <ReduxProvider>
-                <Cart />
+                <Cart Icon={RiShoppingCart2Fill}/>
               </ReduxProvider>
             </div>
           </div>

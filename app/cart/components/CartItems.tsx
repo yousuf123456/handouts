@@ -51,9 +51,9 @@ export const CartItems = () => {
         <SpinnerLoader />
       ):
       (
-        <div className='w-full px-48 py-4'>
-          <div className='w-full flex flex-col gap-6'>
-            <h2 className='text-xl font-text font-semibold text-themeSecondary'>
+        <div className='w-full px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 py-4'>
+          <div className='w-full flex flex-col gap-2 sm:gap-6'>
+            <h2 className='text-base sm:text-xl font-text font-semibold text-themeSecondary'>
               Cart Items <span className='text-themeBlue'>{ "("+cartItems.length+")" }</span>
             </h2>
     

@@ -2,6 +2,7 @@ import { getRecomendedProducts } from '@/app/actions/recomendations/getRecomende
 import { ProductCard } from '@/app/components/ProductCard';
 import { ProductsListLayout } from '@/app/components/ProductsListLayout';
 import { ProductCardType, fullCategoryDiscountedProductType } from '@/app/types';
+import Image from 'next/image';
 import React from 'react'
 
 export const RecomendedProductsList = async() => {
@@ -19,6 +20,7 @@ export const RecomendedProductsList = async() => {
             recomendedProducts.map((product, i)=> (
                 <ProductCard
                     key={i}
+                    dynamic={true}
                     product={product}
                 />
             ))
