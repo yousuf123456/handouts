@@ -40,6 +40,7 @@ export async function POST(req : Request){
         return NextResponse.json(favouriteItems, { status : 200 })
     }
     catch(e){
+        console.log(e)
         return new NextResponse("Internal Server Error", { status : 500 })
     }
 }

@@ -33,6 +33,7 @@ export const FavouritesItems = () => {
   }, [hasBeenFetched])
 
   const favouriteItems = useAppSelector(state => state.favourites.favouritesItems);
+  useEffect(()=> {console.log(favouriteItems)}, [favouriteItems])
 
   if(!isLoading && session.status !== "loading" && favouriteItems.length === 0){
     return (
