@@ -283,14 +283,6 @@ model ReturnRequest {
   requester User @relation(fields: [requesterId], references: [id])
 }
 
-// model OrderedProduct {
-//   id String @id @default(auto()) @map("_id") @db.ObjectId
-//   quantity Int  
-//   selectedCombination Json?
-//   priceAtOrderTime Int 
-//   product Json
-// }
-
 model CartItem {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   quantity Int

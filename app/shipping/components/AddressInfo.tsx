@@ -113,8 +113,7 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
     return (
       <div
         className={clsx(
-          !loading &&
-            "flex h-36 w-full items-center justify-center sm:w-[460px]",
+          "flex h-36 w-full items-center justify-center sm:w-[460px]",
         )}
       >
         {loading ? (
