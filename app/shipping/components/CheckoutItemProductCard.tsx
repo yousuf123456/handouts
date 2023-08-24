@@ -45,7 +45,7 @@ export const CheckoutItemProductCard: React.FC<
         </div>
       </div>
 
-      <div className="hidden sm:block">
+      <div className="hidden flex-shrink-0 sm:block">
         <ProductPrice
           productOnSale={productOnSale}
           discountOff={discountOff}
