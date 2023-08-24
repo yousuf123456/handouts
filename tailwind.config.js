@@ -2,11 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -17,8 +17,8 @@ module.exports = {
     },
     extend: {
       colors: {
-        'themeBlue' : "#2998FF",
-        'themeSecondary' : "#1e1b4b",
+        themeBlue: "#2998FF",
+        themeSecondary: "#1e1b4b",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -72,21 +72,25 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-      boxShadow : {
-        cardShadow : "0 0 2px rgba(0, 0, 0, 0.3)",
-        whiteCardShadow : "0 0 3px rgba(255, 255, 255, 0.7)",
-        cardHoverShadow : "0px 0px 10px rgba(0,0,0, 0.5)"
+      boxShadow: {
+        cardShadow: "0 0 2px rgba(0, 0, 0, 0.3)",
+        whiteCardShadow: "0 0 3px rgba(255, 255, 255, 0.7)",
+        cardHoverShadow: "0px 0px 10px rgba(0,0,0, 0.5)",
+        panelFootersShadow: "0px 0px 10px 4px rgba(0,0,0,0.06)",
       },
-      fontFamily : {
-        text : ['var(--font-poppins)'],
-        heading : ['var(--font-poppins)'],
-        superHeading : ['var(--font-nunito)']
-      }
+      borderRadius: {
+        curved: "0 0 50% 50% / 0 0 100% 100%",
+      },
+      fontFamily: {
+        text: ["var(--font-poppins)"],
+        heading: ["var(--font-poppins)"],
+        superHeading: ["var(--font-nunito)"],
+      },
     },
   },
   plugins: [
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
-    require("tailwindcss-gradients")
+    require("tailwindcss-gradients"),
   ],
-}
+};

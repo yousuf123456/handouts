@@ -9,7 +9,7 @@ export const RecomendedProducts = async() => {
         <Heading>
           Just for you
         </Heading>
-
+ 
         <RecomendedProductsList />
     </div>
   )
