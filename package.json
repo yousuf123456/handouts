@@ -52,6 +52,7 @@
     "react-currency-formatter": "^1.1.0",
     "react-day-picker": "^8.8.0",
     "react-dom": "18.2.0",
+    "react-elastic-carousel": "^0.11.5",
     "react-font": "^1.2.1",
     "react-fonts": "^1.1.1",
     "react-hook-form": "^7.45.0",
