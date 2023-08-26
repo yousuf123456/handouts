@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
 import prisma from "../../libs/prismadb";
+
+import { NextResponse } from "next/server";
 import { getFilterObjects } from "@/app/filter/getFilterObjects";
+import { IParams } from "@/app/types";
 
 export async function POST(req: Request) {
   try {
-    const { params, category } = await req.json();
+    const { params, category }: { params: IParams; category: string } =
+      await req.json();
 
     const filterArray = [];
     const {
@@ -23,10 +26,22 @@ export async function POST(req: Request) {
     if (params.price) filterArray.push(priceObject);
     if (params.rating) filterArray.push(ratingObject);
 
-    // const query = params.q || params.category
-    // const queryPath = params.q ? "keywords" : "category"
+    const sortByField =
+      params.sortBy === "price-up" || params.sortBy === "price-down"
+        ? "price"
+        : params.sortBy;
+    const sortObject = sortByField
+      ? {
+          [sortByField]:
+            params.sortBy === "price-up"
+              ? 1
+              : params.sortBy === "price-down"
+              ? -1
+              : -1,
+        }
+      : {};
 
-    const pipeline = [
+    const pipeline: any = [
       {
         $search: {
           index: "productsSearch",
@@ -120,6 +135,8 @@ export async function POST(req: Request) {
     if (pipeline[0].$search?.compound)
       //@ts-ignore
       pipeline[0].$search.compound.filter = filterArray;
+    console.log();
+    if (params.sortBy && sortObject) pipeline[0].$search.sort = sortObject;
 
     const searchProducts = (await prisma.product.aggregateRaw({
       //@ts-ignore

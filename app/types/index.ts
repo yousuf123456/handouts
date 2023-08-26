@@ -138,14 +138,15 @@ export type CategoriesType = {
 }[];
 
 export interface IParams {
-  from: string | undefined;
   q: string | undefined;
-  category: string | undefined;
-  colors: string | undefined;
+  from: string | undefined;
   sizes: string | undefined;
   brand: string | undefined;
   price: string | undefined;
+  sortBy: string | undefined;
   rating: string | undefined;
+  colors: string | undefined;
+  category: string | undefined;
 }
 
 export interface FormatedCartItemType {

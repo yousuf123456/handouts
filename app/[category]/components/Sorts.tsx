@@ -21,13 +21,29 @@ export const Sorts: React.FC<SortsProps> = ({
   const searchParams = useSearchParams();
   const params = useParams();
   const router = useRouter();
+
   const onSort = (value: string) => {
+    const prevSortBy = searchParams.get("sortBy");
     let searchParamsArray = getSearchParamsArray(searchParams, ["sortBy"]);
-    searchParamsArray.push(`sortBy=${value}`);
+    const searchParamsString = searchParamsArray.join("&");
 
-    const updatedSearchParams = searchParamsArray.join("&");
+    if (
+      (value === "price-up" && prevSortBy === "price-down") ||
+      (prevSortBy === value && value !== "price-up")
+    ) {
+      return router.push(
+        `/${params.category || "search"}?${searchParamsString}`,
+      );
+    }
 
-    router.push(`/${params.category || "search"}?${updatedSearchParams}`);
+    let newSortBy: string = "";
+    if (prevSortBy === "price-up") newSortBy = "price-down";
+    else newSortBy = value;
+
+    searchParamsArray.push(`sortBy=${newSortBy}`);
+    const updatedSearchParamsString = searchParamsArray.join("&");
+
+    router.push(`/${params.category || "search"}?${updatedSearchParamsString}`);
   };
 
   const sortOptionsColor = "text-gray-500";
@@ -51,6 +67,7 @@ export const Sorts: React.FC<SortsProps> = ({
       {sorts.map((sort, i) => (
         <div
           key={i}
+          onClick={() => onSort(sort.value)}
           className={clsx(
             "group cursor-pointer items-center gap-1 sm:gap-2",
             showClassName,
@@ -59,7 +76,10 @@ export const Sorts: React.FC<SortsProps> = ({
           <p
             className={clsx(
               "font-sans text-[11px] group-hover:text-themeBlue min-[420px]:text-xs sm:text-sm",
-              searchParams.get("sortBy") === sort.value && "text-themeBlue",
+              (searchParams.get("sortBy") === sort.value ||
+                (searchParams.get("sortBy") === "price-down" &&
+                  sort.value === "price-up")) &&
+                "text-themeBlue",
               sortOptionsColor,
             )}
           >
@@ -74,7 +94,11 @@ export const Sorts: React.FC<SortsProps> = ({
                   sortOptionsColor,
                   sort.size,
                   "group-hover:text-blue-500",
-                  searchParams.get("sortBy") === sort.value && "text-blue-500",
+                  ((searchParams.get("sortBy") === sort.value && i === 0) ||
+                    (sort.value === "price-up" &&
+                      i === 1 &&
+                      searchParams.get("sortBy") === "price-down")) &&
+                    "text-blue-500",
                   sort.icon.length > 1 &&
                     (i === 0
                       ? "relative -bottom-[3px]"

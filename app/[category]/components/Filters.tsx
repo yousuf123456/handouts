@@ -76,7 +76,9 @@ export const Filters: React.FC<FiltersProps> = ({
             onClick={() => onFilterClick(key)}
             className="flex cursor-pointer items-center gap-2 rounded-xl bg-slate-100 px-3 py-1"
           >
-            <p className="font-sans text-sm capitalize text-slate-800">{key}</p>
+            <p className="font-sans text-xs capitalize text-slate-800 sm-[420px]:text-sm">
+              {key}
+            </p>
 
             <HiChevronDown
               className={clsx(

@@ -94,7 +94,7 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
 
   return (
     <div className="flex flex-col gap-0">
-      <div className="mt-8 h-full w-full lg:flex">
+      <div className="mt-8 w-full lg:flex">
         <div className="hidden lg:block">
           <Facets
             facets={facetsData[0].facet}
@@ -102,7 +102,7 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
           />
         </div>
 
-        <div className="flex w-full flex-col gap-0 px-0 sm:px-4">
+        <div className="relative flex w-full flex-col gap-0 px-0 sm:px-4">
           <ReduxProvider>
             <Header
               searchTerm={searchParams.q}
