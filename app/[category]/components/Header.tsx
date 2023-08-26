@@ -47,13 +47,13 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <div className="flex flex-col gap-2 max-sm:px-2">
+      <div className="flex flex-col gap-2 bg-white max-sm:sticky max-sm:top-0 max-sm:z-[999] max-sm:px-2 max-sm:py-3">
         <CategoryBreadCrumbs categoryTree={categoryTree} />
 
         <Seperator className="hidden bg-slate-200 sm:block" />
 
         <div className="flex w-full flex-col justify-center gap-0">
-          <div className="flex w-full flex-col items-start gap-3">
+          <div className=" sticky top-0 flex w-full flex-col items-start gap-3">
             <div className="flex w-full items-center justify-between">
               <h2 className="line-clamp-1 hidden flex-shrink-0 text-sm text-slate-700 lg:block">
                 Showing results for the{" "}

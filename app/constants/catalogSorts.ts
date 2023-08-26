@@ -12,13 +12,13 @@ export const catalogSorts = [
 
   {
     name: "Price",
-    value: "price",
+    value: "price-up",
     icon: [HiChevronUp, HiChevronDown],
   },
 
   {
     name: "Top Ranked",
-    value: "rating",
+    value: "avgRating",
     icon: [RiPriceTag3Line],
   },
 
