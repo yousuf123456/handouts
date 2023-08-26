@@ -1,7 +1,14 @@
-import React from 'react'
+import React from "react";
+import { cn } from "../utils/cn";
 
-export const Seperator = () => {
-  return (
-    <hr className='w-full my-1 h-[1px] bg-slate-300 border-none' />
-  )
+interface SeperatorProps {
+  className?: string;
 }
+
+export const Seperator: React.FC<SeperatorProps> = ({ className }) => {
+  return (
+    <hr
+      className={cn("my-1 h-[1px] w-full border-none bg-slate-300", className)}
+    />
+  );
+};

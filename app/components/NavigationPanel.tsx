@@ -9,6 +9,8 @@ import { Cart } from "../(site)/components/header/components/Cart";
 import { ReduxProvider } from "../context/ReduxProvider";
 import { SearchBar } from "../(site)/components/header/components/SearchBar";
 import { ProfileDropDownMenu } from "../(site)/components/header/components/ProfileDropDownMenu";
+import clsx from "clsx";
+import { cn } from "../utils/cn";
 
 interface NavigationPanelProps {
   heading?: string;
@@ -26,8 +28,13 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
 
   return (
     <>
-      <div className="rounded-curved absolute inset-0 z-0 h-[52px] w-full scale-x-[2] bg-themeBlue min-[420px]:h-[60px] " />
-      <div className="relative z-50 bg-transparent px-2 py-3 min-[420px]:p-4 sm:hidden">
+      <div
+        className={cn(
+          "fixed inset-0 z-[50] h-[52px] w-full scale-x-[2] overflow-hidden rounded-curved bg-themeBlue",
+          showSearchBar ? "h-[60px] scale-x-[2.5]" : "h-[52px]",
+        )}
+      />
+      <div className="fixed left-0 right-0 top-0 z-50 bg-transparent px-2 py-3 sm:hidden">
         <div className="flex justify-between gap-3">
           <div className="flex items-center gap-2">
             <HiChevronLeft onClick={onBack} className="h-6 w-6 text-white" />

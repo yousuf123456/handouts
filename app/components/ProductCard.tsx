@@ -1,98 +1,96 @@
 "use client";
-import React from 'react'
-import Link from 'next/link';
+import React from "react";
+import Link from "next/link";
 
-import { ProductCardType, fullCategoryDiscountedProductType } from '../types';
-import { priceLabel } from '../utils/priceLabel';
-import { RatingStars } from './RatingStars';
+import { ProductCardType, fullCategoryDiscountedProductType } from "../types";
+import { priceLabel } from "../utils/priceLabel";
+import { RatingStars } from "./RatingStars";
 
-import { getPriceInfo } from '../utils/getPriceInfo';
-import { ProductImage } from './ProductImage';
-import { FormattedCurrency } from './FormattedCurrency';
-import { cn } from '../utils/cn';
-import clsx from 'clsx';
-
+import { getPriceInfo } from "../utils/getPriceInfo";
+import { ProductImage } from "./ProductImage";
+import { FormattedCurrency } from "./FormattedCurrency";
+import { cn } from "../utils/cn";
+import clsx from "clsx";
 
 interface ProductCardProps {
-    product : ProductCardType | fullCategoryDiscountedProductType;
-    showDiscountLabel? : boolean;
-    dynamic? : boolean;
+  product: ProductCardType | fullCategoryDiscountedProductType;
+  showDiscountLabel?: boolean;
+  dynamic?: boolean;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ 
-    product, 
-    dynamic,
-    showDiscountLabel 
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  dynamic,
+  showDiscountLabel,
 }) => {
+  const { productOnSale, discountOff, isPercentOff, discountOffLabel } =
+    getPriceInfo(product);
 
-    const {
-        productOnSale,
-        discountOff,
-        isPercentOff,
-        discountOffLabel
-    } 
-    = getPriceInfo(product);
-
-    //@ts-ignore
-    const productId = product?.id || product?._id?.$oid
-//36 sm40 lg48
+  //@ts-ignore
+  const productId = product?.id || product?._id?.$oid;
+  //36 sm40 lg48
   return (
     <Link href={`/products/${productId}`}>
-        <div className={cn('mb-2 relative group flex flex-col gap-2 bg-white rounded-[2px] transition-all pb-2 overflow-hidden hover:shadow-cardHoverShadow', dynamic ? "w-full" : "w-36 sm:w-40 lg:w-48")}>
-            {
-                productOnSale() && showDiscountLabel && (
-                    <div className='transition-all absolute bg-rose-500 rounded-tl-sm py-1 px-2 top-0 left-0 z-50'>
-                        <p className='text-xs sm:text-sm font-text font-extrabold tracking-wide text-white'>
-                            {discountOffLabel}
-                        </p>
-                    </div>
-                )
-            }
-            <div className={clsx('relative overflow-hidden', dynamic ? "aspect-square w-auto h-auto" : "h-36 sm:h-40 lg:h-48")}>
-                <ProductImage 
-                    src={product.image!}
-                    loading='lazy'
-                />
-            </div>
-
-            <div className='flex flex-col gap-1 px-1 sm:px-2'>
-                <h2 className='w-full h-8 text-xs tracking-wide font-text font-semibold overflow-hidden line-clamp-2'>
-                    {product?.name?.slice(0, 50)}
-                </h2>
-
-                <div>
-                    <div className='flex gap-1 sm:gap-2 items-center'>
-                        <h2 className='text-sm sm:text-base md:text-lg font-text font-semibold text-blue-600 tracking-wide'>
-                            <FormattedCurrency 
-                                quantity={priceLabel(productOnSale(), isPercentOff, discountOff(), product?.price) || 0}
-                            />
-                        </h2>
-                        {
-                            productOnSale() && (
-                                <p className='text-[10px] sm:text-xs font-text font-semibold opacity-75'>
-                                    <s>
-                                    <FormattedCurrency 
-                                        quantity={product.price}
-                                    />
-                                    </s>
-                                </p>
-                            )
-                        }
-                    </div>
-
-                    <div className='flex gap-1 items-center'>
-                        <RatingStars 
-                            defaultValue={product.avgRating} 
-                            size='small'
-                        /> 
-
-                        <p className='text-[12px] font-text text-slate-500 font-semibold'>                        
-                            { product.avgRating + "/5" }
-                        </p>
-                    </div>
-                </div>
-            </div>
+      <div
+        className={cn(
+          "group relative flex flex-col gap-2 overflow-hidden rounded-[2px] bg-white pb-2 transition-all sm:hover:shadow-cardHoverShadow",
+          dynamic ? "w-full" : "w-36 sm:w-40 lg:w-48",
+        )}
+      >
+        {productOnSale() && showDiscountLabel && (
+          <div className="absolute left-0 top-0 z-50 rounded-tl-sm bg-rose-500 px-2 py-1 transition-all">
+            <p className="font-text text-xs font-extrabold tracking-wide text-white sm:text-sm">
+              {discountOffLabel}
+            </p>
+          </div>
+        )}
+        <div
+          className={clsx(
+            "relative overflow-hidden",
+            dynamic ? "aspect-square h-auto w-auto" : "h-36 sm:h-40 lg:h-48",
+          )}
+        >
+          <ProductImage src={product.image!} loading="lazy" />
         </div>
+
+        <div className="flex flex-col gap-1 px-1 sm:px-2">
+          <h2 className="line-clamp-2 h-8 w-full overflow-hidden font-text text-xs font-semibold tracking-wide">
+            {product?.name?.slice(0, 50)}
+          </h2>
+
+          <div>
+            <div className="flex items-center gap-1 sm:gap-2">
+              <h2 className="font-text text-sm font-semibold tracking-wide text-blue-600 sm:text-base md:text-lg">
+                <FormattedCurrency
+                  quantity={
+                    priceLabel(
+                      productOnSale(),
+                      isPercentOff,
+                      discountOff(),
+                      product?.price,
+                    ) || 0
+                  }
+                />
+              </h2>
+              {productOnSale() && (
+                <p className="font-text text-[10px] font-semibold opacity-75 sm:text-xs">
+                  <s>
+                    <FormattedCurrency quantity={product.price} />
+                  </s>
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-1">
+              <RatingStars defaultValue={product.avgRating} size="small" />
+
+              <p className="font-text text-[12px] font-semibold text-slate-500">
+                {product.avgRating + "/5"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </Link>
-  )
-}
+  );
+};

@@ -1,10 +1,6 @@
-
-import React from 'react'
-import { SpinnerLoader } from '../components/SpinnerLoader'
-
+import React from "react";
+import { SpinnerLoader } from "../components/SpinnerLoader";
 
 export default function Loading() {
-  return (
-    <SpinnerLoader className='bg-slate-100' />
-  )
+  return <SpinnerLoader className="bg-white" />;
 }

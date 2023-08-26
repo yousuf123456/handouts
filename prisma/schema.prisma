@@ -192,6 +192,10 @@ model Category {
   // products Product[] @relation(fields: [productIds], references: [id])
 }
 
+model Sales {
+  id String @id @default(auto()) @map("_id") @db.ObjectId 
+}
+
 model Order { 
   id String @id @default(auto()) @map("_id") @db.ObjectId 
   createdAt DateTime @default(now())
