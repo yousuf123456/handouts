@@ -1,27 +1,39 @@
+import React, { Suspense } from "react";
+import Loading from "./loading";
 
-import React, { Suspense } from 'react'
-import Loading from './loading';
+import { SearchedProducts } from "./components/SearchedProducts";
+import { Facets } from "./components/Facets";
+import { searchProducts } from "../actions/searchProducts";
+import { IParams } from "../types";
 
-import { SearchedProducts } from './components/SearchedProducts';
-import { Facets } from './components/Facets';
-import { searchProducts } from '../actions/searchProducts';
-import { IParams } from '../types';
-
-import { getCategory } from '../actions/getCategory';
-import { getCategoryTree } from '../utils/getCategoryTree';
-import { formatCategoryParam } from '../utils/formatCategoryParam';
-import { SearchedTermResults } from './components/SearchedTermResults';
+import { getCategory } from "../actions/getCategory";
+import { getCategoryTree } from "../utils/getCategoryTree";
+import { formatCategoryParam } from "../utils/formatCategoryParam";
+import { SearchedTermResults } from "./components/SearchedTermResults";
+import { NavigationPanel } from "../components/NavigationPanel";
 
 interface Params {
-  category : string
+  category: string;
 }
 
-export default async function SearchPage(
-  { searchParams, params } : {searchParams : IParams, params : Params},
-){
+export default async function SearchPage({
+  searchParams,
+  params,
+}: {
+  searchParams: IParams;
+  params: Params;
+}) {
   // const data = await searchProducts(searchParams, params.category);
 
-  const categoryData = params.category !== "search" ? await getCategory({category : formatCategoryParam({ toRetrieve : true, category : params.category })}) : null;
+  const categoryData =
+    params.category !== "search"
+      ? await getCategory({
+          category: formatCategoryParam({
+            toRetrieve: true,
+            category: params.category,
+          }),
+        })
+      : null;
   // const categoryTreeData = categoryData ? getCategoryTree(categoryData.rawCategoryData, null) : null;
   // const fullCategoryTreeData = categoryData ? getCategoryTree([...categoryData.rawCategoryData, ...categoryData.descendants], categoryData.parent.parentId) : null;
 
@@ -38,23 +50,26 @@ export default async function SearchPage(
   // const facetsData = await res.json();
 
   return (
-    <SearchedTermResults 
-      searchParams={searchParams}
-      categoryData={categoryData}
-      category={params.category}
-    />
+    <div>
+      <NavigationPanel showSearchBar={true} />
+      <SearchedTermResults
+        searchParams={searchParams}
+        categoryData={categoryData}
+        category={params.category}
+      />
+    </div>
     // <Suspense fallback={<Loading />}>
     //   <div className='lg:flex h-full w-full mt-8'>
     //     <div className='hidden lg:block'>
     //       <Facets
-    //         facets={facetsData[0].facet} 
+    //         facets={facetsData[0].facet}
     //         categoryTreeData={fullCategoryTreeData}
     //       />
     //     </div>
 
     //     <div className='px-4 flex flex-col gap-3 w-full'>
     //       <ReduxProvider>
-    //         <Header 
+    //         <Header
     //           searchTerm={searchParams.q}
     //           facets={facetsData[0].facet}
     //           categoryTree={categoryTreeData}
@@ -68,7 +83,7 @@ export default async function SearchPage(
     //         products={data}
     //       />
     //     </div>
-    //   </div>    
+    //   </div>
     // </Suspense>
-  )
+  );
 }
