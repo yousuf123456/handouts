@@ -30,7 +30,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
     <>
       <div
         className={cn(
-          "fixed inset-0 z-[50] h-[52px] w-full scale-x-[2] overflow-hidden rounded-curved bg-themeBlue",
+          "fixed inset-0 z-[50] h-[52px] w-full scale-x-[2] overflow-hidden rounded-curved bg-themeBlue sm:hidden",
           showSearchBar ? "h-[60px] scale-x-[2.5]" : "h-[52px]",
         )}
       />

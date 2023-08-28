@@ -160,6 +160,7 @@ export interface FormatedCartItemType {
 }
 
 export type AddressType = {
+  id: string;
   fullName: string;
   phone: string;
   address: string;
