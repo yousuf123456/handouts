@@ -1,0 +1,193 @@
+"use client";
+import React, { useState } from "react";
+import { FormField } from "./FormField";
+import { Seperator } from "@/app/components/Seperator";
+import { AddressTypeButton } from "../../addressDiary/components/AddressTypeButton";
+import { FlagSelector } from "../../addressDiary/components/FlagSelector";
+import { Button } from "@/app/components/Button";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { AreaSelector } from "./AreaSelector";
+import clsx from "clsx";
+import { AddressType } from "@/app/types";
+import axios from "axios";
+import { addAddress } from "@/app/store/features/addressDiarySlice";
+import { useAppDispatch } from "@/app/store/store";
+import BackdropLoader from "@/app/components/BackdropLoader";
+import { useRouter } from "next/navigation";
+
+export const Form = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [selectedProvince, setSelectedProvince] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedArea, setSelectedArea] = useState("");
+
+  const [confirmSelectedProvince, setConfirmSelectedProvince] = useState("");
+  const [confirmSelectedCity, setConfirmSelectedCity] = useState("");
+  const [confirmSelectedArea, setConfirmSelectedArea] = useState("");
+
+  const [selectedType, setSelectedType] = useState<"Home" | "Office" | "">("");
+
+  const [isDefaultShippingAddress, setIsDefaultShippingAddress] =
+    useState(false);
+  const [isDefaultBillingAddress, setIsDefaultBillingAddress] = useState(false);
+
+  const fieldsSectionCs = "flex flex-col gap-3 p-3 border-[1px] rounded-md";
+
+  const onHomeClick = () =>
+    selectedType !== "Home" ? setSelectedType("Home") : setSelectedType("");
+  const onOfficeClick = () =>
+    selectedType !== "Office" ? setSelectedType("Office") : setSelectedType("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<FieldValues>({
+    defaultValues: {
+      fullName: "",
+      address: "",
+      phone: "",
+      landmark: "",
+    },
+  });
+
+  const everyThingFilled =
+    isValid &&
+    !!confirmSelectedProvince.length &&
+    !!confirmSelectedCity.length &&
+    !!confirmSelectedArea.length;
+
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const address = {
+      ...data,
+      area: confirmSelectedArea,
+      city: confirmSelectedCity,
+      province: confirmSelectedProvince,
+      type: selectedType.length ? selectedType : "Home",
+      isDefaultBillingAddress: isDefaultBillingAddress,
+      isDefaultShippingAddress: isDefaultShippingAddress,
+    } as AddressType;
+
+    setIsLoading(true);
+    axios
+      .post("../../../api/addAddress", {
+        address,
+        editAddress: false,
+      })
+      .then((res) => {
+        dispatch(addAddress(address));
+        router.push("/user/addressDiary");
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+      .finally(() => setIsLoading(false));
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-6 pb-12">
+        <div className={fieldsSectionCs}>
+          <FormField
+            id="fullName"
+            required={true}
+            label="Full Name"
+            register={register}
+            placeHolder="E.g., Aryan Ahmed"
+          />
+          <FormField
+            id="phone"
+            label="Phone"
+            required={true}
+            register={register}
+            placeHolder="Type your phone number"
+          />
+        </div>
+
+        <div className={fieldsSectionCs}>
+          <AreaSelector
+            selectedProvince={selectedProvince}
+            selectedArea={selectedArea}
+            selectedCity={selectedCity}
+            setSelectedProvince={setSelectedProvince}
+            setSelectedArea={setSelectedArea}
+            setSelectedCity={setSelectedCity}
+            confirmSelectedProvince={confirmSelectedProvince}
+            confirmSelectedCity={confirmSelectedCity}
+            confirmSelectedArea={confirmSelectedArea}
+            setConfirmSelectedProvince={setConfirmSelectedProvince}
+            setConfirmSelectedArea={setConfirmSelectedArea}
+            setConfirmSelectedCity={setConfirmSelectedCity}
+          />
+
+          <FormField
+            id="address"
+            label="Address"
+            required={true}
+            register={register}
+            placeHolder="House no. / building / street / area"
+          />
+          <FormField
+            id="landmark"
+            register={register}
+            label="Landmark (optional)"
+            placeHolder="E.g., Besides the train station"
+          />
+        </div>
+
+        <div className={fieldsSectionCs}>
+          <div className="flex flex-col gap-1">
+            <p className="font-sans text-sm font-semibold text-themeSecondary">
+              Select Address Type
+            </p>
+            <div className="flex justify-between gap-3">
+              <AddressTypeButton
+                onClick={onHomeClick}
+                isSelected={selectedType === "Home"}
+                label="Home"
+              />
+
+              <AddressTypeButton
+                onClick={onOfficeClick}
+                isSelected={selectedType === "Office"}
+                label="Office"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-0">
+            <FlagSelector
+              flagLabel="Default shipping address"
+              setFlag={setIsDefaultShippingAddress}
+              defaultChecked={false}
+            />
+
+            <FlagSelector
+              flagLabel="Default billing address"
+              setFlag={setIsDefaultBillingAddress}
+              defaultChecked={false}
+            />
+          </div>
+        </div>
+
+        <div className="fixed bottom-0 left-0 right-0">
+          <Button
+            type="submit"
+            disabled={!everyThingFilled}
+            className={clsx(
+              "h-9 w-full",
+              !everyThingFilled &&
+                "bg-blue-200 text-slate-700 hover:bg-blue-200",
+            )}
+          >
+            Create New Address
+          </Button>
+        </div>
+      </div>
+
+      <BackdropLoader open={isLoading} />
+    </form>
+  );
+};

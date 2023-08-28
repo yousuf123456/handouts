@@ -1,15 +1,13 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react";
 
 interface ContainerProps {
-    children : ReactNode
+  children: ReactNode;
 }
 
-export const Container: React.FC<ContainerProps> = ({
-    children
-}) => {
+export const Container: React.FC<ContainerProps> = ({ children }) => {
   return (
-    <div className='p-4 w-full bg-white drop-shadow-lg'>
-      { children }
+    <div className="w-full bg-white px-0 py-4 sm:p-4 xl:drop-shadow-lg">
+      {children}
     </div>
-  )
-}
+  );
+};
