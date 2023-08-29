@@ -48,9 +48,15 @@ export const AreaSelector: React.FC<AreaSelectorProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const selectingSteps = ["Province", "City", "Area"];
+
+  const initialCurrentSelectingStep = selectedArea
+    ? "Area"
+    : selectedCity
+    ? "City"
+    : "Province";
   const [currentSelectingStep, setCurrentSelectingStep] = useState<
     "Province" | "City" | "Area"
-  >("Province");
+  >(initialCurrentSelectingStep);
 
   const onProvinceClick = () => setCurrentSelectingStep("Province");
   const onCityClick = () => setCurrentSelectingStep("City");
@@ -120,7 +126,11 @@ export const AreaSelector: React.FC<AreaSelectorProps> = ({
 
   const confirmArea =
     confirmSelectedProvince && confirmSelectedArea && confirmSelectedCity
-      ? selectedProvince + "/" + selectedCity + "/" + selectedArea
+      ? confirmSelectedProvince +
+        "/" +
+        confirmSelectedCity +
+        "/" +
+        confirmSelectedArea
       : "";
 
   return (
