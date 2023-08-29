@@ -193,13 +193,13 @@ export const Form: React.FC<FormProps> = ({ editingAddress }) => {
             <FlagSelector
               flagLabel="Default shipping address"
               setFlag={setIsDefaultShippingAddress}
-              defaultChecked={isDefaultShippingAddress}
+              defaultChecked={editingAddress?.isDefaultShippingAddress || false}
             />
 
             <FlagSelector
               flagLabel="Default billing address"
               setFlag={setIsDefaultBillingAddress}
-              defaultChecked={isDefaultBillingAddress}
+              defaultChecked={editingAddress?.isDefaultBillingAddress || false}
             />
           </div>
         </div>

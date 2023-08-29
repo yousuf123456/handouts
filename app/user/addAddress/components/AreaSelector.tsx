@@ -158,7 +158,7 @@ export const AreaSelector: React.FC<AreaSelectorProps> = ({
         side="bottom"
         open={isOpen}
         setOpen={setIsOpen}
-        className="h-[90%] bg-slate-100 pb-20 max-[420px]:px-2"
+        className="h-[93%] bg-slate-100 pb-20 max-[420px]:px-2"
       >
         <SheetHeader>
           <SheetTitle>Select Your Area</SheetTitle>
@@ -217,7 +217,7 @@ export const AreaSelector: React.FC<AreaSelectorProps> = ({
               {"Select a " + currentSelectingStep}
             </p>
 
-            <div className="h-64 overflow-y-auto rounded-md bg-white p-4">
+            <div className="h-56 overflow-y-auto rounded-md bg-white p-4">
               <div className="flex flex-col gap-1">
                 {itemsToMapOver.map((item, i) => (
                   <div
