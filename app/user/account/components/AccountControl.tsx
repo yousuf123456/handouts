@@ -19,7 +19,7 @@ export const AccountControl: React.FC<AccountControlProps> = ({ link }) => {
         <div className="flex items-center gap-4">
           <link.icon className="h-5 w-5 text-themeSecondary" />
 
-          <p className="font-text text-base font-semibold text-themeSecondary">
+          <p className="font-sans text-base font-medium text-themeSecondary">
             {link.label}
           </p>
         </div>

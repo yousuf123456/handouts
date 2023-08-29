@@ -60,10 +60,20 @@ export const AddressCard: React.FC<AddressCardProps> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2 md:hidden">
-              <p className="line-clamp-1 font-text text-xs font-semibold text-slate-900">
+              <p
+                className={cn(
+                  "line-clamp-1 font-text text-xs font-semibold text-slate-900",
+                  isSelected && "text-themeBlue",
+                )}
+              >
                 {address.fullName}
               </p>
-              <Badge variant="outline">{address.type}</Badge>
+              <Badge
+                variant="outline"
+                className={cn(isSelected && " border-themeBlue text-themeBlue")}
+              >
+                {address.type}
+              </Badge>
             </div>
 
             <h3
@@ -101,7 +111,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
             {address.fullName}
           </p>
 
-          <p className="font-text text-xs font-semibold text-slate-900">
+          <p className="text-start font-text text-xs font-semibold text-slate-900">
             {address.phone}
           </p>
         </div>
@@ -110,7 +120,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
       <div>
         <FormatAddress
           rawAddress={address}
-          className="font-text text-xs text-black md:text-sm"
+          className="text-start font-text text-xs text-black md:text-sm"
         />
       </div>
 
