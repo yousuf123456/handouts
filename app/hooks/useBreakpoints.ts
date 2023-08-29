@@ -1,18 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
 export const useBreakpoint = () => {
-    const [breakpoint, setBreakpoint] = useState(1200)
-    const resize = () => {
-        setBreakpoint(window.innerWidth)
-    }
+  const [breakpoint, setBreakpoint] = useState(1200);
+  const resize = () => {
+    setBreakpoint(window.innerWidth);
+  };
 
-    useEffect(() => {
-        window.addEventListener('resize', resize)
+  useEffect(() => {
+    setBreakpoint(window.innerWidth);
+  }, []);
 
-        return () => {
-            window.removeEventListener('resize', resize)
-        }
-    }, [])
+  useEffect(() => {
+    window.addEventListener("resize", resize);
 
-    return breakpoint
-}
+    return () => {
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return breakpoint;
+};

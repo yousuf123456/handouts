@@ -5,6 +5,7 @@ import { Header } from "./(site)/components/header/Header";
 import { SessionProviderContext } from "./context/SessionProviderContext";
 import { Inter, Poppins, Nunito } from "next/font/google";
 import { QueryProvider } from "./context/QueryProvider";
+import { LayoutWrapper } from "./context/LayoutWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,11 +37,7 @@ export default function RootLayout({
         <SessionProviderContext>
           <QueryProvider>
             <Header />
-
-            <div className="pt-10 sm:pt-[108px] md:pt-[120px] lg:pt-32">
-              {children}
-            </div>
-
+            <LayoutWrapper>{children}</LayoutWrapper>
             <Footer />
           </QueryProvider>
         </SessionProviderContext>

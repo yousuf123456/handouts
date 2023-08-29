@@ -19,7 +19,6 @@ import {
 import dynamic from "next/dynamic";
 import axios from "axios";
 
-import { BREAKPOINTS } from "@/app/constants/breakPoints";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { getRoutes } from "@/app/utils/getRoutes";
@@ -42,8 +41,9 @@ export const AddressDiary = ({}) => {
     if (!hasBeenFetched) {
       setIsLoading(true);
       axios
-        .post("../../../api/getAddressDiary")
+        .post("../../../api/getAddressDiary", {})
         .then((res) => {
+          console.log(res.data);
           dispatch(setHasBeenFetched(true));
           dispatch(setAddressDiary(res.data?.addressDiary));
         })
@@ -59,6 +59,7 @@ export const AddressDiary = ({}) => {
   const addressesArray = useAppSelector(
     (state) => state.addressDiary.addressDiary,
   );
+
   const noAddressIsHere = addressesArray?.length === 0;
 
   const onEdit = (address: AddressType) => {
@@ -114,7 +115,7 @@ export const AddressDiary = ({}) => {
 
         <div className="h-full w-full">
           {isLoading ? (
-            <SpinnerLoader className="mt-0 flex h-full w-full items-center justify-center pt-0" />
+            <SpinnerLoader className="mt-4 flex h-full w-full items-center justify-center pt-0" />
           ) : !addressesArray || noAddressIsHere ? (
             <EmptyState
               Icon={FaMapMarkerAlt}
