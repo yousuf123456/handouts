@@ -1,52 +1,45 @@
-import React from 'react'
+import React from "react";
 
-import { getUserReturnRequests } from '@/app/actions/getUserReturnRequests';
-import { EmptyState } from '../../components/EmptyState';
-import { RiArrowGoBackFill } from 'react-icons/ri';
-import { ReturnRequestType } from '@/app/types';
-import { ReturnRequestCard } from './ReturnRequestCard';
-import { PaginationControl } from '../../components/PaginationControl';
-import { RETURNS_PER_PAGE } from '@/app/constants/consts';
-import { Heading } from '@/app/(site)/components/Heading';
+import { getUserReturnRequests } from "@/app/actions/getUserReturnRequests";
+import { EmptyState } from "../../components/EmptyState";
+import { RiArrowGoBackFill } from "react-icons/ri";
+import { ReturnRequestType } from "@/app/types";
+import { ReturnRequestCard } from "./ReturnRequestCard";
+import { PaginationControl } from "../../components/PaginationControl";
+import { RETURNS_PER_PAGE } from "@/app/constants/consts";
+import { Heading } from "@/app/(site)/components/Heading";
+import { NavigationPanel } from "@/app/components/NavigationPanel";
 
 interface ReturnsProps {
-  pageNumber : number | undefined;
+  pageNumber: number | undefined;
 }
 
-export const Returns: React.FC<ReturnsProps> = async({
-  pageNumber
-}) => {
+export const Returns: React.FC<ReturnsProps> = async ({ pageNumber }) => {
+  const { data, count } = (await getUserReturnRequests({
+    page: pageNumber,
+  })) as unknown as { data: ReturnRequestType[]; count: number };
 
-  const { 
-    data, 
-    count 
-  } 
-  = await getUserReturnRequests({ page : pageNumber }) as unknown as { data : ReturnRequestType[], count : number };
-
-  if(!data || data.length === 0){
+  if (!data || data.length === 0) {
     return (
-      <EmptyState
-          Icon={RiArrowGoBackFill}
-          label='There are no returns yet'
-      />
-    )
+      <EmptyState Icon={RiArrowGoBackFill} label="There are no returns yet" />
+    );
   }
 
   return (
-    <div className='flex flex-col gap-6'>
-      <Heading>
-        My Returns { "(" + count + ")" }
+    <div className="flex flex-col gap-6">
+      <NavigationPanel heading="My Returns" />
+
+      <Heading className="hidden sm:block">
+        My Returns {"(" + count + ")"}
       </Heading>
-      
-      <div className='flex flex-col gap-0'>
-        {
-          data.map((returnRequest, i)=> (
-            <ReturnRequestCard
-              key={i}
-              returnRequest={returnRequest as unknown as ReturnRequestType}
-            />
-          ))
-        }
+
+      <div className="flex flex-col gap-0">
+        {data.map((returnRequest, i) => (
+          <ReturnRequestCard
+            key={i}
+            returnRequest={returnRequest as unknown as ReturnRequestType}
+          />
+        ))}
       </div>
 
       <PaginationControl
@@ -55,5 +48,5 @@ export const Returns: React.FC<ReturnsProps> = async({
         ITEMS_PER_PAGE={RETURNS_PER_PAGE}
       />
     </div>
-  )
-}
+  );
+};
