@@ -19,7 +19,7 @@ export const AddImages: React.FC<AddImagesProps> = ({ images, setImages }) => {
   };
 
   return (
-    <div className="flex items-start gap-16 rounded-md border-[1px] border-slate-300 p-3">
+    <div className="flex items-start gap-3 rounded-md border-[1px] border-slate-300 p-3 max-sm:flex-col sm:gap-8 md:gap-16">
       <SectionHeading>Add Order Pictures / Images</SectionHeading>
 
       <ReviewImages

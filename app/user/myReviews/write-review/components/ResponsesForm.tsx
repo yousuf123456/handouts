@@ -26,10 +26,11 @@ const StyledRating = styled(Rating)(({ theme }) => ({
 
 interface ResponsesFormProps {
   href?: string;
+  hover?: number;
   compact?: boolean;
   showOnly?: boolean;
   value: number | null;
-  hover?: number;
+  noLabelOnRes?: boolean;
   setHover?: React.Dispatch<React.SetStateAction<number>>;
   setValue?: React.Dispatch<React.SetStateAction<number | null>>;
 }
@@ -42,7 +43,13 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
   showOnly,
   setValue,
   setHover,
+  noLabelOnRes,
 }) => {
+  const responsesClassName = cn(
+    "mx-2 md:mx-1",
+    compact ? "text-[30px]" : "text-[34px] sm:text-[38px]",
+  );
+
   const customIcons: {
     [index: string]: {
       icon: React.ReactElement;
@@ -53,8 +60,8 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
       icon: (
         <FaFrown
           className={cn(
-            "mx-1 text-red-500",
-            compact ? "text-[30px]" : "text-[38px]",
+            responsesClassName,
+            "text-red-400",
             compact && value !== 1 && "text-[0px]",
             value !== 1 && "text-slate-300",
           )}
@@ -66,8 +73,8 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
       icon: (
         <FaMeh
           className={cn(
-            "mx-1 text-yellow-500",
-            compact ? "text-[30px]" : "text-[38px]",
+            responsesClassName,
+            "text-yellow-400",
             compact && value !== 2 && "text-[0px]",
             value !== 2 && "text-slate-300",
           )}
@@ -79,8 +86,8 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
       icon: (
         <FaSmile
           className={cn(
-            "mx-1 text-green-500",
-            compact ? "text-[30px]" : "text-[38px]",
+            " text-green-500",
+            responsesClassName,
             compact && value !== 3 && "text-[0px]",
             value !== 3 && "text-slate-300",
           )}
@@ -120,7 +127,12 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
         readOnly={showOnly}
       />
 
-      <p className="text-sm text-black">
+      <p
+        className={cn(
+          "hidden text-sm text-black md:block",
+          noLabelOnRes && "hidden lg:block",
+        )}
+      >
         {
           //@ts-ignore
           labels[hover ? (hover !== -1 ? hover : value) : value]

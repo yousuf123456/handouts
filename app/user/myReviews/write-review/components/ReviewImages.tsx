@@ -54,7 +54,7 @@ export const ReviewImages: React.FC<ReviewImagesProps> = ({
       <div className="flex flex-wrap gap-3">
         <input type="file" onChange={onUpload} id="upload" hidden />
         {images.map((img) => (
-          <div key={img} className="relative h-20 w-20">
+          <div key={img} className="relative h-[72px] w-[72px] md:h-20 md:w-20">
             <Image
               src={img}
               alt="Image"
@@ -67,20 +67,20 @@ export const ReviewImages: React.FC<ReviewImagesProps> = ({
               desc="Do you really want to remove this picture ?"
               action={() => onRemovePic(img)}
             >
-              <FaTimes className="absolute -right-1 -top-1 h-4 w-4 cursor-pointer rounded-full bg-slate-700 text-white" />
+              <FaTimes className="absolute -right-1 -top-1 h-4 w-4 cursor-pointer rounded-full bg-red-400 text-white" />
             </AlertDialogModel>
           </div>
         ))}
         <div
-          className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-sm border-2 border-dashed border-themeBlue"
+          className="flex h-[72px] w-[72px] cursor-pointer items-center justify-center rounded-sm border-2 border-dashed border-themeBlue md:h-20 md:w-20"
           onClick={onClick}
         >
           {isLoading ? (
-            <CircularProgress className="text-themeBlue" />
+            <CircularProgress size="1rem" className="text-themeBlue" />
           ) : (
-            <div className="flex flex-col items-center gap-2">
-              <FaCamera className="h-7 w-7 text-themeBlue" />
-              <p className="font-text text-[10px] text-themeBlue">
+            <div className="flex flex-col items-center gap-1 md:gap-2">
+              <FaCamera className="h-6 w-6 text-themeBlue md:h-7 md:w-7" />
+              <p className="break-words font-text text-[10px] text-themeBlue max-md:w-[64px] max-md:text-center">
                 Upload Photo
               </p>
             </div>
