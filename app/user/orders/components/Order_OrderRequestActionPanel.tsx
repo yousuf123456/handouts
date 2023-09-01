@@ -14,6 +14,7 @@ interface Order_OrderRequestActionPanelProps {
   orderId?: string;
   requestedOn?: Date;
   showTotal?: boolean;
+  hideCtas?: boolean;
   orderRequestId?: string;
   isOrderRequest?: boolean;
   cancelledOn?: Date | null;
@@ -35,6 +36,7 @@ export const Order_OrderRequestActionPanel: React.FC<
   requestedOn,
   returnedOn,
   showTotal,
+  hideCtas,
   orderId,
   status,
   total,
@@ -69,7 +71,7 @@ export const Order_OrderRequestActionPanel: React.FC<
         </h2>
       </CtaLink>
 
-      {showTotal ? (
+      {showTotal && (
         <div className="mr-12 flex flex-col items-start gap-0">
           <p className="font-text text-sm text-slate-500">Total</p>
 
@@ -77,7 +79,9 @@ export const Order_OrderRequestActionPanel: React.FC<
             {total && <FormattedCurrency quantity={total} />}
           </h3>
         </div>
-      ) : (
+      )}
+
+      {!hideCtas && (
         <div className={cn("hidden gap-3 sm:flex")}>
           {status === "Payment Pending" && (
             <Button className="bg-green-100 px-2 py-1.5 text-xs font-semibold text-green-500  hover:bg-green-100 hover:text-green-500 xl:px-3 xl:text-sm">

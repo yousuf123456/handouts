@@ -1,38 +1,29 @@
-import React from 'react'
-import { OrderSummaryInfo } from './OrderSummaryInfo';
+import React from "react";
+import { OrderSummaryInfo } from "./OrderSummaryInfo";
+import { Seperator } from "@/app/components/Seperator";
 
 interface OrderSummaryProps {
-    total : number;
-} 
+  total: number;
+}
 
-export const OrderSummary: React.FC<OrderSummaryProps> = ({
-    total
-}) => {
+export const OrderSummary: React.FC<OrderSummaryProps> = ({ total }) => {
   return (
-    <div className='flex flex-col gap-1'>
-      <h3 className='font-text text-black'>
+    <div className="flex flex-shrink-0 flex-grow flex-col gap-1 max-lg:w-full max-sm:items-center">
+      <h3 className="font-text text-sm font-semibold text-black">
         Order Summary
       </h3>
 
-      <div className='p-4 flex flex-col gap-4 bg-slate-100'>
-        <OrderSummaryInfo
-          Key='Subtotal'
-          value={total}
-          isTotal={false}
-        />
+      <div className="flex flex-col gap-2 rounded-sm p-3 shadow-cardShadow max-sm:w-full md:px-[10%] lg:px-3">
+        <div className="flex flex-col gap-3">
+          <OrderSummaryInfo Key="Subtotal" value={total} isTotal={false} />
 
-        <OrderSummaryInfo
-          Key='Delievery'
-          value={150}
-          isTotal={false}
-        />
+          <OrderSummaryInfo Key="Delievery" value={150} isTotal={false} />
+        </div>
 
-        <OrderSummaryInfo
-          Key='Total'
-          value={total + 150}
-          isTotal={true}
-        />
+        <Seperator />
+
+        <OrderSummaryInfo Key="Total" value={total + 150} isTotal={true} />
       </div>
     </div>
-  )
-}
+  );
+};

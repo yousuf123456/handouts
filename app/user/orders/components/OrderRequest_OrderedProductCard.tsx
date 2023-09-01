@@ -63,6 +63,9 @@ export const OrderRequest_OrderedProductCard: React.FC<
     cancellationId || returnId
   }`;
 
+  const showCancelOrderButton =
+    !isCancelled && !isReturned && showCancelButton && !hideCancelButton;
+
   return (
     <div className={"h-full items-start sm:flex sm:justify-between"}>
       <div className="flex h-full items-start gap-4">
@@ -96,7 +99,7 @@ export const OrderRequest_OrderedProductCard: React.FC<
 
             {!showReason ? (
               !hideStatus && (
-                <div className="flex flex-col gap-1 max-sm:items-end">
+                <div className="mt-1 flex flex-col gap-1 max-sm:items-end">
                   <Status
                     status={orderedProductStatus}
                     showOnlyRequestStatus={showOnlyRequestStatus}
@@ -116,17 +119,26 @@ export const OrderRequest_OrderedProductCard: React.FC<
                 <p className="text-xs text-black">{reason}</p>
               </div>
             )}
+
+            <Cancel
+              show={showCancelOrderButton}
+              status={orderedProductStatus}
+            />
+
+            <Refund_ReviewCta
+              hasBeenReviewed={orderedProductOPT.hasBeenReviewed}
+              productId={orderedProduct.product.id}
+              orderedProductId={orderedProduct.id}
+              isDelievered={isDelievered}
+            />
           </div>
 
-          <Cancel
-            show={
-              !isCancelled &&
-              !isReturned &&
-              showCancelButton &&
-              !hideCancelButton
-            }
-            status={orderedProductStatus}
-          />
+          <div className="hidden sm:block">
+            <Cancel
+              show={showCancelOrderButton}
+              status={orderedProductStatus}
+            />
+          </div>
         </div>
       </div>
 
@@ -152,12 +164,14 @@ export const OrderRequest_OrderedProductCard: React.FC<
         </div>
       </div>
 
-      <Refund_ReviewCta
-        hasBeenReviewed={orderedProductOPT.hasBeenReviewed}
-        productId={orderedProduct.product.id}
-        orderedProductId={orderedProduct.id}
-        isDelievered={isDelievered}
-      />
+      <div className="hidden sm:block">
+        <Refund_ReviewCta
+          hasBeenReviewed={orderedProductOPT.hasBeenReviewed}
+          productId={orderedProduct.product.id}
+          orderedProductId={orderedProduct.id}
+          isDelievered={isDelievered}
+        />
+      </div>
     </div>
   );
 };

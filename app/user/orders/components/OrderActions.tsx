@@ -36,11 +36,13 @@ export const OrderActions: React.FC<OrderActionsProps> = ({
         </Button>
       )}
 
-      <CtaLink href={href}>
-        <Button size="sm" variant="outline" className="text-[11px] leading-3">
-          Manage Order
-        </Button>
-      </CtaLink>
+      {!isOrderRequest && (
+        <CtaLink href={href}>
+          <Button size="sm" variant="outline" className="text-[11px] leading-3">
+            Manage Order
+          </Button>
+        </CtaLink>
+      )}
     </div>
   );
 };

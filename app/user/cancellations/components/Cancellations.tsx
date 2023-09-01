@@ -27,8 +27,6 @@ export const Cancellations: React.FC<CancellationsProps> = async ({
 
   return (
     <div className="flex flex-col gap-6">
-      <NavigationPanel heading="My Cancellations" />
-
       <Heading className="hidden sm:block">
         My Cancellations {"(" + count + ")"}
       </Heading>
