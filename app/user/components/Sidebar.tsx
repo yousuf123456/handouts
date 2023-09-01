@@ -15,11 +15,14 @@ import { FaMapMarkerAlt, FaTimes } from "react-icons/fa";
 import { RiArrowGoBackFill, RiUser5Fill } from "react-icons/ri";
 import { cn } from "@/app/utils/cn";
 import clsx from "clsx";
+import { useAppDispatch, useAppSelector } from "@/app/store/store";
+import { setSidebarOpen } from "@/app/store/features/profileSideBar";
 
 export const Sidebar = () => {
-  const [open, setOpen] = useState(false);
-  const openSideBar = () => setOpen(true);
-  const closeSideBar = () => setOpen(false);
+  const dispatch = useAppDispatch();
+  const open = useAppSelector((state) => state.profileSidebar.open);
+  const closeSideBar = () => dispatch(setSidebarOpen(false));
+  const openSideBar = () => dispatch(setSidebarOpen(true));
 
   return (
     <div
@@ -33,7 +36,7 @@ export const Sidebar = () => {
       <div className="flex w-full flex-col justify-between gap-12 px-2 py-3 lg:px-4 lg:py-6">
         <div className="flex w-full flex-col gap-4 lg:gap-2">
           <div
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => dispatch(setSidebarOpen(!open))}
             className="flex w-full flex-shrink-0 justify-center rounded-full bg-themeBlue p-1 lg:hidden"
           >
             <HiChevronRight

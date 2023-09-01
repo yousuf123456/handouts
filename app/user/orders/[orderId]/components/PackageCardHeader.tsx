@@ -1,53 +1,68 @@
-import React from 'react'
+import React from "react";
 
-import { Button } from '@/app/components/Button';
-import { HiChatBubbleLeft } from "react-icons/hi2"
-import { GetBy_DelieveredTimeline } from '../../components/GetBy_DelieveredTimeline';
+import { Button } from "@/app/components/Button";
+import { HiChatBubbleLeft } from "react-icons/hi2";
+import { GetBy_DelieveredTimeline } from "../../components/GetBy_DelieveredTimeline";
+import { Status } from "../../components/Status";
+import { StatusType } from "@/app/types";
+import { Seperator } from "@/app/components/Seperator";
 
 interface PackageCardHeaderProps {
-    storeName? : string;
-    packageNumber? : number; 
-    isDelievered? : boolean;
-    delieveredAt? : Date | null;
-    hideTimeline? : boolean;
+  storeName?: string;
+  packageNumber?: number;
+  isDelievered?: boolean;
+  hideTimeline?: boolean;
+  delieveredAt?: Date | null;
+  packageStatus: StatusType;
 }
 
 export const PackageCardHeader: React.FC<PackageCardHeaderProps> = ({
-    storeName,
-    isDelievered,
-    packageNumber,
-    delieveredAt,
-    hideTimeline
+  packageStatus,
+  isDelievered,
+  packageNumber,
+  delieveredAt,
+  hideTimeline,
+  storeName,
 }) => {
   return (
-    <div className='px-2 py-1 w-full flex justify-between items-center bg-white'>
-        <div className='flex flex-col gap-0 items-start'>
-            <h4 className='text-base font-text font-semibold text-slate-700'> 
-                { "Package Number : " + packageNumber }
-            </h4>
+    <div className="flex flex-col gap-3">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex w-full flex-col items-start gap-0">
+          <div className="flex w-full justify-between">
+            <div className="flex flex-col gap-0">
+              <h4 className="font-text text-[13px] font-semibold leading-5 text-slate-700 sm:text-sm md:text-base">
+                {"Package Number : " + packageNumber}
+              </h4>
 
-            <div className='flex gap-2 items-center'>
-                <p className='text-xs font-text text-slate-700'>By : </p>
-                <p className='text-xs font-text text-blue-500'>{ storeName }</p>
+              <div className="flex items-center gap-2">
+                <p className="font-text text-xs text-slate-700">By : </p>
+                <p className="font-text text-xs text-blue-500">{storeName}</p>
+              </div>
             </div>
 
-            {
-                !hideTimeline &&
-                <div className='mt-4'>
-                    {
-                        <GetBy_DelieveredTimeline 
-                            createdAt={isDelievered ? delieveredAt : new Date()}
-                            isDelievered={isDelievered}
-                        />
-                    }
-                </div>
-            }
-        </div>
+            <div className="md:hidden ">
+              <Status status={packageStatus} />
+            </div>
+          </div>
 
-        <Button className='bg-transparent text-themeBlue flex gap-2 items-center hover:bg-transparent hover:text-themeBlue '>
-            <HiChatBubbleLeft className='w-5 h-5 text-themeBlue'/>
-            Chat With Seller
+          {!hideTimeline && (
+            <div className="mt-2 md:mt-3 lg:mt-4">
+              {
+                <GetBy_DelieveredTimeline
+                  createdAt={isDelievered ? delieveredAt : new Date()}
+                  isDelievered={isDelievered}
+                />
+              }
+            </div>
+          )}
+        </div>
+        <Button className="hidden items-center gap-2 bg-transparent text-themeBlue hover:bg-transparent hover:text-themeBlue md:flex">
+          <HiChatBubbleLeft className="h-4 w-4 text-themeBlue md:h-5 md:w-5" />
+          Chat With Seller
         </Button>
+      </div>
+
+      <Seperator />
     </div>
-  )
-}
+  );
+};

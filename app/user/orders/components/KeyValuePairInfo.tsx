@@ -25,7 +25,7 @@ export const KeyValuePairInfo: React.FC<KeyValuePairInfoProps> = ({
     <div className="flex items-center gap-1">
       <div className="flex items-center gap-1">
         {Icon ? (
-          <Icon className=" h-[14px] w-[14px] text-green-500 sm:h-4 sm:w-4" />
+          <Icon className=" h-[14px] w-[14px] text-green-500 md:h-4 md:w-4" />
         ) : null}
         <p className={twMerge(clsx("text-sm text-slate-500", keyClassName))}>
           {Key}

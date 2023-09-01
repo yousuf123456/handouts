@@ -27,8 +27,6 @@ export const Returns: React.FC<ReturnsProps> = async ({ pageNumber }) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <NavigationPanel heading="My Returns" />
-
       <Heading className="hidden sm:block">
         My Returns {"(" + count + ")"}
       </Heading>

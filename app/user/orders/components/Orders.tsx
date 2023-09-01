@@ -17,7 +17,6 @@ export async function Orders({ pageNumber }: OrdersProps) {
 
   return (
     <div className="flex h-full w-full flex-col gap-6">
-      <NavigationPanel heading="My Orders" />
       <Heading className="hidden sm:block">
         {"My Orders " + "(" + count + ")"}
       </Heading>
