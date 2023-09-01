@@ -3,12 +3,14 @@ import { SectionHeading } from "./SectionHeading";
 import { ResponsesForm } from "../ResponsesForm";
 import clsx from "clsx";
 import { cn } from "@/app/utils/cn";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface ServiceRatingsProps {
   href?: string;
   compact?: boolean;
   showOnly?: boolean;
   horizontal?: boolean;
+  noLabelOnRes?: boolean;
   withOutBorder?: boolean;
   storeRatingHover?: number;
   storeRatingValue: number | null;
@@ -26,6 +28,7 @@ export const ServiceRatings: React.FC<ServiceRatingsProps> = ({
   compact,
   showOnly,
   horizontal,
+  noLabelOnRes,
   withOutBorder,
   storeRatingHover,
   storeRatingValue,
@@ -35,9 +38,10 @@ export const ServiceRatings: React.FC<ServiceRatingsProps> = ({
   return (
     <div
       className={cn(
-        "flex gap-3",
+        "flex",
         !horizontal && "flex-col",
-        horizontal && "items-center",
+        horizontal && "items-start md:items-center",
+        withOutBorder ? "gap-1" : "gap-3",
         !withOutBorder && "rounded-md border-[1px] border-slate-300 p-3",
       )}
     >
@@ -50,6 +54,7 @@ export const ServiceRatings: React.FC<ServiceRatingsProps> = ({
           showOnly={showOnly}
           value={storeRatingValue}
           hover={storeRatingHover}
+          noLabelOnRes={noLabelOnRes}
           setValue={setStoreRatingValue}
           setHover={setStoreRatingHover}
         />

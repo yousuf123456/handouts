@@ -24,33 +24,55 @@ export const HistoryReviewCard: React.FC<HistoryReviewCardProps> = ({
           purchasedAt={review.product.purchasedAt}
         />
 
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-3 sm:gap-4">
           <div className="flex w-full gap-4">
-            <div className="flex w-[70%] flex-shrink-0">
+            <div className="flex w-full flex-shrink-0 lg:w-[60%]">
               <ProductDesc product={review.product} />
             </div>
 
-            <OverAllRating
-              showOnly
-              href={href}
-              size="small"
-              productRatingValue={review.rating}
-            />
+            <div className="hidden w-full lg:block">
+              <OverAllRating
+                showOnly
+                href={href}
+                size="small"
+                productRatingValue={review.rating}
+              />
+            </div>
           </div>
 
           <div className="flex w-full items-center justify-between">
-            <ServiceRatings
-              showOnly
-              horizontal
-              href={href}
-              compact={true}
-              withOutBorder={true}
-              storeRatingValue={review.sellerResponse}
-            />
+            <div className="flex items-start">
+              <div className="w-52 lg:hidden">
+                <div className="w-fit">
+                  <OverAllRating
+                    showOnly
+                    href={href}
+                    size="small"
+                    withoutBorder
+                    noLabelOnRes
+                    productRatingValue={review.rating}
+                  />
+                </div>
+              </div>
+
+              <div className="hidden sm:block">
+                <ServiceRatings
+                  showOnly
+                  horizontal
+                  href={href}
+                  noLabelOnRes
+                  withOutBorder
+                  compact={true}
+                  storeRatingValue={review.sellerResponse}
+                />
+              </div>
+            </div>
 
             <Link href={href}>
               <div className="cursor-pointer rounded-sm border-2 border-themeBlue px-2 py-0.5">
-                <p className="font-sans text-sm text-themeBlue">Edit</p>
+                <p className="font-sans text-xs text-themeBlue sm:text-sm">
+                  Edit
+                </p>
               </div>
             </Link>
           </div>

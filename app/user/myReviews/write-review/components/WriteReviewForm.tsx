@@ -118,7 +118,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
 
   return (
     <div className="flex w-full flex-col gap-12">
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex w-full flex-col gap-6 max-sm:pb-12">
         <ProductDesc product={OrderedProduct.product} />
 
         <OverAllRating
@@ -165,12 +165,12 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
             />
         </div> */}
 
-      <div className="flex w-full justify-center">
+      <div className="bottom-0 left-0 right-0 flex w-full justify-center max-sm:fixed">
         <LoadingButton
-          isLoading={isLoading}
-          disabled={isLoading}
           onClick={onSubmit}
-          className="flex h-11 w-48 justify-center text-base"
+          disabled={isLoading}
+          isLoading={isLoading}
+          className="flex h-9 w-full justify-center text-base sm:h-11 sm:w-48"
         >
           Submit
         </LoadingButton>

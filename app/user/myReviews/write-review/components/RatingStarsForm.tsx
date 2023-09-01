@@ -5,6 +5,7 @@ import Rating from "@mui/material/Rating";
 import { FaStar } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { cn } from "@/app/utils/cn";
 
 const labels: { [index: string]: string } = {
   1: "Very Poor",
@@ -23,6 +24,7 @@ interface RatingStarsFormProps {
   value: number;
   hover?: number;
   showOnly?: boolean;
+  noLabelOnRes?: boolean;
   size?: "small" | "medium" | "large";
   setHover?: React.Dispatch<React.SetStateAction<number>>;
   setValue?: React.Dispatch<React.SetStateAction<number>>;
@@ -36,6 +38,7 @@ export const RatingStarsForm: React.FC<RatingStarsFormProps> = ({
   showOnly,
   setHover,
   setValue,
+  noLabelOnRes,
 }) => {
   const router = useRouter();
 
@@ -65,7 +68,12 @@ export const RatingStarsForm: React.FC<RatingStarsFormProps> = ({
         readOnly={showOnly}
       />
 
-      <p className="text-sm text-black">
+      <p
+        className={cn(
+          "hidden text-sm text-black md:block",
+          noLabelOnRes && "hidden lg:block",
+        )}
+      >
         {
           //@ts-ignore
           labels[hover ? (hover !== -1 ? hover : value) : value]
