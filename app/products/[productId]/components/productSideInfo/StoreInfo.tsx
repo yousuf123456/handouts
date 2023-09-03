@@ -23,7 +23,7 @@ export const StoreInfo: React.FC<StoreInfoProps> = ({ store }) => {
 
   return (
     <PortionWrapper portionName="Sold By">
-      <div className="flex w-full flex-col items-center bg-slate-100 p-3">
+      <div className="flex w-full flex-col items-center rounded-md border-[1px] p-3">
         <div className="relative h-14 w-14 overflow-hidden rounded-full">
           <Avatar image={store?.logo} />
         </div>

@@ -450,23 +450,90 @@ async function main() {
   // })
 
   // sep
-  const users = await prisma.user.findMany();
+  // const users = await prisma.user.findMany();
 
-  users.forEach(async (user) => {
-    const updatedAddressDiary = user.addressDiary.map((address: any) => ({
-      ...address,
-      _id: new ObjectId(),
-    }));
+  // users.forEach(async (user) => {
+  //   const updatedAddressDiary = user.addressDiary.map((address: any) => ({
+  //     ...address,
+  //     _id: new ObjectId(),
+  //   }));
 
-    await prisma.user.update({
-      where: {
-        id: user.id,
+  //   await prisma.user.update({
+  //     where: {
+  //       id: user.id,
+  //     },
+
+  //     data: {
+  //       addressDiary: updatedAddressDiary,
+  //     },
+  //   });
+  // });
+
+  const combinations = [
+    {
+      id: "1",
+      combination: {
+        color: "Red",
+        size: "sm",
       },
-
-      data: {
-        addressDiary: updatedAddressDiary,
+      price: 50,
+      stock: 10,
+    },
+    {
+      id: "2",
+      combination: {
+        color: "Red",
+        size: "md",
       },
-    });
+      price: 500,
+      stock: 10,
+    },
+    {
+      id: "3",
+      combination: {
+        color: "Red",
+        size: "lg",
+      },
+      price: 77,
+      stock: 10,
+    },
+    {
+      id: "4",
+      combination: {
+        color: "Blue",
+        size: "sm",
+      },
+      price: 780,
+      stock: 0,
+    },
+    {
+      id: "5",
+      combination: {
+        color: "Blue",
+        size: "md",
+      },
+      price: 70,
+      stock: 10,
+    },
+    {
+      id: "6",
+      combination: {
+        color: "Blue",
+        size: "lg",
+      },
+      price: 505,
+      stock: 10,
+    },
+  ];
+
+  await prisma.product.update({
+    where: {
+      id: "64bd1973b6cbecb92c110ec3",
+    },
+
+    data: {
+      combinations: combinations,
+    },
   });
 }
 

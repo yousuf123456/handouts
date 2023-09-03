@@ -13,7 +13,7 @@ export const ProductSideInfo: React.FC<ProductSideInfoProps> = ({
   product,
 }) => {
   return (
-    <div className="flex-shrink-0 border-l-2 border-slate-300 px-4">
+    <div className="flex-shrink-0 border-l-[1px] border-slate-300 px-4">
       <div className="flex flex-col gap-4">
         <Services />
 

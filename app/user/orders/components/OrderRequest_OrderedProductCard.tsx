@@ -16,6 +16,7 @@ import { Cancel } from "./Cancel";
 import { CtaLink } from "@/app/(site)/components/CtaLink";
 import { Refund_ReviewCta } from "./Refund_ReviewCta";
 import { cn } from "@/app/utils/cn";
+import clsx from "clsx";
 
 interface OrderRequest_OrderedProductCardProps {
   orderedProduct: OrderedProductType | CartItemType;
@@ -119,7 +120,7 @@ export const OrderRequest_OrderedProductCard: React.FC<
               </div>
             )}
 
-            <div className="sm:hidden">
+            <div className={clsx("sm:hidden", !showCancelOrderButton && "hidden")}>
               <Cancel
                 show={showCancelOrderButton}
                 status={orderedProductStatus}
