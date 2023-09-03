@@ -1,12 +1,8 @@
 "use client";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 
 import { AverageStats } from "./AverageStats";
 import { RatingStars } from "@/app/components/RatingStars";
-import { Carousel } from "react-responsive-carousel";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { CombinationsType, ProductInfo, VariantsType } from "@/app/types";
 import { ProductVariants } from "./ProductVariants";
 import { ProductCTAs } from "./ProductCTAs";
@@ -23,10 +19,8 @@ import { Quantity } from "@/app/components/Quantity";
 import { getPriceInfo } from "@/app/utils/getPriceInfo";
 import { ProductSideInfo } from "./productSideInfo/ProductSideInfo";
 import find from "lodash/find";
-import clsx from "clsx";
 import axios from "axios";
-import { useBreakpoint } from "use-breakpoint";
-import { BREAKPOINTS } from "@/app/constants/breakPoints";
+import { ProductImages } from "./ProductImages";
 
 interface ProductInformationProps {
   product: ProductInfo;
@@ -51,9 +45,10 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
   }, []);
 
   const [quantity, setQuantity] = useState(1);
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedPicture, setSelectedPicture] = useState("");
-  const [selectedVariantPicture, setSelectedVariantPicture] = useState("");
+
+  const [selectedVariantPicture, setSelectedVariantPicture] = useState<
+    string[]
+  >([]);
 
   const dispatch = useAppDispatch();
 
@@ -82,34 +77,16 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
     "/images/exclusiveSection/luxury_decor.jpg",
   ];
 
-  const displayCount = 3;
-  const chevronsClassName = "w-8 h-8 text-slate-600 cursor-pointer";
-
-  const moveToTheNextImage = () => {
-    if (selectedIndex < fakeDetailedImages.length - 1) {
-      setSelectedIndex((prev) => prev + 1);
-    }
-  };
-
-  const moveToThePreviousImage = () => {
-    if (selectedIndex > 0) {
-      setSelectedIndex((prev) => prev - 1);
-    }
-  };
-
-  useEffect(() => {
-    // Make it real
-    setSelectedPicture(fakeDetailedImages[selectedIndex]);
-    setSelectedVariantPicture("");
-  }, [selectedIndex]);
-
   const variants = product?.variants as VariantsType | undefined;
+
   const productCombinations = product?.combinations as
     | CombinationsType[]
     | undefined;
+
   const defaultProductCombination = productCombinations?.filter(
     (combination) => combination.default,
   )[0];
+
   const [selectedCombination, setSelectedCombination] = useState(
     defaultProductCombination,
   );
@@ -122,81 +99,16 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
     });
   };
 
-  const { breakpoint } = useBreakpoint(BREAKPOINTS);
-
-  useEffect(() => {
-    console.log(breakpoint);
-  }, [breakpoint]);
-
   return (
     <div className="flex gap-0 max-lg:flex-col">
-      <div className="flex items-start gap-0 max-lg:justify-around lg:flex-col lg:gap-2">
-        <div className="relative h-80 w-80 overflow-hidden rounded-sm max-lg:order-2">
-          <Image
-            src={
-              (variants && selectedVariantPicture) ||
-              selectedPicture ||
-              product?.image ||
-              ""
-            }
-            alt="Product Picture"
-            className="object-cover"
-            fill
-          />
-        </div>
+      <ProductImages
+        setSelectedVariantPicture={setSelectedVariantPicture}
+        selectedVariantPicture={selectedVariantPicture}
+        mainImage={product?.image}
+        images={fakeDetailedImages}
+      />
 
-        {/* Have to make it real */}
-        {fakeDetailedImages?.length !== 0 && (
-          <div className="hidden h-80 items-center justify-center gap-0 max-lg:flex-col lg:flex lg:h-auto lg:w-80 lg:items-center">
-            <HiChevronLeft
-              onClick={moveToThePreviousImage}
-              className={chevronsClassName}
-            />
-            <Carousel
-              centerMode
-              className="flex flex-col gap-3"
-              axis="vertical"
-              centerSlidePercentage={100 / displayCount}
-              selectedItem={selectedIndex}
-              showIndicators={false}
-              showStatus={false}
-              showThumbs={false}
-              showArrows={false}
-            >
-              {fakeDetailedImages.map((image: string, i) => (
-                <div
-                  onClick={() => {
-                    if (selectedIndex !== i) {
-                      setSelectedIndex(i);
-                    } else {
-                      setSelectedPicture(image);
-                      setSelectedVariantPicture("");
-                    }
-                  }}
-                  key={i}
-                  className={clsx(
-                    "relative h-16 w-16 flex-shrink-0 cursor-pointer",
-                    i === selectedIndex && "border-2 border-slate-500",
-                  )}
-                >
-                  <Image
-                    src={image}
-                    alt="Image"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </Carousel>
-            <HiChevronRight
-              onClick={moveToTheNextImage}
-              className={clsx(chevronsClassName, "lg:relative lg:-left-5")}
-            />
-          </div>
-        )}
-      </div>
-
-      <div className="ml-6 flex w-full flex-col gap-8 px-6">
+      <div className="ml-2 flex w-full flex-col gap-8 px-6 xl:ml-6">
         <div className="flex flex-col gap-2">
           <h1 className="font-heading text-xl font-extrabold text-themeSecondary">
             {product?.name}

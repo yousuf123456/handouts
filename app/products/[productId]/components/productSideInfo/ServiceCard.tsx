@@ -1,22 +1,23 @@
-import React from 'react'
-import { IconType } from 'react-icons'
+import { cn } from "@/app/utils/cn";
+import React from "react";
+import { IconType } from "react-icons";
 
 interface ServiceCardProps {
-    Icon : IconType;
-    label : string;
+  Icon: IconType;
+  label: string;
+  className?: string;
 }
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({
-    Icon,
-    label
+  Icon,
+  label,
+  className,
 }) => {
   return (
-    <div className='flex gap-3 items-center'>
-      <Icon className='w-5 h-5 text-black'/>
-      
-      <p className='capitalize text-sm font-text text-black'>
-        { label }
-      </p>
+    <div className="flex items-center gap-3">
+      <Icon className={cn("h-5 w-5 text-black", className)} />
+
+      <p className="font-text text-sm capitalize text-black">{label}</p>
     </div>
-  )
-}
+  );
+};
