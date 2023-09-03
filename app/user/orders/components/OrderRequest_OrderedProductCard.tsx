@@ -5,18 +5,17 @@ import { ProductImage } from "@/app/components/ProductImage";
 import {
   CartItemType,
   OrderedProductType,
-  StatusType,
-  ReturnStatusType,
   cancellationSteps,
   returnSteps,
 } from "@/app/types";
+
 import { KeyValuePairInfo } from "./KeyValuePairInfo";
 import { Status } from "./Status";
 
-import clsx from "clsx";
 import { Cancel } from "./Cancel";
 import { CtaLink } from "@/app/(site)/components/CtaLink";
 import { Refund_ReviewCta } from "./Refund_ReviewCta";
+import { cn } from "@/app/utils/cn";
 
 interface OrderRequest_OrderedProductCardProps {
   orderedProduct: OrderedProductType | CartItemType;
@@ -120,10 +119,12 @@ export const OrderRequest_OrderedProductCard: React.FC<
               </div>
             )}
 
-            <Cancel
-              show={showCancelOrderButton}
-              status={orderedProductStatus}
-            />
+            <div className="sm:hidden">
+              <Cancel
+                show={showCancelOrderButton}
+                status={orderedProductStatus}
+              />
+            </div>
 
             <Refund_ReviewCta
               hasBeenReviewed={orderedProductOPT.hasBeenReviewed}
@@ -164,7 +165,7 @@ export const OrderRequest_OrderedProductCard: React.FC<
         </div>
       </div>
 
-      <div className="hidden sm:block">
+      <div className={cn("hidden sm:block", !isDelievered && "sm:hidden")}>
         <Refund_ReviewCta
           hasBeenReviewed={orderedProductOPT.hasBeenReviewed}
           productId={orderedProduct.product.id}

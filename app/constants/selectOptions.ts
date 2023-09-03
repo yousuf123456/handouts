@@ -93,3 +93,10 @@ export const areas = [
   "Quetta",
   "Peshawar",
 ];
+
+export const reasons = [
+  "Delievery time is too long",
+  "Duplicate Order",
+  "Mistaken Order",
+  "Found cheaper somewhere else",
+];

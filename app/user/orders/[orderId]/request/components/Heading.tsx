@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export const Heading = ({ children } : { children : React.ReactNode }) => {
+export const Heading = ({ children }: { children: React.ReactNode }) => {
   return (
-    <h3 className='text-base font-text font-semibold text-black'>
-      { children }
+    <h3 className="font-text text-sm font-semibold text-black md:text-base">
+      {children}
     </h3>
-  )
-}
+  );
+};
