@@ -13,6 +13,7 @@ import { ProductsFromStore } from "./components/containers/ProductsFromStore";
 import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
 import { SimilarProducts } from "./components/containers/SimilarProducts";
 import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
+import { NavigationPanel } from "@/app/components/NavigationPanel";
 
 interface IParams {
   productId: string;
@@ -20,7 +21,9 @@ interface IParams {
 
 export default async function page({ params }: { params: IParams }) {
   return (
-    <div className="mt-8 w-full bg-slate-100 px-8 py-8 xl:px-20">
+    <div className="w-full overflow-x-hidden bg-slate-100 py-2 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
+      <NavigationPanel heading="Product Details" />
+
       <div className="flex flex-col gap-6">
         <Suspense fallback={<InformationLoading />}>
           <Information productId={params.productId} />
@@ -34,13 +37,13 @@ export default async function page({ params }: { params: IParams }) {
               </Suspense>
             </Container>
 
-            <Container>
+            <Container id="ratings">
               <Suspense fallback={<ReviewsLoading />}>
                 <Reviews productId={params.productId} />
               </Suspense>
             </Container>
 
-            <Container>
+            <Container id="questions">
               <Suspense fallback={<QuestionsLoading />}>
                 <Questions productId={params.productId} />
               </Suspense>

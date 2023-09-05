@@ -69,6 +69,7 @@
     "use-next-blurhash": "^1.0.5"
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/bcrypt": "^5.0.0",
     "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.2",

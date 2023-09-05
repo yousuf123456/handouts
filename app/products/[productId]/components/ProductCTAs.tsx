@@ -108,22 +108,25 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
   };
 
   return (
-    <>
+    <div>
       {stock ? (
-        <>
+        <div className="flex h-full w-full items-end gap-3 max-sm:flex-col max-sm:px-3 sm:gap-4">
           <Button
             variant={"outline"}
             onClick={onAddToCart}
             className="
               flex 
               h-9 
-              w-36 
+              w-full 
               items-center justify-center 
-              border-rose-500 
-              text-sm 
+              rounded-md 
+              border-rose-500
+              text-sm
               font-semibold 
               text-rose-500 
-              hover:bg-rose-500"
+              hover:bg-rose-500 
+              max-sm:order-2
+              max-sm:rounded-3xl"
           >
             Add to Cart
           </Button>
@@ -133,12 +136,15 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
             onClick={onClick}
             className="
               h-9 
-              w-36 
+              w-full
+              rounded-md
               bg-rose-500
-              text-sm 
-              font-medium 
-              tracking-wider 
-              hover:bg-rose-600"
+              text-sm
+              font-medium
+              tracking-wider
+              text-white
+              hover:bg-rose-600
+              max-sm:rounded-3xl"
           >
             Buy Now
           </Button>
@@ -151,7 +157,7 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
               />
             </TooltipWrapper>
           </div>
-        </>
+        </div>
       ) : (
         <div className="flex items-center gap-3">
           <p className="font-text text-xl font-semibold tracking-wider text-red-500">
@@ -185,6 +191,6 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
         href={href}
         isError={isError}
       />
-    </>
+    </div>
   );
 };

@@ -14,7 +14,7 @@ export const ProductsFromSameStore: React.FC<ProductsFromSameStoreProps> = ({
     <div className="flex flex-col gap-3">
       <Heading>From the Same Store</Heading>
 
-      <div className="flex w-full justify-between gap-3 lg:grid lg:grid-cols-1 lg:gap-0">
+      <div className="flex w-full flex-wrap justify-between gap-3 lg:grid lg:grid-cols-1 lg:gap-0">
         {products.map((product, i) => (
           <ProductCard key={i} product={product as any} />
         ))}

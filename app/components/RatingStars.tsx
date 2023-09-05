@@ -1,27 +1,46 @@
-import Rating from '@mui/material/Rating'
-import { HiStar } from "react-icons/hi"
-import React from 'react'
+import Rating from "@mui/material/Rating";
+import { HiStar } from "react-icons/hi";
+import React from "react";
+import clsx from "clsx";
 
 interface RatingStarsProps {
-  defaultValue : number,
-  size? : "small" | "medium" | "large"
+  size?: "small" | "medium" | "large";
+  onlyOneStar?: boolean;
+  defaultValue: number;
+  iconSize?: string;
 }
 
 export const RatingStars: React.FC<RatingStarsProps> = ({
   defaultValue,
-  size
+  onlyOneStar,
+  iconSize,
+  size,
 }) => {
-
   return (
-    <Rating  
-      name="half-rating-read" 
-      value={defaultValue}
-      // defaultValue={defaultValue} 
-      precision={0.5} 
-      size={size} 
-      icon={<div><HiStar className='text-[15px] sm:text-[16px] md:text-inherit' /></div>}
-      emptyIcon={<HiStar className='text-slate-300 text-[15px] sm:text-[16px] md:text-inherit'/>}
-      readOnly 
+    <Rating
+      max={onlyOneStar ? 1 : 5}
+      name="half-rating-read"
+      value={onlyOneStar ? 1 : defaultValue}
+      precision={0.5}
+      size={size}
+      icon={
+        <div>
+          <HiStar
+            className={clsx(
+              iconSize || "text-[16px] sm:text-[16px] md:text-inherit",
+            )}
+          />
+        </div>
+      }
+      emptyIcon={
+        <HiStar
+          className={clsx(
+            iconSize || "text-[16px] sm:text-[16px] md:text-inherit",
+            " text-slate-200 ",
+          )}
+        />
+      }
+      readOnly
     />
-  )
-}
+  );
+};
