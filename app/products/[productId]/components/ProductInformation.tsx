@@ -21,6 +21,11 @@ import { ProductSideInfo } from "./productSideInfo/ProductSideInfo";
 import find from "lodash/find";
 import axios from "axios";
 import { ProductImages } from "./ProductImages";
+import { ProductRating } from "./ProductRating";
+import { HiChevronRight } from "react-icons/hi";
+import { StoreInfoCTA } from "./StoreInfoCTA";
+import { ProductQuantity } from "./ProductQuantity";
+import { Section } from "./containers/Section";
 
 interface ProductInformationProps {
   product: ProductInfo;
@@ -91,77 +96,158 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
     defaultProductCombination,
   );
 
-  const changeCombination = (variant: string, value: string) => {
-    setSelectedCombination((prev) => {
+  const changeCombination = (
+    variant: string,
+    value: string,
+    images: string[],
+  ) => {
+    if (!selectedCombination && !defaultProductCombination) return;
+
+    if (find(selectedCombination, { [variant]: value })) {
+      setSelectedVariantPicture([]);
+      setSelectedCombination(undefined);
+      return;
+    }
+
+    setSelectedCombination(() => {
+      const prev = selectedCombination || defaultProductCombination;
       const combination = { ...prev!.combination, [variant]: value };
       const Combination = find(productCombinations, { combination });
+      setSelectedVariantPicture(images || []);
       return Combination;
     });
   };
 
+  const scrollToQuestions = () => {
+    const questionsElement = document.getElementById("questions");
+    questionsElement?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
-    <div className="flex gap-0 max-lg:flex-col">
-      <ProductImages
-        setSelectedVariantPicture={setSelectedVariantPicture}
-        selectedVariantPicture={selectedVariantPicture}
-        mainImage={product?.image}
-        images={fakeDetailedImages}
-      />
-
-      <div className="ml-2 flex w-full flex-col gap-8 px-6 xl:ml-6">
-        <div className="flex flex-col gap-2">
-          <h1 className="font-heading text-xl font-extrabold text-themeSecondary">
-            {product?.name}
-          </h1>
-          <div className="flex flex-col gap-0">
-            <div className="flex items-center gap-2">
-              <RatingStars defaultValue={product?.avgRating!} />
-              <p className="font-text text-sm"> {product?.avgRating! + "/5"}</p>
-            </div>
-
-            <div className="mt-1">
-              <AverageStats
-                label="Ratings"
-                averageStats={product?.ratingsCount}
-                href="user"
-              />
-            </div>
-          </div>
-        </div>
-
-        <ProductPrice
-          discountOff={discountOff}
-          productOnSale={productOnSale}
-          isPercentOff={isPercentOff}
-          discountOffLabel={discountOffLabel}
-          price={variants ? selectedCombination?.price : product?.price}
-        />
-
-        <ProductVariants
-          variants={variants}
-          selectedCombination={selectedCombination}
-          changeCombination={changeCombination}
+    <>
+      <div className="flex gap-0 max-lg:flex-col max-sm:bg-slate-50">
+        <ProductImages
           setSelectedVariantPicture={setSelectedVariantPicture}
+          selectedVariantPicture={selectedVariantPicture}
+          mainImage={product?.image}
+          images={fakeDetailedImages}
         />
 
-        <div className="mt-0 flex gap-2">
-          <h3 className="min-w-[80px] font-text text-sm">Quantity :</h3>
-          <Quantity quantity={quantity} setQuantity={setQuantity} />
-        </div>
+        <div className="relative flex w-full flex-col gap-8 px-0 max-md:-top-4 max-sm:-top-6 sm:px-3 md:px-6 lg:ml-2 xl:ml-6">
+          <Section mode="padding">
+            <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 lg:gap-8">
+              <div className="flex flex-col gap-3 sm:gap-2">
+                <h1 className="font-heading text-base font-extrabold text-themeSecondary min-[560px]:text-lg md:text-xl">
+                  {product?.name}
+                </h1>
 
-        <div className="flex h-full items-end gap-4">
+                <div className="sm:hidden">
+                  <ProductPrice
+                    discountOff={discountOff}
+                    isPercentOff={isPercentOff}
+                    productOnSale={productOnSale}
+                    discountOffLabel={discountOffLabel}
+                    price={
+                      variants && selectedCombination
+                        ? selectedCombination?.price
+                        : product?.price
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col gap-0">
+                  <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                      <ProductRating
+                        ratingsCount={product?.ratingsCount}
+                        avgRating={product?.avgRating}
+                      />
+
+                      <div
+                        onClick={scrollToQuestions}
+                        className="flex cursor-pointer items-center gap-1 sm:hidden"
+                      >
+                        <p className="text-xs font-medium text-black">
+                          {product?.questionsCount + " questions "}
+                        </p>
+                        <HiChevronRight className="h-4 w-4 text-black" />
+                      </div>
+                    </div>
+
+                    <StoreInfoCTA
+                      logo={product.store.logo}
+                      storeName={product.storeName}
+                      posRatings={product.store.posRatings}
+                      ratingsCount={product.store.ratingsCount}
+                    />
+                  </div>
+
+                  <div className="mt-1 hidden lg:block">
+                    <AverageStats
+                      label="Ratings"
+                      averageStats={product?.ratingsCount}
+                      href="user"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="hidden sm:block">
+                <ProductPrice
+                  discountOff={discountOff}
+                  productOnSale={productOnSale}
+                  isPercentOff={isPercentOff}
+                  discountOffLabel={discountOffLabel}
+                  price={
+                    variants && selectedCombination
+                      ? selectedCombination?.price
+                      : product?.price
+                  }
+                />
+              </div>
+            </div>
+          </Section>
+
+          <ProductVariants
+            quantity={quantity}
+            variants={variants}
+            setQuantity={setQuantity}
+            discountOff={discountOff}
+            isPercentOff={isPercentOff}
+            productOnSale={productOnSale}
+            productPicture={product.image}
+            discountOffLabel={discountOffLabel}
+            changeCombination={changeCombination}
+            selectedCombination={selectedCombination}
+            setSelectedVariantPicture={setSelectedVariantPicture}
+            selectedVariantPicture={selectedVariantPicture[0] || undefined}
+            price={
+              variants && selectedCombination
+                ? selectedCombination?.price
+                : product?.price
+            }
+          />
+
+          <div className="hidden sm:block">
+            <ProductQuantity quantity={quantity} setQuantity={setQuantity} />
+          </div>
+
           <ProductCTAs
             selectedCombination={selectedCombination}
             quantity={quantity}
             productId={product?.id}
-            stock={variants ? selectedCombination?.stock : product?.quantity}
+            stock={
+              variants && selectedCombination
+                ? selectedCombination?.stock
+                : product?.quantity
+            }
           />
         </div>
-      </div>
 
-      <div className="hidden flex-shrink-0 lg:block">
-        <ProductSideInfo product={product} />
+        <div className="hidden flex-shrink-0 lg:block">
+          <ProductSideInfo product={product} />
+        </div>
       </div>
-    </div>
+    </>
   );
 };

@@ -44,24 +44,31 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
 
   useEffect(() => {
     // Make it real
+    if (selectedIndex === -1) return;
+
     setSelectedPicture(images[selectedIndex]);
     setSelectedVariantPicture([]);
   }, [selectedIndex]);
 
   const isVeryLargeDevices = useMediaQuery("(min-width:1024px)");
   const isLargeDevices = useMediaQuery("(max-width:1024px)");
+  const isSmallDevices = useMediaQuery("(max-width:640px)");
 
   const imagesToMapOver = selectedVariantPicture.length
     ? selectedVariantPicture
     : images;
 
+  // useEffect(() => {
+  //   console.log(imagesToMapOver);
+  // }, [imagesToMapOver]);
+
   useEffect(() => {
     //So It triggers a rerender no matter what index of item is clicked same or not
-    setSelectedIndex(-1);
+    if (selectedVariantPicture.length) setSelectedIndex(-1);
   }, [selectedVariantPicture]);
 
   return (
-    <div className="flex items-start gap-2 max-lg:justify-start lg:flex-col">
+    <div className="relative flex items-start gap-2 max-lg:justify-start lg:flex-col">
       <div className="relative hidden h-72 w-72 overflow-hidden rounded-sm max-lg:order-2 lg:block xl:h-80 xl:w-80">
         <Image
           src={selectedVariantPicture[0] || selectedPicture || mainImage || ""}
@@ -72,7 +79,7 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
       </div>
 
       <div className="flex w-full gap-6">
-        <div className="hidden h-80 flex-col flex-wrap gap-4 md:flex">
+        <div className="hidden h-80 flex-col flex-wrap gap-4 md:flex lg:hidden">
           {images.map((img, i) => (
             <div
               key={i}
@@ -85,17 +92,21 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
         </div>
 
         {isLargeDevices && (
-          <div className="h-auto w-full">
+          <div className="h-fit w-full">
             <Carousel
               onChange={(index) => {
                 setSelectedIndex(index);
               }}
               selectedItem={selectedVariantPicture.length ? 0 : selectedIndex}
+              showArrows={!isSmallDevices}
               showStatus={false}
               swipeable={true}
             >
               {imagesToMapOver.map((img) => (
-                <div key={img} className="relative aspect-video h-auto w-full">
+                <div
+                  key={img}
+                  className="relative aspect-1 h-auto w-full sm:aspect-[16/9]"
+                >
                   <Image
                     src={img || ""}
                     alt="Product Picture"
