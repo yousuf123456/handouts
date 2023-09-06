@@ -21,8 +21,8 @@ interface IParams {
 
 export default async function page({ params }: { params: IParams }) {
   return (
-    <div className="w-full overflow-x-hidden bg-slate-100 py-2 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
-      <NavigationPanel heading="Product Details" />
+    <div className="w-full overflow-x-hidden bg-slate-100 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
+      <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
         <Suspense fallback={<InformationLoading />}>

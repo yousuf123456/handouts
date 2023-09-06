@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import { Heart } from "lucide-react";
 import { TooltipWrapper } from "@/app/components/TooltipWrapper";
 import { addFavouriteItem } from "@/app/store/features/favouritesSlice";
+import { Section } from "./containers/Section";
 
 interface ProductCTAsProps {
   selectedCombination: CombinationsType | undefined;
@@ -108,13 +109,14 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
   };
 
   return (
-    <div>
+    <div className="flex h-full w-full items-end">
       {stock ? (
-        <div className="flex h-full w-full items-end gap-3 max-sm:flex-col max-sm:px-3 sm:gap-4">
-          <Button
-            variant={"outline"}
-            onClick={onAddToCart}
-            className="
+        <Section mode="padding">
+          <div className="flex h-full w-full items-end gap-3 max-sm:flex-col max-sm:px-3 sm:gap-4">
+            <Button
+              variant={"outline"}
+              onClick={onAddToCart}
+              className="
               flex 
               h-9 
               w-full 
@@ -127,14 +129,14 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
               hover:bg-rose-500 
               max-sm:order-2
               max-sm:rounded-3xl"
-          >
-            Add to Cart
-          </Button>
+            >
+              Add to Cart
+            </Button>
 
-          <Button
-            variant={"default"}
-            onClick={onClick}
-            className="
+            <Button
+              variant={"default"}
+              onClick={onClick}
+              className="
               h-9 
               w-full
               rounded-md
@@ -145,19 +147,20 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
               text-white
               hover:bg-rose-600
               max-sm:rounded-3xl"
-          >
-            Buy Now
-          </Button>
+            >
+              Buy Now
+            </Button>
 
-          <div className="hidden xl:block">
-            <TooltipWrapper content="Add to Favourites">
-              <Heart
-                onClick={onFavouritesAdd}
-                className="h-9 w-9 cursor-pointer text-themeSecondary"
-              />
-            </TooltipWrapper>
+            <div className="hidden xl:block">
+              <TooltipWrapper content="Add to Favourites">
+                <Heart
+                  onClick={onFavouritesAdd}
+                  className="h-9 w-9 cursor-pointer text-themeSecondary"
+                />
+              </TooltipWrapper>
+            </div>
           </div>
-        </div>
+        </Section>
       ) : (
         <div className="flex items-center gap-3">
           <p className="font-text text-xl font-semibold tracking-wider text-red-500">

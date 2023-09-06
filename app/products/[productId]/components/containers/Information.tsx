@@ -26,7 +26,7 @@ export const Information: React.FC<InformationProps> = async ({
   return (
     <ReduxProvider>
       <div className="flex flex-col gap-2">
-        <div className="flex gap-1">
+        <div className="hidden gap-1 sm:flex">
           <CategoryBreadCrumbs
             productName={productInfo.name}
             categoryTree={categoryTree}

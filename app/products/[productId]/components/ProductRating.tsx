@@ -17,7 +17,12 @@ export const ProductRating: React.FC<ProductRatingProps> = ({
 
   const onClick = () => {
     const ratingsElement = document.getElementById("ratings");
-    ratingsElement?.scrollIntoView({ behavior: "smooth" });
+    const topScrollPos =
+      ratingsElement?.getBoundingClientRect().top! + window.scrollY;
+    window.scrollTo({
+      behavior: "smooth",
+      top: topScrollPos - 50,
+    });
   };
 
   return (
