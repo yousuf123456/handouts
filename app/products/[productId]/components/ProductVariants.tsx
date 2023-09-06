@@ -11,6 +11,7 @@ import { ProductVariantsValues } from "./ProductVariantsValues";
 import { Seperator } from "@/app/components/Seperator";
 import { ProductQuantity } from "./ProductQuantity";
 import { ProductPrice } from "@/app/components/ProductPrice";
+import { SectionHeading } from "./SectionHeading";
 
 interface ProductVariantsProps {
   discountOffLabel: any;
@@ -49,7 +50,7 @@ export const ProductVariants: React.FC<ProductVariantsProps> = ({
     <>
       {variants && (
         <div>
-          <div className="hidden sm:block">
+          <div className="hidden md:block">
             <ProductVariantsValues
               variants={variants}
               changeCombination={changeCombination}
@@ -58,15 +59,15 @@ export const ProductVariants: React.FC<ProductVariantsProps> = ({
             />
           </div>
 
-          <div className="sm:hidden">
-            <Section mode="full">
+          <div className="md:hidden">
+            <Section mode="full" variant="differentiate">
               <div
                 onClick={() => setOpen((prev) => !prev)}
                 className="flex cursor-pointer flex-col gap-2"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <p className="font-text text-sm text-slate-700">Variants</p>
+                    <SectionHeading>Variants</SectionHeading>
 
                     <p className="text-xs capitalize text-black">
                       {Object.keys(selectedCombination?.combination || {}).map(
@@ -137,7 +138,7 @@ export const ProductVariants: React.FC<ProductVariantsProps> = ({
               <Seperator />
 
               <div className="flex max-h-72 flex-col gap-4 overflow-y-auto scrollbar-thin scrollbar-track-neutral-100 scrollbar-thumb-neutral-300">
-                <div className="sm:hidden">
+                <div className="md:hidden">
                   <ProductVariantsValues
                     variants={variants}
                     changeCombination={changeCombination}

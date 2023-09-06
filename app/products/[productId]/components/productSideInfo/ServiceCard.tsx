@@ -15,9 +15,13 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 }) => {
   return (
     <div className="flex items-center gap-3">
-      <Icon className={cn("h-5 w-5 text-black", className)} />
+      <Icon
+        className={cn("h-4 w-4 text-themeSecondary md:h-5 md:w-5", className)}
+      />
 
-      <p className="font-text text-sm capitalize text-black">{label}</p>
+      <p className="text-xs font-medium capitalize text-black sm:text-sm">
+        {label}
+      </p>
     </div>
   );
 };

@@ -18,7 +18,12 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
 }) => {
   const onClick = () => {
     const storeInfoElement = document.getElementById("storeInfo");
-    storeInfoElement?.scrollIntoView({ behavior: "smooth" });
+    const top = storeInfoElement?.getBoundingClientRect().top! + window.scrollY;
+
+    window.scrollTo({
+      top: top! - 50,
+      behavior: "smooth",
+    });
   };
 
   return (

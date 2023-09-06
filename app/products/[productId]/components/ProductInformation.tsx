@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 
 import { AverageStats } from "./AverageStats";
-import { RatingStars } from "@/app/components/RatingStars";
 import { CombinationsType, ProductInfo, VariantsType } from "@/app/types";
 import { ProductVariants } from "./ProductVariants";
 import { ProductCTAs } from "./ProductCTAs";
@@ -15,7 +14,6 @@ import {
 } from "@/app/store/features/productMinorInfoSlice";
 
 import { ProductPrice } from "@/app/components/ProductPrice";
-import { Quantity } from "@/app/components/Quantity";
 import { getPriceInfo } from "@/app/utils/getPriceInfo";
 import { ProductSideInfo } from "./productSideInfo/ProductSideInfo";
 import find from "lodash/find";
@@ -26,6 +24,9 @@ import { HiChevronRight } from "react-icons/hi";
 import { StoreInfoCTA } from "./StoreInfoCTA";
 import { ProductQuantity } from "./ProductQuantity";
 import { Section } from "./containers/Section";
+import { ProductSpecifications } from "./ProductSpecifications";
+import { StoreInfo } from "./productSideInfo/StoreInfo";
+import { Services } from "./productSideInfo/Services";
 
 interface ProductInformationProps {
   product: ProductInfo;
@@ -120,12 +121,17 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
 
   const scrollToQuestions = () => {
     const questionsElement = document.getElementById("questions");
-    questionsElement?.scrollIntoView({ behavior: "smooth" });
+    const topScrollPos =
+      questionsElement?.getBoundingClientRect().top! + window.scrollY;
+    window.scrollTo({
+      behavior: "smooth",
+      top: topScrollPos - 50,
+    });
   };
 
   return (
     <>
-      <div className="flex gap-0 max-lg:flex-col max-sm:bg-slate-50">
+      <div className="flex gap-0 max-lg:flex-col max-sm:bg-neutral-50">
         <ProductImages
           setSelectedVariantPicture={setSelectedVariantPicture}
           selectedVariantPicture={selectedVariantPicture}
@@ -133,7 +139,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
           images={fakeDetailedImages}
         />
 
-        <div className="relative flex w-full flex-col gap-8 px-0 max-md:-top-4 max-sm:-top-6 sm:px-3 md:px-6 lg:ml-2 xl:ml-6">
+        <div className="relative flex w-full flex-col gap-4 px-0 max-md:-top-4 max-sm:-top-6 sm:gap-6 sm:px-3 md:gap-8 md:px-6 lg:ml-2 xl:ml-6">
           <Section mode="padding">
             <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 lg:gap-8">
               <div className="flex flex-col gap-3 sm:gap-2">
@@ -228,7 +234,13 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
             }
           />
 
-          <div className="hidden sm:block">
+          <div className="w-full md:hidden">
+            <ProductSpecifications
+              productAttributes={product?.attributes as any}
+            />
+          </div>
+
+          <div className="hidden md:block">
             <ProductQuantity quantity={quantity} setQuantity={setQuantity} />
           </div>
 
@@ -242,6 +254,14 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
                 : product?.quantity
             }
           />
+
+          <div className="w-full lg:hidden">
+            <Services />
+          </div>
+
+          <div className="w-full lg:hidden">
+            <StoreInfo store={product.store} />
+          </div>
         </div>
 
         <div className="hidden flex-shrink-0 lg:block">
