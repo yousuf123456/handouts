@@ -54,7 +54,7 @@ export const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({
         <div className="mt-4">
           <div className="flex flex-col gap-3">
             {Object.keys(productAttributes).map((key) => (
-              <div className="flex flex-col gap-0">
+              <div key={key} className="flex flex-col gap-0">
                 <p className=" text-sm font-medium capitalize text-black">
                   {key}
                 </p>
