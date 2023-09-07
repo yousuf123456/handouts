@@ -1,23 +1,26 @@
-"use client"
-import { Heading } from '@/app/(site)/components/Heading'
-import CircularProgress from '@mui/material/CircularProgress'
-import React from 'react'
-import { Container } from '../../Container'
+"use client";
+import { Heading } from "@/app/(site)/components/Heading";
+import CircularProgress from "@mui/material/CircularProgress";
+import React from "react";
+import { Container } from "../../Container";
+import { LinearProgress, useMediaQuery } from "@mui/material";
 
 export const ProductsFromStoreLoading = () => {
-  return (
-    <div className='flex-shrink-0 h-full'>
-      <Container wFit={true}>
-        <div className='flex flex-col items-center gap-4'>
-          <Heading>
-              From the Same Store
-          </Heading>
+  const isLargeDevices = useMediaQuery("(max-width:1024px)");
 
-          <CircularProgress 
-            color="secondary" 
-          />
+  return (
+    <div className="h-full flex-shrink-0 max-lg:w-full">
+      <Container wFit={!isLargeDevices}>
+        <div className="flex flex-col gap-4 lg:items-center">
+          <Heading>From the Same Store</Heading>
+
+          {isLargeDevices ? (
+            <LinearProgress color="secondary" />
+          ) : (
+            <CircularProgress color="secondary" />
+          )}
         </div>
       </Container>
     </div>
-  )
-}
+  );
+};

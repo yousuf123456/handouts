@@ -32,11 +32,11 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = async ({
     <div className="flex flex-col gap-4">
       <Heading>Similar Products</Heading>
 
-      <div className="flex flex-wrap justify-between gap-3">
+      <ProductsListLayout className="lg:grid-cols-4 xl:grid-cols-5">
         {similarProducts.map((product, i) => (
-          <ProductCard key={i} product={product} />
+          <ProductCard dynamic key={i} product={product} />
         ))}
-      </div>
+      </ProductsListLayout>
     </div>
   );
 };

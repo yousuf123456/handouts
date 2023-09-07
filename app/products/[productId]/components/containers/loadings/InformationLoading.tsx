@@ -1,85 +1,103 @@
-'use client'
-import Skeleton from '@mui/material/Skeleton';
-import React from 'react'
+"use client";
+
+import React from "react";
+import { Container } from "../../Container";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Seperator } from "@/app/components/Seperator";
 
 export const InformationLoading = () => {
   return (
-    <div className='flex gap-0'>
-        <div className='flex flex-col gap-2 items-start'>
-            <Skeleton variant='rounded' height={320} width={320} />
+    <Container>
+      <div className="hidden gap-0 lg:flex">
+        <div className="flex flex-col items-start gap-2">
+          <Skeleton className="h-80 w-80" />
 
-            <div className='w-80 flex gap-2 items-center justify-center'>
-                <Skeleton variant='rounded' width={26} height={26} />   
-                <div className='flex gap-3'>
-                    <Skeleton variant='rounded' height={64} width={64} />
-                    <Skeleton variant='rounded' height={64} width={64} />
-                    <Skeleton variant='rounded' height={64} width={64} />
-                </div>                         
-                <Skeleton variant='rounded' width={26} height={26} />
+          <div className="flex w-80 items-center justify-center gap-2">
+            <Skeleton className="w- h-7" />
+            <div className="flex gap-3">
+              <Skeleton className=" h-16 w-16" />
+              <Skeleton className=" h-16 w-16" />
+              <Skeleton className=" h-16 w-16" />
             </div>
+            <Skeleton className="h-7 w-7" />
+          </div>
         </div>
 
-        <div className='ml-6 px-6 w-full flex flex-col gap-4'>
-            <div className='flex flex-col gap-2'>
-                <Skeleton variant='text' width={248} sx={{ fontSize: '2.5rem' }} />
-                <div className='flex flex-col gap-0'>
-                    <div className='flex gap-2 items-center'>
-                        <Skeleton variant='rounded' width={120} height={26} />   
-                        <Skeleton variant='text' width={48} sx={{ fontSize: '0.875rem' }} />
-                    </div>
+        <div className="ml-6 flex w-full flex-col gap-4 px-6">
+          <div className="flex flex-col gap-3">
+            <Skeleton className="h-8 w-64" />
 
-                    <div className='mt-1'>
-                        <Skeleton variant='text' width={120} sx={{ fontSize: '0.75rem' }} />
-                    </div>
-                </div>
+            <Skeleton className="h-8 w-64" />
+          </div>
+
+          <Seperator className="bg-slate-200" />
+
+          <div className="flex gap-4">
+            <Skeleton className="h-5 w-14 flex-shrink-0" />
+
+            <div className="flex flex-wrap gap-4">
+              {Array.from({ length: 5 }, (_, index) => (
+                <Skeleton key={index} className="h-8 w-20" />
+              ))}
             </div>
+          </div>
 
-            <div className='flex flex-col gap-0'>
-                <Skeleton variant='text' width={120} sx={{ fontSize: '2.5rem' }} />
+          <Seperator className="bg-slate-200" />
+
+          <div className="mt-0 flex items-center gap-4">
+            <Skeleton className="h-5 w-14" />
+
+            <div className="flex gap-1">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="h-8 w-16" />
+              <Skeleton className="h-8 w-8" />
             </div>
+          </div>
 
-            <div className='mt-0 flex gap-2 items-center'>
-                <Skeleton variant='text' width={72} sx={{ fontSize: '1.2rem' }} />
-                <Skeleton variant='text' width={8} sx={{ fontSize: '1.2rem' }} />
-                <div className='flex gap-1'>
-                    <Skeleton variant='rounded' width={24} height={24} />
-                    <Skeleton variant='rounded' width={48} height={24} />
-                    <Skeleton variant='rounded' width={24} height={24} />
-                </div>
-            </div>
+          <Seperator className="bg-slate-200" />
 
-
-            <div className='h-full flex items-end gap-12'>
-                <Skeleton variant='rounded' width={164} height={42} />
-                <Skeleton variant='rounded' width={144} height={42} />
-            </div>
+          <div className="flex h-full items-end gap-5">
+            <Skeleton className=" h-11 w-full" />
+            <Skeleton className="h-11 w-full" />
+          </div>
         </div>
 
-        <div className='px-4 w-56 border-l-2 border-slate-300 flex-shrink-0'>
-            <div className='flex flex-col gap-2'>
-                <Skeleton variant='text' width={80} sx={{ fontSize: '0.875rem' }} />
+        <div className="w-56 flex-shrink-0 border-l-[1px] border-slate-200 px-4">
+          <div className="flex flex-col gap-6">
+            <Skeleton className="h-36 w-full" />
 
-                <div className='w-full p-3 bg-slate-100 flex flex-col items-center'>
-                    <Skeleton variant='circular' width={96} height={96} />
-
-                    <Skeleton variant='text' width={120} sx={{ fontSize: '1.5rem' }} />
-
-                    <div className='mt-4 mb-4 w-full flex flex-col gap-2 items-start'>
-                        <div className='w-full flex flex-col gap-0'>
-                            <Skeleton variant='text' width={80} sx={{ fontSize: '0.75rem' }} />
-                            <Skeleton variant='rounded' width={120} height={26} />
-                        </div>
-
-                        <div className='w-full flex flex-col gap-0'>
-                            <Skeleton variant='text' width={80} sx={{ fontSize: '0.75rem' }} />
-                            <Skeleton variant='rounded' width={120} height={26} />
-                        </div>
-                    </div>
-
-                    <Skeleton variant='text' width={96} sx={{ fontSize: '1.3rem' }} />
-                </div>
-            </div>
+            <Skeleton className="h-36 w-full" />
+          </div>
         </div>
-    </div>
-  )
-}
+      </div>
+
+      <div className="lg:hidden">
+        <div className="mt-3 flex flex-col gap-6">
+          <div className="flex gap-4">
+            <div className="hidden flex-col gap-3 sm:flex">
+              {Array.from({ length: 3 }, (_, index) => (
+                <Skeleton key={index} className="h-16 w-[60px]" />
+              ))}
+            </div>
+
+            <Skeleton className="aspect-[16/9] h-auto w-full" />
+          </div>
+
+          <div className="flex flex-col gap-6 md:pl-[76px]">
+            <Skeleton className="h-9 w-full sm:w-80 md:h-12" />
+
+            <Skeleton className="h-9 w-full sm:w-80 md:h-12" />
+
+            <Skeleton className="h-9 w-full sm:w-80 md:h-12" />
+
+            <div className="flex gap-8">
+              <Skeleton className="h-9 w-full md:h-12" />
+
+              <Skeleton className="h-9 w-full md:h-12" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  );
+};

@@ -103,7 +103,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           <SheetTitle>Share Product</SheetTitle>
         </SheetHeader>
 
-        <div className="mt-4 grid grid-cols-4 place-items-center gap-y-6 min-[420px]:grid-cols-5 sm:grid-cols-7">
+        <div className="my-6 grid grid-cols-4 place-items-center gap-y-6 min-[420px]:grid-cols-5 sm:grid-cols-7">
           <ShareLinks
             url={url}
             quote="But this amazing product from Handouts"

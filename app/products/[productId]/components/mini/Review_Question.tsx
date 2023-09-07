@@ -1,12 +1,17 @@
+import { cn } from "@/lib/utils";
 import React, { ReactNode } from "react";
 
 interface Review_Question {
   children: ReactNode;
+  className?: string;
 }
 
-export const Review_Question: React.FC<Review_Question> = ({ children }) => {
+export const Review_Question: React.FC<Review_Question> = ({
+  children,
+  className,
+}) => {
   return (
-    <p className="font-text text-[13px] font-medium leading-[16px] text-black sm:text-sm">
+    <p className={cn("font-text text-sm font-medium text-black", className)}>
       {children}
     </p>
   );

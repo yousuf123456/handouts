@@ -28,14 +28,19 @@ export default async function page({ params }: { params: IParams }) {
         <Suspense fallback={<InformationLoading />}>
           <Information productId={params.productId} />
         </Suspense>
+        {/* <InformationLoading /> */}
 
         <div className="flex items-start gap-6 max-lg:flex-col">
-          <div className="flex flex-col gap-6">
+          <div className="flex w-full flex-col gap-6">
             <Container>
               <Suspense fallback={<DetailsLoading />}>
                 <Details productId={params.productId} />
               </Suspense>
             </Container>
+
+            {/* <Container>
+              <DetailsLoading />
+            </Container> */}
 
             <Container id="ratings">
               <Suspense fallback={<ReviewsLoading />}>
@@ -43,20 +48,36 @@ export default async function page({ params }: { params: IParams }) {
               </Suspense>
             </Container>
 
+            {/* <Container>
+              <ReviewsLoading />
+            </Container> */}
+
             <Container id="questions">
               <Suspense fallback={<QuestionsLoading />}>
                 <Questions productId={params.productId} />
               </Suspense>
             </Container>
 
+            {/* <Container>
+              <QuestionsLoading />
+            </Container> */}
+
             <Suspense fallback={<SimilarProductsLoading />}>
-              <SimilarProducts productId={params.productId} />
+              <Container>
+                <SimilarProducts productId={params.productId} />
+              </Container>
             </Suspense>
+
+            {/* <Container>
+              <SimilarProductsLoading />
+            </Container> */}
           </div>
 
           <Suspense fallback={<ProductsFromStoreLoading />}>
             <ProductsFromStore productId={params.productId} />
           </Suspense>
+
+          {/* <ProductsFromStoreLoading /> */}
         </div>
       </div>
     </div>

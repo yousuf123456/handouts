@@ -13,7 +13,8 @@ export const HeaderInfo: React.FC<HeaderInfoProps> = ({
   name,
   className,
 }) => {
-  const ClassName = "text-xs font-text font-medium text-slate-600";
+  const ClassName =
+    "text-[11px] leading-[16px] md:text-xs font-text font-medium text-slate-600";
 
   return (
     <div className="flex gap-3">
