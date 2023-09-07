@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FacetHeader } from "./FacetHeader";
 import TextField from "@mui/material/TextField";
 import { Button } from "@/app/components/Button";
@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { updateSearchParam } from "@/app/utils/updateSearchParam";
 import { useAppDispatch } from "@/app/store/store";
 import { addSelectedFacet } from "@/app/store/features/selectedFacetsSlice";
+import { Input } from "@/components/ui/input";
 
 export const PriceFacet = () => {
   const [collapsed, setIsCollapsed] = useState(false);
@@ -51,24 +52,19 @@ export const PriceFacet = () => {
       {!collapsed && (
         <div className="flex flex-col items-end gap-2">
           <div className="flex gap-2">
-            <TextField
-              fullWidth
-              label="From"
-              size="small"
+            <Input
               type="number"
-              autoFocus={false}
-              error={fromError}
               value={from}
+              placeholder="From"
+              id="minPrice"
               onChange={(e) => setFrom(e.target.value)}
             />
-            <TextField
-              fullWidth
-              label="To"
-              autoFocus={false}
-              size="small"
-              type="number"
-              error={toError}
+
+            <Input
               value={to}
+              type="number"
+              placeholder="To"
+              autoFocus={false}
               onChange={(e) => setTo(e.target.value)}
             />
           </div>

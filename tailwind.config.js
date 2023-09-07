@@ -86,6 +86,9 @@ module.exports = {
         heading: ["var(--font-poppins)"],
         superHeading: ["var(--font-nunito)"],
       },
+      aspectRatio: {
+        auto: "auto",
+      },
     },
   },
   plugins: [

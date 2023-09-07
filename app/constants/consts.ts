@@ -8,7 +8,7 @@ export const REVIEWS_PER_PAGE = 5;
 
 export const CANCELLATIONS_PER_PAGE = 5;
 
-export const PRODUCTS_REVIEWS_PER_PAGE = 1;
+export const PRODUCTS_REVIEWS_PER_PAGE = 8;
 
 export const PRODUCTS_QUESTIONS_PER_PAGE = 5;
 
