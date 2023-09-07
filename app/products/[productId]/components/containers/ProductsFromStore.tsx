@@ -18,8 +18,8 @@ export const ProductsFromStore: React.FC<ProductsFromStoreProps> = async ({
   }
 
   return (
-    <div className="flex-shrink-0">
-      <Container className="bg-transparent lg:bg-white">
+    <div className="flex-shrink-0 max-lg:w-full">
+      <Container>
         <ProductsFromSameStore products={productsFromSameStore} />
       </Container>
     </div>

@@ -46,7 +46,9 @@ export const RatingAndReviewCard: React.FC<RatingAndReviewCardProps> = ({
           </div>
 
           <div>
-            <Review_Question>{ratingAndReview.review}</Review_Question>
+            <Review_Question className="text-[13px] leading-[16px] sm:text-sm">
+              {ratingAndReview.review}
+            </Review_Question>
           </div>
 
           <div className="mt-2 flex flex-wrap gap-2">

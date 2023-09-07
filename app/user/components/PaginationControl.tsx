@@ -1,118 +1,130 @@
-"use client"
+"use client";
 
-import { getSearchParamsArray } from '@/app/products/[productId]/customer-reviews/utils/getSearchParamsArray';
-import { Button } from '@/components/ui/button';
-import Pagination from '@mui/material/Pagination'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import { HiChevronLeft } from 'react-icons/hi';
+import { getSearchParamsArray } from "@/app/products/[productId]/customer-reviews/utils/getSearchParamsArray";
+import { Button } from "@/components/ui/button";
+import Pagination from "@mui/material/Pagination";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { HiChevronLeft } from "react-icons/hi";
 
 interface PaginationControlProps {
-    count : number;
-    offset? : boolean;
-    ITEMS_PER_PAGE : number;
-    jumpingDisabled? : boolean;
-    firstItemTieBreaker? : string | undefined;
-    lastItemTieBreaker? : string | undefined;
-    lastCursor? : string | number | undefined;
-    firstCursor? : string | number | undefined;
+  count: number;
+  offset?: boolean;
+  ITEMS_PER_PAGE: number;
+  jumpingDisabled?: boolean;
+  firstItemTieBreaker?: string | undefined;
+  lastItemTieBreaker?: string | undefined;
+  lastCursor?: string | number | undefined;
+  firstCursor?: string | number | undefined;
 }
 
 export const PaginationControl: React.FC<PaginationControlProps> = ({
-    count,
-    offset,
-    lastCursor,
-    firstCursor,
-    ITEMS_PER_PAGE,
-    jumpingDisabled,
-    lastItemTieBreaker,
-    firstItemTieBreaker,
+  count,
+  offset,
+  lastCursor,
+  firstCursor,
+  ITEMS_PER_PAGE,
+  jumpingDisabled,
+  lastItemTieBreaker,
+  firstItemTieBreaker,
 }) => {
+  const searchParams = useSearchParams();
+  const page = parseInt(searchParams.get("page") || "0");
 
-    const searchParams = useSearchParams();
-    const page = parseInt(searchParams.get("page") || "0");
+  const [currentPage, setCurrentPage] = useState(page || 1);
 
-    const [currentPage, setCurrentPage] = useState(page || 1);
+  useEffect(() => {
+    setCurrentPage(page || 1);
+  }, [page]);
 
-    useEffect(()=> {
-        setCurrentPage(page || 1)
-    }, [page])
+  const router = useRouter();
+  const pathname = usePathname();
 
-    const router = useRouter();
-    const pathname = usePathname();
+  const isHistory = searchParams.get("isHistory");
+  const toBeReviewed = searchParams.get("toBeReviewed");
+  const sortBy = searchParams.get("sortBy");
 
-    const isHistory = searchParams.get("isHistory");
-    const toBeReviewed = searchParams.get("toBeReviewed");
-    const sortBy = searchParams.get("sortBy")
-    
-    const handleChange = (e :any, page : number, prev? : boolean, next? : boolean)=>{
-        if(currentPage === page) return
+  const handleChange = (
+    e: any,
+    page: number,
+    prev?: boolean,
+    next?: boolean,
+  ) => {
+    if (currentPage === page) return;
 
-        const paramsToRemove = ["page", "prevPage", "cursor", "tieBreaker"]
-        let oldSearchParamsArray = getSearchParamsArray(searchParams, paramsToRemove);
-        
-        const nextPageToGo = page !== 0 ? page : (next ? currentPage + 1 : currentPage - 1)
+    const paramsToRemove = ["page", "prevPage", "cursor", "tieBreaker"];
+    let oldSearchParamsArray = getSearchParamsArray(
+      searchParams,
+      paramsToRemove,
+    );
 
-        const cursor = (nextPageToGo > currentPage) ? lastCursor : firstCursor
+    const nextPageToGo =
+      page !== 0 ? page : next ? currentPage + 1 : currentPage - 1;
 
-        let searchParamsArray = [
-            `page=${nextPageToGo}`,
-        ]
+    const cursor = nextPageToGo > currentPage ? lastCursor : firstCursor;
 
-        if(!offset) searchParamsArray = [
-            ...searchParamsArray,
-            `prevPage=${currentPage}`,
-            `cursor=${cursor}`,
-        ]
+    let searchParamsArray = [`page=${nextPageToGo}`];
 
-        const tieBreaker = (nextPageToGo > currentPage) ? lastItemTieBreaker : firstItemTieBreaker
-        if(sortBy) searchParamsArray.push(`tieBreaker=${tieBreaker}`)
+    if (!offset)
+      searchParamsArray = [
+        ...searchParamsArray,
+        `prevPage=${currentPage}`,
+        `cursor=${cursor}`,
+      ];
 
-        if(isHistory && toBeReviewed) searchParamsArray = [
-            `toBeReviewed=${toBeReviewed}`,
-            `isHistory=${isHistory}`,
-            ...searchParamsArray
-        ]
+    const tieBreaker =
+      nextPageToGo > currentPage ? lastItemTieBreaker : firstItemTieBreaker;
+    if (sortBy) searchParamsArray.push(`tieBreaker=${tieBreaker}`);
 
-        searchParamsArray = [
-            ...searchParamsArray,
-            ...oldSearchParamsArray
-        ]
+    if (isHistory && toBeReviewed)
+      searchParamsArray = [
+        `toBeReviewed=${toBeReviewed}`,
+        `isHistory=${isHistory}`,
+        ...searchParamsArray,
+      ];
 
-        const searchParamsString = searchParamsArray.join("&");
+    searchParamsArray = [...searchParamsArray, ...oldSearchParamsArray];
 
-        router.push(`${pathname}?${searchParamsString}`)
+    const searchParamsString = searchParamsArray.join("&");
 
-        setCurrentPage(nextPageToGo)
-    }
+    router.push(`${pathname}?${searchParamsString}`);
 
-    const noOfPages = Math.ceil(count / ITEMS_PER_PAGE);
+    setCurrentPage(nextPageToGo);
+  };
+
+  const noOfPages = Math.ceil(count / ITEMS_PER_PAGE);
 
   return (
-    <div className='w-full flex justify-end'>
-        {
-            jumpingDisabled && 
-            <div className='flex gap-4'>
-                <Button disabled={currentPage === 1} variant="outline" onClick={()=> handleChange(0, 0, true, false)}>
-                    <HiChevronLeft className='w-4 h-4 mr-2'/> Previous
-                </Button>
+    <div className="flex w-full justify-end">
+      {jumpingDisabled && (
+        <div className="flex gap-4">
+          <Button
+            disabled={currentPage === 1}
+            variant="outline"
+            onClick={() => handleChange(0, 0, true, false)}
+          >
+            <HiChevronLeft className="mr-2 h-4 w-4" /> Previous
+          </Button>
 
-                <Button disabled={currentPage === 2} variant="outline" onClick={()=> handleChange(0, 0, false, true)}>
-                    Next <HiChevronLeft className='w-4 h-4 ml-2 rotate-180'/> 
-                </Button>
-            </div>
-        }
+          <Button
+            disabled={currentPage === 2}
+            variant="outline"
+            onClick={() => handleChange(0, 0, false, true)}
+          >
+            Next <HiChevronLeft className="ml-2 h-4 w-4 rotate-180" />
+          </Button>
+        </div>
+      )}
 
-        {
-            !jumpingDisabled && noOfPages !== 1 &&
-            <Pagination 
-                color='primary' 
-                shape="rounded" 
-                count={noOfPages} 
-                onChange={handleChange}
-                page={page || 1}
-            />
-        }
+      {!jumpingDisabled && noOfPages !== 1 && (
+        <Pagination
+          color="primary"
+          shape="rounded"
+          count={noOfPages}
+          onChange={handleChange}
+          page={page || 1}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
