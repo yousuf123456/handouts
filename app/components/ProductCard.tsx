@@ -82,7 +82,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
 
             <div className="flex items-center gap-1">
-              <RatingStars defaultValue={product.avgRating} size="small" />
+              <RatingStars
+                defaultValue={product.avgRating}
+                iconSize="text-[14px] md:text-[16px]"
+              />
 
               <p className="font-text text-[12px] font-semibold text-slate-500">
                 {product.avgRating + "/5"}
