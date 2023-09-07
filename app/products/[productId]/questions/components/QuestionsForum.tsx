@@ -49,7 +49,7 @@ export const QuestionsForum: React.FC<QuestionsForumProps> = ({
       {questions.length !== 0 ? (
         <div className="flex flex-col gap-4">
           <div className="flex w-full items-center justify-between">
-            <p className="font-text text-sm md:text-base">
+            <p className="font-text text-xs sm:text-sm md:text-base">
               Total {questionsCount} questions on this product
             </p>
 
