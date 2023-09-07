@@ -7,7 +7,7 @@ import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 import Image from "next/image";
 import clsx from "clsx";
-import { useMediaQuery } from "@mui/material";
+import { Skeleton, useMediaQuery } from "@mui/material";
 import { ProductImage } from "@/app/components/ProductImage";
 
 interface ProductImagesProps {
@@ -58,10 +58,6 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
     ? selectedVariantPicture
     : images;
 
-  // useEffect(() => {
-  //   console.log(imagesToMapOver);
-  // }, [imagesToMapOver]);
-
   useEffect(() => {
     //So It triggers a rerender no matter what index of item is clicked same or not
     if (selectedVariantPicture.length) setSelectedIndex(-1);
@@ -91,33 +87,32 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
           ))}
         </div>
 
-        {isLargeDevices && (
-          <div className="h-fit w-full">
-            <Carousel
-              onChange={(index) => {
-                setSelectedIndex(index);
-              }}
-              selectedItem={selectedVariantPicture.length ? 0 : selectedIndex}
-              showArrows={!isSmallDevices}
-              showStatus={false}
-              swipeable={true}
-            >
-              {imagesToMapOver.map((img) => (
-                <div
-                  key={img}
-                  className="relative aspect-1 h-auto w-full sm:aspect-[16/9]"
-                >
-                  <Image
-                    src={img || ""}
-                    alt="Product Picture"
-                    className=" object-cover"
-                    fill
-                  />
-                </div>
-              ))}
-            </Carousel>
-          </div>
-        )}
+        <div className="h-fit w-full lg:hidden">
+          <Carousel
+            onChange={(index) => {
+              setSelectedIndex(index);
+            }}
+            selectedItem={selectedVariantPicture.length ? 0 : selectedIndex}
+            showArrows={!isSmallDevices}
+            showStatus={false}
+            swipeable={true}
+          >
+            {imagesToMapOver.map((img, i) => (
+              <div
+                key={img}
+                className="relative aspect-1 h-auto w-full sm:aspect-[16/9]"
+              >
+                <Image
+                  src={img || ""}
+                  alt="Product Picture"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  className=" object-cover"
+                  fill
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
       </div>
 
       {isVeryLargeDevices && images?.length !== 0 && (

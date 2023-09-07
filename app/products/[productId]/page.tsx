@@ -15,8 +15,22 @@ import { SimilarProducts } from "./components/containers/SimilarProducts";
 import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
 
+import prisma from "../../libs/prismadb";
+
 interface IParams {
   productId: string;
+}
+
+export const revalidate = 7200;
+
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: {
+      id: true,
+    },
+  });
+
+  return products.map((product) => ({ productId: product.id }));
 }
 
 export default async function page({ params }: { params: IParams }) {

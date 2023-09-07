@@ -69,7 +69,7 @@ export const ProductQuestions: React.FC<ProductQuestionsProps> = ({
 
       {questions?.length !== 0 && (
         <CtaLink href={`/products/${productId}/questions`}>
-          <p className="font-text font-semibold text-themeBlue underline">
+          <p className="font-text text-sm font-semibold text-themeBlue underline max-sm:text-center sm:text-base">
             View All
           </p>
         </CtaLink>
