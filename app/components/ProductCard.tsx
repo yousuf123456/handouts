@@ -47,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div
           className={clsx(
             "relative overflow-hidden",
-            dynamic ? "aspect-square h-auto w-auto" : "h-36 sm:h-40 lg:h-48",
+            dynamic ? " aspect-1 h-auto w-auto" : "h-36 sm:h-40 lg:h-48",
           )}
         >
           <ProductImage src={product.image!} loading="lazy" />

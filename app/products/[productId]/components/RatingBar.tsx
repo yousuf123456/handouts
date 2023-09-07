@@ -1,36 +1,82 @@
-"use client"
-import { RatingStars } from '@/app/components/RatingStars'
-import LinearProgress from '@mui/material/LinearProgress';
-import React, { useMemo } from 'react'
+"use client";
+import { RatingStars } from "@/app/components/RatingStars";
+import { useMediaQuery } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
+import React, { useEffect, useMemo } from "react";
 
 interface RatingBarProps {
-    ratingNumber : number;
-    ratingsCount : number | undefined;
-    ratingNumberCount : number | undefined;
+  label: string;
+  ratingNumber: number;
+  ratingsCount: number | undefined;
+  ratingNumberCount: number | undefined;
 }
 
 export const RatingBar: React.FC<RatingBarProps> = ({
-    ratingNumber,
-    ratingsCount,
-    ratingNumberCount
+  label,
+  ratingNumber,
+  ratingsCount,
+  ratingNumberCount,
 }) => {
+  const ratingPercentage = useMemo(() => {
+    if (ratingsCount && ratingNumberCount) {
+      return (ratingNumberCount / ratingsCount) * 100;
+    }
+    return 0;
+  }, [ratingNumberCount, ratingsCount]);
 
-    const ratingPercentage = useMemo(()=>{
-        if (ratingsCount && ratingNumberCount) {
-            return (ratingNumberCount / ratingsCount) * 100
-        }
-        return 0
-    }, [ratingNumberCount, ratingsCount])
+  const isLargeDevices = useMediaQuery("(max-width:1024px)");
+  const isMediumDivices = useMediaQuery("(max-width:768px)");
+  const isSmallDivices = useMediaQuery("(max-width:640px)");
+
+  const getProgressBarWidth = () => {
+    if (isSmallDivices) return "100%";
+    if (isMediumDivices) return 192;
+
+    return 248;
+  };
+
+  const getProgressBarHeight = () => {
+    if (isSmallDivices) return 10;
+    if (isMediumDivices) return 16;
+    if (isLargeDevices) return 20;
+
+    return 24;
+  };
+
+  const progressBarWidth = getProgressBarWidth();
+  const progressBarHeight = getProgressBarHeight();
+
+  const progressBarBorderRadius = isSmallDivices ? 12 : 0;
 
   return (
-    <div className='flex gap-3 items-center'>
-        <RatingStars defaultValue={ratingNumber} size='small' /> 
+    <div className="flex w-full items-center gap-2 min-[440px]:gap-4 sm:gap-3">
+      <div className="hidden sm:block">
+        <RatingStars
+          defaultValue={ratingNumber}
+          iconSize="text-[14px] md:text-[16px]"
+        />
+      </div>
 
-        <LinearProgress value={ratingPercentage} color='primary' variant="determinate" sx={{ height : 24, width : 248 }} />
+      <p className="w-12 flex-shrink-0 font-text text-xs font-semibold text-black sm:hidden">
+        {label}
+      </p>
 
-        <p className='text-base font-text font-bold text-black'>
-            { ratingNumberCount }
-        </p>
+      <div className="max-sm:w-full">
+        <LinearProgress
+          value={ratingPercentage}
+          color="primary"
+          variant="determinate"
+          sx={{
+            height: progressBarHeight,
+            width: progressBarWidth,
+            borderRadius: progressBarBorderRadius,
+          }}
+        />
+      </div>
+
+      <p className="w-7 text-center font-text text-xs font-bold text-black sm:text-sm md:text-base">
+        {ratingNumberCount}
+      </p>
     </div>
-  )
-}
+  );
+};

@@ -84,9 +84,6 @@ export const Header: React.FC<HeaderProps> = ({
 
         <Facets facets={facets} categoryTreeData={fullCategoryTree} />
       </Drawer>
-      {/* <DrawerComp open={open} setOpen={setOpen}>
-        <Facets facets={facets} categoryTreeData={fullCategoryTree} />
-      </DrawerComp> */}
     </>
   );
 };

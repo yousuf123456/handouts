@@ -5,9 +5,9 @@ import { SelectOptions } from "@/app/components/SelectOptions";
 import { catalogSortOptions } from "@/app/constants/selectOptions";
 import { RiFilter2Line } from "react-icons/ri";
 import { catalogSorts } from "@/app/constants/catalogSorts";
-import { cn } from "@/app/utils/cn";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { getSearchParamsArray } from "@/app/products/[productId]/customer-reviews/utils/getSearchParamsArray";
+import { cn } from "@/app/utils/cn";
 
 interface SortsProps {
   filterModelOpen?: boolean;
