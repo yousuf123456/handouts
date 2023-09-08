@@ -7,12 +7,25 @@ import { CategoriesType } from "@/app/types";
 import { getCategoryTree } from "@/app/utils/getCategoryTree";
 import { CategoryBreadCrumbs } from "@/app/[category]/components/CategoryBreadCrumbs";
 import { InformationLoading } from "./loadings/InformationLoading";
+import { heavyAction } from "@/app/actions/heavyAction";
 
 interface InformationProps {
   productId: string;
 }
 
 export async function Information({ productId }: InformationProps) {
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
+  await heavyAction();
   const productInfo = await getProductInfoById(productId);
   const categories = productInfo?.categoryTreeData as CategoriesType;
 
