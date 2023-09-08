@@ -4,19 +4,18 @@ import { Button } from "@/app/components/Button";
 import { DialogModel } from "@/app/components/DialogModel";
 import { AddAddressForm } from "./AddAddressForm";
 import { AddressType } from "@/app/types";
+import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 interface AddAddressFormModelProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   open: boolean;
   editingAddress?: AddressType | undefined;
-  children: React.ReactNode;
 }
 
 export default function AddAddressFormModel({
   setOpen,
   open,
   editingAddress,
-  children,
 }: AddAddressFormModelProps) {
   const [alertOpen, setAlertOpen] = useState(false);
 
@@ -31,9 +30,10 @@ export default function AddAddressFormModel({
         setOpen={setOpen}
         onOpenChange={handleOnOpenChange}
         className="h-[500px] max-w-[720px] overflow-y-auto"
-        title="Add New Address"
-        trigger={children}
       >
+        <DialogHeader>
+          <DialogTitle>Add New Address</DialogTitle>
+        </DialogHeader>
         <AddAddressForm setOpen={setOpen} editingAddress={editingAddress} />
       </DialogModel>
 

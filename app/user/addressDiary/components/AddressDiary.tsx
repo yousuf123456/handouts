@@ -79,25 +79,27 @@ export const AddressDiary = ({}) => {
         <div className="relative flex w-full items-center justify-between">
           <Heading className="hidden sm:block">Address Diary</Heading>
 
-          {width > 640 ? (
+          <div className="hidden sm:block">
+            <Button
+              variant={"outline"}
+              onClick={() => {
+                setEditingAddress(undefined);
+                setOpen((prev) => !prev);
+              }}
+              className={buttonClassName}
+            >
+              <HiPlus className="h-5 w-5" />
+              Add New Address
+            </Button>
+
             <AddAddressFormModel
               open={open}
               setOpen={setOpen}
               editingAddress={editingAddress}
-            >
-              <Button
-                variant={"outline"}
-                onClick={() => {
-                  setEditingAddress(undefined);
-                  setOpen((prev) => !prev);
-                }}
-                className={buttonClassName}
-              >
-                <HiPlus className="h-5 w-5" />
-                Add New Address
-              </Button>
-            </AddAddressFormModel>
-          ) : (
+            />
+          </div>
+
+          <div className="sm:hidden">
             <Link href={addAddress}>
               <Button
                 variant={"outline"}
@@ -110,7 +112,7 @@ export const AddressDiary = ({}) => {
                 Add New Address
               </Button>
             </Link>
-          )}
+          </div>
         </div>
 
         <div className="h-full w-full">

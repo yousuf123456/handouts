@@ -47,6 +47,10 @@ export const FormInputs: React.FC<FormInputsProps> = ({
   const citySelected = watch("city");
 
   useEffect(() => {
+    console.log(provinceSelected);
+  }, [provinceSelected]);
+
+  useEffect(() => {
     if (provinceSelected) {
       if (provinceSelected === "Islamabad") setCities(["Islamabad"]);
       else

@@ -31,10 +31,15 @@ export default async function AddAddressPage({
 
   return (
     <div>
-      <NavigationPanel heading="Add New Address" />
+      <NavigationPanel
+        heading={searchParams.update ? "Edit Address" : "Add New Address"}
+      />
       <div className="mt-8 px-3 min-[420px]:px-6">
         <ReduxProvider>
-          <Form editingAddress={address as AddressType | undefined} />
+          <Form
+            update={searchParams.update === "true"}
+            editingAddress={address as AddressType | undefined}
+          />
         </ReduxProvider>
       </div>
     </div>

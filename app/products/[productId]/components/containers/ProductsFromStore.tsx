@@ -3,6 +3,7 @@ import React from "react";
 import { getStoreProducts } from "@/app/actions/getProductDetailsById/getStoreProducts";
 import { ProductsFromSameStore } from "../ProductsFromSameStore";
 import { Container } from "../Container";
+import { heavyAction } from "@/app/actions/heavyAction";
 
 interface ProductsFromStoreProps {
   productId: string;

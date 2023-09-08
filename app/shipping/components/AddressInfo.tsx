@@ -52,6 +52,7 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
 
   const [delieveryAddressesOpen, setDelieveryAddressesOpen] = useState(false);
   const [billingAddressesOpen, setBillingAddressesOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
 
   const addresses = useAppSelector((state) => state.addressDiary.addressDiary);
   const session = useSession();
@@ -139,6 +140,13 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
               {"Deliever To :  " + selectedShippingAddress?.fullName}
             </h3>
 
+            <p
+              onClick={() => setDelieveryAddressesOpen(true)}
+              className={editClassName}
+            >
+              Change
+            </p>
+
             <EditAddressModel
               title="Delievery Address"
               open={delieveryAddressesOpen}
@@ -148,9 +156,7 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
               onClick={(address) =>
                 dispatch(setSelectedShippingAddress(address))
               }
-            >
-              <p className={editClassName}>Change</p>
-            </EditAddressModel>
+            />
           </div>
 
           <div className="flex items-start gap-1 max-sm:flex-col sm:items-center sm:gap-2">
@@ -175,6 +181,12 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
           <div className="flex flex-col gap-4 max-sm:mt-3 sm:gap-1">
             <div className="flex items-center justify-between">
               {billingLabel()}
+              <p
+                onClick={() => setBillingAddressesOpen(true)}
+                className={editClassName}
+              >
+                Edit
+              </p>
               <EditAddressModel
                 title="Billing Address"
                 open={billingAddressesOpen}
@@ -184,22 +196,23 @@ export const AddressInfo: React.FC<AddressInfoProps> = ({}) => {
                 onClick={(address) =>
                   dispatch(setSelectedBillingAddress(address))
                 }
-              >
-                <p className={editClassName}>Edit</p>
-              </EditAddressModel>
+              />
             </div>
 
             <div className="flex items-center justify-between">
               <p className="font-text text-xs text-white">{emailToLabel}</p>
 
+              <p onClick={() => setEmailOpen(true)} className={editClassName}>
+                Edit
+              </p>
               <EditEmailModel
                 email={email}
+                open={emailOpen}
+                setOpen={setEmailOpen}
                 onSave={(newEmail: string | null | undefined) =>
                   dispatch(setEmail(newEmail))
                 }
-              >
-                <p className={editClassName}>Edit</p>
-              </EditEmailModel>
+              />
             </div>
           </div>
         </div>

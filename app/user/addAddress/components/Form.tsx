@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { FormField } from "./FormField";
-import { Seperator } from "@/app/components/Seperator";
+
 import { AddressTypeButton } from "../../addressDiary/components/AddressTypeButton";
 import { FlagSelector } from "../../addressDiary/components/FlagSelector";
 import { Button } from "@/app/components/Button";
@@ -19,10 +19,11 @@ import BackdropLoader from "@/app/components/BackdropLoader";
 import { useRouter } from "next/navigation";
 
 interface FormProps {
+  update: boolean;
   editingAddress: AddressType | undefined;
 }
 
-export const Form: React.FC<FormProps> = ({ editingAddress }) => {
+export const Form: React.FC<FormProps> = ({ editingAddress, update }) => {
   const initialIsDefaultShippingAddress = editingAddress
     ? editingAddress.isDefaultShippingAddress
     : false;
@@ -59,8 +60,6 @@ export const Form: React.FC<FormProps> = ({ editingAddress }) => {
     initialIsDefaultBilligAddress,
   );
 
-  console.log(editingAddress);
-
   const fieldsSectionCs = "flex flex-col gap-3 p-3 border-[1px] rounded-md";
 
   const onHomeClick = () =>
@@ -93,6 +92,7 @@ export const Form: React.FC<FormProps> = ({ editingAddress }) => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const address = {
       ...data,
+      ...(editingAddress ? { _id: editingAddress?._id } : {}),
       area: confirmSelectedArea,
       city: confirmSelectedCity,
       province: confirmSelectedProvince,
@@ -108,8 +108,11 @@ export const Form: React.FC<FormProps> = ({ editingAddress }) => {
         editAddress: editingAddress ? true : false,
       })
       .then((res) => {
+        console.log(res.data);
         dispatch(
-          editingAddress ? replaceWithNewAddress(address) : addAddress(address),
+          editingAddress
+            ? replaceWithNewAddress(res.data)
+            : addAddress(res.data),
         );
         router.push("/user/addressDiary");
       })
@@ -214,7 +217,7 @@ export const Form: React.FC<FormProps> = ({ editingAddress }) => {
                 "bg-blue-200 text-slate-700 hover:bg-blue-200",
             )}
           >
-            Create New Address
+            {update ? "Confirm" : "Create New Address"}
           </Button>
         </div>
       </div>

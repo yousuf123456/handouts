@@ -36,7 +36,7 @@ export const CheckoutItemProductCard: React.FC<
                 isPercentOff={isPercentOff}
                 discountOffLabel={discountOffLabel}
                 price={product.price}
-                className="text-sm font-semibold text-themeSecondary"
+                className="text-sm font-semibold text-themeSecondary sm:text-sm lg:text-sm"
                 discountLabelsClassName="text-xs"
               />
             </div>
@@ -52,8 +52,8 @@ export const CheckoutItemProductCard: React.FC<
           isPercentOff={isPercentOff}
           discountOffLabel={discountOffLabel}
           price={product.price}
-          className="mb-1 text-sm font-semibold text-themeSecondary"
-          discountLabelsClassName="text-xs"
+          className="mb-1 text-sm font-semibold text-themeSecondary sm:text-sm lg:text-sm"
+          discountLabelsClassName="text-xs sm:text-xs"
           mode="flex-col"
         />
       </div>

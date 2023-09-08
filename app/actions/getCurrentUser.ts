@@ -99,6 +99,7 @@ export const getCurrentUser = async (
       );
     }
 
+    let newAddress;
     if (addAddress) {
       const changeDefaultBillingAddress = address.isDefaultBillingAddress;
       const changeDefaultShippingAddress = address.isDefaultShippingAddress;
@@ -111,7 +112,7 @@ export const getCurrentUser = async (
           : oldAddress.isDefaultShippingAddress;
 
         if (editAddress) {
-          if (oldAddress.address === address.address) return address;
+          if (oldAddress._id === address._id) return address;
         }
 
         return {
@@ -120,15 +121,21 @@ export const getCurrentUser = async (
           isDefaultShippingAddress: newIsDefaultShippingAddress,
         };
       });
-      !editAddress &&
-        (updatedAddressesArray.length > 0
-          ? updatedAddressesArray.push({ ...address, _id: new ObjectId() })
-          : updatedAddressesArray.push({
+
+      newAddress =
+        updatedAddressesArray.length > 0
+          ? { ...address, _id: new ObjectId() }
+          : {
               ...address,
               _id: new ObjectId(),
               isDefaultBillingAddress: true,
               isDefaultShippingAddress: true,
-            }));
+            };
+
+      !editAddress &&
+        (updatedAddressesArray.length > 0
+          ? updatedAddressesArray.push(newAddress)
+          : updatedAddressesArray.push(newAddress));
     }
 
     const user = await prisma.user.update({
@@ -152,7 +159,7 @@ export const getCurrentUser = async (
       },
     });
 
-    return user;
+    return editAddress ? address : newAddress;
   }
 
   if (updateCartItemCount) {

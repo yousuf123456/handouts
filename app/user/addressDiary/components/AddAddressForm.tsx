@@ -35,6 +35,7 @@ export const AddAddressForm: React.FC<AddAddressFormProps> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoading2, setIsLoading2] = useState(false);
+
   const [selectedType, setSelectedType] = useState(
     editingAddress ? editingAddress.type : "",
   );

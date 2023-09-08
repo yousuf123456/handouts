@@ -96,10 +96,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
               </p>
             ) : (
               <Link href={`/user/addAddress?update=true&id=${address._id}`}>
-                <p
-                  className="font-text text-sm font-semibold text-themeBlue transition-all hover:text-blue-300"
-                  onClick={() => handleEdit(address)}
-                >
+                <p className="font-text text-sm font-semibold text-themeBlue transition-all hover:text-blue-300">
                   Edit
                 </p>
               </Link>

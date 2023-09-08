@@ -134,6 +134,13 @@ export const ProfileDropDownMenu: React.FC<ProfileDropDownMenuProps> = ({
               <span>Sell On Handouts</span>
             </DropdownMenuItem>
           </Link>
+
+          <Link href={"/products/64bd1972b6cbecb92c110ec2"}>
+            <DropdownMenuItem>
+              <FaShopify className={cn(iconCs, "text-purple-500")} />
+              <span>Test</span>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
