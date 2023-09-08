@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { Container } from "../../Container";
 import { Skeleton } from "@/components/ui/skeleton";
