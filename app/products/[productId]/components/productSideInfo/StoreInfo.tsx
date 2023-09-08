@@ -25,9 +25,9 @@ interface StoreInfoProps {
 }
 
 export const StoreInfo: React.FC<StoreInfoProps> = ({ store }) => {
-  const avgStorePosRatings = Math.round(
-    (store.posRatings! / store.ratingsCount!) * 100,
-  );
+  const avgStorePosRatings = store.posRatings
+    ? Math.round((store.posRatings! / store.ratingsCount!) * 100)
+    : 0;
 
   return (
     <div className="w-full">
