@@ -48,7 +48,7 @@ export default async function ProductDetailsPage({
         </Suspense>
 
         <div className="flex items-start gap-6 max-lg:flex-col">
-          <div className="flex w-full flex-col gap-6">
+          <div className="flex w-full flex-col gap-5">
             <Container>
               <Suspense key="details" fallback={<DetailsLoading />}>
                 <Details productId={params.productId} />
