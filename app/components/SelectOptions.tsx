@@ -45,9 +45,9 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
 
   return (
     <Select
+      {...field}
       required={required}
       disabled={disabled}
-      {...field}
       onValueChange={(value) => {
         field && field.onChange();
         onChange && onChange(value);

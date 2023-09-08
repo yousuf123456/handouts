@@ -4,9 +4,7 @@ import { Heading } from "@/app/(site)/components/Heading";
 import { getUserOrders } from "@/app/actions/getUserOrders";
 import { OrdersList } from "./OrdersList";
 import { PaginationControl } from "../../components/PaginationControl";
-import { OrderType } from "@/app/types";
 import { ORDERS_PER_PAGE } from "@/app/constants/consts";
-import { NavigationPanel } from "@/app/components/NavigationPanel";
 
 interface OrdersProps {
   pageNumber: number | undefined;

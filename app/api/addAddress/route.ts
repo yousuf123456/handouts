@@ -14,13 +14,9 @@ export async function POST(req: Request) {
       editAddress: editAddress,
     };
 
-    const currentUser = await getCurrentUser(parameters);
+    const newAddress = await getCurrentUser(parameters);
 
-    if (!currentUser || !currentUser.id) {
-      return new NextResponse("Unauthorized User", { status: 401 });
-    }
-
-    return NextResponse.json("Added the address to the diary");
+    return NextResponse.json(newAddress);
   } catch (e) {
     return new NextResponse("Internal Server Error", { status: 500 });
   }

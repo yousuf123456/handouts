@@ -1,27 +1,20 @@
-import { getProductQuestionsById } from '@/app/actions/getProductDetailsById/getProductQuestionsById'
-import { ReduxProvider } from '@/app/context/ReduxProvider'
-import { ProductDetails } from '../ProductDetails';
-import { getProductInfoById } from '@/app/actions/getProductDetailsById/getProductInfoById';
+import { getProductQuestionsById } from "@/app/actions/getProductDetailsById/getProductQuestionsById";
+import { ReduxProvider } from "@/app/context/ReduxProvider";
+import { ProductDetails } from "../ProductDetails";
+import { getProductInfoById } from "@/app/actions/getProductDetailsById/getProductInfoById";
+import { heavyAction } from "@/app/actions/heavyAction";
 
 interface DetailsProps {
-  productId : string
+  productId: string;
 }
 
-export const Details: React.FC<DetailsProps> = async({
-  productId
-}) => {
+export const Details: React.FC<DetailsProps> = async ({ productId }) => {
   const productInfo = await getProductInfoById(productId);
   // const questionsCount = store.getState().productMinorInfo.questionsCount;
 
-    if(!productInfo){
-        return (
-            <p>No product was found</p>
-        )
-    }
+  if (!productInfo) {
+    return <p>No product was found</p>;
+  }
 
-  return (
-    <ProductDetails
-        product={productInfo}
-    />
-  )
-}
+  return <ProductDetails product={productInfo} />;
+};

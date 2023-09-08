@@ -1,9 +1,8 @@
 "use client";
-import { Button } from "@/app/components/Button";
+
 import { CombinationsType } from "@/app/types";
 import axios from "axios";
 import React, { useState } from "react";
-import { ActionsConfirmation } from "./ActionsConfirmation";
 import { useAppDispatch } from "@/app/store/store";
 import {
   addCartItem,
@@ -15,6 +14,14 @@ import { Heart } from "lucide-react";
 import { TooltipWrapper } from "@/app/components/TooltipWrapper";
 import { addFavouriteItem } from "@/app/store/features/favouritesSlice";
 import { Section } from "./containers/Section";
+import { DialogModel } from "@/app/components/DialogModel";
+import CircularProgress from "@mui/material/CircularProgress";
+import { FaCheckCircle, FaTimes } from "react-icons/fa";
+import { cn } from "@/lib/utils";
+import { DialogFooter } from "@/components/ui/dialog";
+import Link from "next/link";
+import { Button } from "@/app/components/Button";
+import { Button as ShadcnButton } from "@/components/ui/button";
 
 interface ProductCTAsProps {
   selectedCombination: CombinationsType | undefined;
@@ -185,15 +192,51 @@ export const ProductCTAs: React.FC<ProductCTAsProps> = ({
         </div>
       )}
 
-      <ActionsConfirmation
-        open={open}
-        setOpen={setOpen}
-        isLoading={isLoading}
-        label={label}
-        buttonLabel={buttonLabel}
-        href={href}
-        isError={isError}
-      />
+      <DialogModel open={open} setOpen={setOpen}>
+        {isLoading ? (
+          <div className="flex w-full justify-center">
+            <CircularProgress color="secondary" />
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 pb-12">
+            {isError ? (
+              <FaTimes className="h-4 w-4 text-red-500 md:h-5 md:w-5" />
+            ) : (
+              <FaCheckCircle className="h-4 w-4 text-green-500 md:h-5 md:w-5" />
+            )}
+            <h2
+              className={cn(
+                "font-text text-lg font-medium sm:text-xl",
+                isError ? "text-red-600" : "text-green-600",
+              )}
+            >
+              {label}
+            </h2>
+          </div>
+        )}
+
+        <DialogFooter>
+          <ShadcnButton
+            variant={"outline"}
+            disabled={isLoading}
+            onClick={() => setOpen(false)}
+          >
+            Close
+          </ShadcnButton>
+
+          {buttonLabel && (
+            <Link href={href} className="w-full">
+              <ShadcnButton
+                className="max-sm:mb-3 max-sm:w-full"
+                variant={"default"}
+                disabled={isLoading}
+              >
+                {buttonLabel}
+              </ShadcnButton>
+            </Link>
+          )}
+        </DialogFooter>
+      </DialogModel>
     </div>
   );
 };
