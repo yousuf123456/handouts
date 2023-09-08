@@ -38,8 +38,6 @@ export default async function ProductDetailsPage({
 }: {
   params: IParams;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 15000));
-
   return (
     <div className="w-full overflow-x-hidden bg-slate-100 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
       <NavigationPanel showSearchBar showCart showShare />
