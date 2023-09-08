@@ -92,6 +92,8 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
             onChange={(index) => {
               setSelectedIndex(index);
             }}
+            preventMovementUntilSwipeScrollTolerance
+            swipeScrollTolerance={50}
             selectedItem={selectedVariantPicture.length ? 0 : selectedIndex}
             showArrows={!isSmallDevices}
             showStatus={false}

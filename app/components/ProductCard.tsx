@@ -34,7 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div
         className={cn(
           "group relative flex flex-col gap-2 overflow-hidden rounded-[2px] bg-white pb-2 transition-all sm:hover:shadow-cardHoverShadow",
-          dynamic ? "w-full" : "w-36 sm:w-40 lg:w-48",
+          dynamic ? "w-full" : "w-[152px] sm:w-40 lg:w-48",
         )}
       >
         {productOnSale() && showDiscountLabel && (
@@ -47,7 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div
           className={clsx(
             "relative overflow-hidden",
-            dynamic ? " aspect-1 h-auto w-auto" : "h-36 sm:h-40 lg:h-48",
+            dynamic ? " aspect-1 h-auto w-auto" : "h-[152px] sm:h-40 lg:h-48",
           )}
         >
           <ProductImage src={product.image!} loading="lazy" />
@@ -88,7 +88,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               />
 
               <p className="font-text text-[12px] font-semibold text-slate-500">
-                {product.avgRating + "/5"}
+                {product.avgRating || 0 + "/5"}
               </p>
             </div>
           </div>
