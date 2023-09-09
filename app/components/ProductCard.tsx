@@ -88,7 +88,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               />
 
               <p className="font-text text-[12px] font-semibold text-slate-500">
-                {product.avgRating || 0 + "/5"}
+                {(product.avgRating || 0) + "/5"}
               </p>
             </div>
           </div>

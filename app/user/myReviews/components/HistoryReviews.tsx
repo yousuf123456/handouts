@@ -37,7 +37,7 @@ export const HistoryReviews: React.FC<HistoryReviewsProps> = async ({
       </Heading>
 
       <div className="flex w-full flex-col gap-0">
-        {data.map((review, i) => (
+        {data.map((review: any, i: any) => (
           <HistoryReviewCard key={i} review={review} />
         ))}
       </div>

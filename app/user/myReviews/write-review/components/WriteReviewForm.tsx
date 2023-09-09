@@ -113,6 +113,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
       .then((res) => {
         toast.success("Thanks for your feedback");
         router.push("/user/myReviews?toBeReviewed=false&isHistory=true");
+        router.refresh();
       })
       .catch((e) => console.log(e))
       .finally(() => setIsLoading(false));

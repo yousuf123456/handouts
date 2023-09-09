@@ -1,8 +1,12 @@
 "use client";
 import { RatingStars } from "@/app/components/RatingStars";
+import styled from "@emotion/styled";
 import { useMediaQuery } from "@mui/material";
-import LinearProgress from "@mui/material/LinearProgress";
-import React, { useEffect, useMemo } from "react";
+import LinearProgress, {
+  linearProgressClasses,
+} from "@mui/material/LinearProgress";
+
+import React, { useMemo } from "react";
 
 interface RatingBarProps {
   label: string;
@@ -10,6 +14,12 @@ interface RatingBarProps {
   ratingsCount: number | undefined;
   ratingNumberCount: number | undefined;
 }
+
+const StyledLinearProgressBar = styled(LinearProgress)({
+  [`&.${linearProgressClasses.determinate}`]: { backgroundColor: "#fde047" },
+  [`&.${linearProgressClasses.determinate} > .${linearProgressClasses.bar1Determinate}`]:
+    { backgroundColor: "#fde047" },
+});
 
 export const RatingBar: React.FC<RatingBarProps> = ({
   label,
@@ -62,11 +72,12 @@ export const RatingBar: React.FC<RatingBarProps> = ({
       </p>
 
       <div className="max-sm:w-full">
-        <LinearProgress
+        <StyledLinearProgressBar
           value={ratingPercentage}
-          color="primary"
+          style={{ backgroundColor: "#f5f5f5" }}
           variant="determinate"
           sx={{
+            color: "#fcd34d",
             height: progressBarHeight,
             width: progressBarWidth,
             borderRadius: progressBarBorderRadius,
