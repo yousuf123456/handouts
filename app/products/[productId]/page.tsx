@@ -48,16 +48,16 @@ export default async function ProductDetailsPage({
 }: {
   params: IParams;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  // await new Promise((resolve) => setTimeout(resolve, 100));
 
   return (
     <div className="w-full overflow-x-hidden bg-slate-100 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
       <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
-        <Suspense fallback={<InformationLoading />}>
-          <Information productId={params.productId} />
-        </Suspense>
+        <Information productId={params.productId} />
+        {/* <Suspense fallback={<InformationLoading />}>
+        </Suspense> */}
 
         <div className="flex items-start gap-6 max-lg:flex-col">
           <div className="flex w-full flex-col gap-5">
