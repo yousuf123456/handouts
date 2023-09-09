@@ -30,7 +30,9 @@ export default function loading() {
               <QuestionsLoading />
             </Container>
 
-            <SimilarProductsLoading />
+            <Container>
+              <SimilarProductsLoading />
+            </Container>
           </div>
 
           <ProductsFromStoreLoading />
