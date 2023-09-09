@@ -107,7 +107,7 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
                 <Image
                   src={img || ""}
                   alt="Product Picture"
-                  loading={i === 0 ? "eager" : "lazy"}
+                  loading={"eager"}
                   className=" object-cover"
                   fill
                 />
