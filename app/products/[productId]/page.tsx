@@ -43,44 +43,38 @@ export default async function ProductDetailsPage({
       <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
-        <Suspense fallback={<InformationLoading />}>
+        <Suspense fallback={<p>Loading</p>}>
           <Information productId={params.productId} />
         </Suspense>
 
         <div className="flex items-start gap-6 max-lg:flex-col">
           <div className="flex w-full flex-col gap-5">
             <Container>
-              <Suspense key="details" fallback={<DetailsLoading />}>
+              <Suspense key="details" fallback={<p>Details Loading</p>}>
                 <Details productId={params.productId} />
               </Suspense>
             </Container>
 
             <Container id="ratings">
-              <Suspense key="reviews" fallback={<ReviewsLoading />}>
+              <Suspense key="reviews" fallback={<p>Rating Loading</p>}>
                 <Reviews productId={params.productId} />
               </Suspense>
             </Container>
 
             <Container id="questions">
-              <Suspense key="questions" fallback={<QuestionsLoading />}>
+              <Suspense key="questions" fallback={<p>Questions Loading</p>}>
                 <Questions productId={params.productId} />
               </Suspense>
             </Container>
 
-            <Suspense
-              key="similarProducts"
-              fallback={<SimilarProductsLoading />}
-            >
+            <Suspense key="similarProducts" fallback={<p>Loading</p>}>
               <Container>
                 <SimilarProducts productId={params.productId} />
               </Container>
             </Suspense>
           </div>
 
-          <Suspense
-            key="productsfromsamestore"
-            fallback={<ProductsFromStoreLoading />}
-          >
+          <Suspense key="productsfromsamestore" fallback={<p>Loading</p>}>
             <ProductsFromStore productId={params.productId} />
           </Suspense>
         </div>
