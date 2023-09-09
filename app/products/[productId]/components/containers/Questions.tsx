@@ -10,9 +10,11 @@ interface QuestionsProps {
 }
 
 export default async function Questions({ productId }: QuestionsProps) {
+  await new Promise((resolver) => setTimeout(resolver, 5000));
   const questions = (await getProductQuestionsById({
     productId,
   })) as unknown as Question[];
+
   // const questionsCount = store.getState().productMinorInfo.questionsCount;
 
   return (
