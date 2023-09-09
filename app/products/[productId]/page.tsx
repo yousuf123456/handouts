@@ -79,14 +79,14 @@ export default async function ProductDetailsPage({
               </Suspense>
             </Container>
 
-            <Suspense
-              key="similarProducts"
-              fallback={<SimilarProductsLoading />}
-            >
-              <Container>
+            <Container>
+              <Suspense
+                key="similarProducts"
+                fallback={<SimilarProductsLoading />}
+              >
                 <SimilarProducts productId={params.productId} />
-              </Container>
-            </Suspense>
+              </Suspense>
+            </Container>
           </div>
 
           <Suspense
