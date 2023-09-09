@@ -1,8 +1,5 @@
-import { getProductQuestionsById } from "@/app/actions/getProductDetailsById/getProductQuestionsById";
-import { ReduxProvider } from "@/app/context/ReduxProvider";
 import { ProductDetails } from "../ProductDetails";
 import { getProductInfoById } from "@/app/actions/getProductDetailsById/getProductInfoById";
-import { heavyAction } from "@/app/actions/heavyAction";
 
 interface DetailsProps {
   productId: string;

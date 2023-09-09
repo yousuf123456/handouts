@@ -32,16 +32,16 @@ const SimilarProducts = dynamic(
 );
 
 // export const dynamicParams = true;
-export const revalidate = 7200;
+// export const revalidate = 7200;
 
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    select: {
-      id: true,
-    },
-  });
-  return products.map((product) => ({ productId: product.id }));
-}
+// export async function generateStaticParams() {
+//   const products = await prisma.product.findMany({
+//     select: {
+//       id: true,
+//     },
+//   });
+//   return products.map((product) => ({ productId: product.id }));
+// }
 
 export default async function ProductDetailsPage({
   params,
