@@ -7,7 +7,6 @@ import { CategoriesType } from "@/app/types";
 import { getCategoryTree } from "@/app/utils/getCategoryTree";
 import { CategoryBreadCrumbs } from "@/app/[category]/components/CategoryBreadCrumbs";
 import { InformationLoading } from "./loadings/InformationLoading";
-import { heavyAction } from "@/app/actions/heavyAction";
 
 interface InformationProps {
   productId: string;

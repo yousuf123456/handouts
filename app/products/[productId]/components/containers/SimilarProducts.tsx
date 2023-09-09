@@ -1,6 +1,6 @@
 import { Heading } from "@/app/(site)/components/Heading";
 import { getProductInfoById } from "@/app/actions/getProductDetailsById/getProductInfoById";
-import { heavyAction } from "@/app/actions/heavyAction";
+
 import { getSimilarProducts } from "@/app/actions/recomendations/getSimilarProducts";
 import { ProductCard } from "@/app/components/ProductCard";
 import { ProductsListLayout } from "@/app/components/ProductsListLayout";

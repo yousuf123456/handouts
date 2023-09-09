@@ -3,7 +3,6 @@ import { ProductQuestions } from "../ProductQuestions";
 import { getProductQuestionsById } from "@/app/actions/getProductDetailsById/getProductQuestionsById";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
 import { Question } from "@prisma/client";
-import { heavyAction } from "@/app/actions/heavyAction";
 
 interface QuestionsProps {
   productId: string;
