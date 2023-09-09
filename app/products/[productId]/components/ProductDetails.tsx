@@ -33,12 +33,12 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
       <Link
         href="#details"
-        className="absolute bottom-2 left-1/2 z-[99] -translate-x-1/2"
+        className="absolute bottom-2 left-1/2 z-[39] -translate-x-1/2"
       >
         <Button
           onClick={() => setShowingMore((prev) => !prev)}
           variant="outline"
-          className="absolute bottom-2 left-1/2 z-[99] w-64 flex-shrink-0 -translate-x-1/2"
+          className="absolute bottom-2 left-1/2 z-[39] w-64 flex-shrink-0 -translate-x-1/2"
         >
           {!showingMore ? "Show More" : "Show Less"}
         </Button>
