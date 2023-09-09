@@ -47,6 +47,10 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
     setUrl(window.location.href);
   }, []);
 
+  useEffect(() => {
+    if (shareOpen) setShareOpen(false);
+  }, [shareOpen]);
+
   return (
     <>
       {!isProductDetailsPage && (
