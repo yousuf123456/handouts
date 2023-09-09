@@ -44,10 +44,14 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   const isProductDetailsPage = pathname.includes("/products");
 
   useEffect(() => {
-    setOpen((prev) => !prev);
-    setOpen((prev) => !prev);
+    setOpen(true);
+
     setUrl(window.location.href);
   }, []);
+
+  useEffect(() => {
+    if (open) setOpen(false);
+  }, [open]);
 
   return (
     <>
