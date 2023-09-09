@@ -9,13 +9,14 @@ import { DetailsLoading } from "./components/containers/loadings/DetailsLoading"
 import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
 import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
+import Details from "./components/containers/Details";
 import dynamic from "next/dynamic";
 
 interface IParams {
   productId: string;
 }
 
-const Details = dynamic(() => import("./components/containers/Details"));
+// const Details = dynamic(() => import("./components/containers/Details"));
 const Questions = dynamic(() => import("./components/containers/Questions"));
 const Reviews = dynamic(() => import("./components/containers/Reviews"));
 const ProductsFromStore = dynamic(
