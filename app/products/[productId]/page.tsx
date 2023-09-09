@@ -2,12 +2,12 @@ import React, { Suspense } from "react";
 
 import { Container } from "./components/Container";
 import { Information } from "./components/containers/Information";
-// import { InformationLoading } from "./components/containers/loadings/InformationLoading";
-// import { ReviewsLoading } from "./components/containers/loadings/ReviewsLoading";
-// import { QuestionsLoading } from "./components/containers/loadings/QuestionsLoading";
-// import { DetailsLoading } from "./components/containers/loadings/DetailsLoading";
-// import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
-// import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
+import { InformationLoading } from "./components/containers/loadings/InformationLoading";
+import { ReviewsLoading } from "./components/containers/loadings/ReviewsLoading";
+import { QuestionsLoading } from "./components/containers/loadings/QuestionsLoading";
+import { DetailsLoading } from "./components/containers/loadings/DetailsLoading";
+import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
+import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
 // import Details from "./components/containers/Details";
 // import Questions from "./components/containers/Questions";
@@ -32,16 +32,16 @@ const SimilarProducts = dynamic(
 );
 
 // export const dynamicParams = true;
-export const revalidate = 7200;
+// export const revalidate = 7200;
 
-export async function generateStaticParams() {
-  const products = await prisma.product.findMany({
-    select: {
-      id: true,
-    },
-  });
-  return products.map((product) => ({ productId: product.id }));
-}
+// export async function generateStaticParams() {
+//   const products = await prisma.product.findMany({
+//     select: {
+//       id: true,
+//     },
+//   });
+//   return products.map((product) => ({ productId: product.id }));
+// }
 
 export default async function ProductDetailsPage({
   params,
@@ -53,46 +53,46 @@ export default async function ProductDetailsPage({
       <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
-        <Information productId={params.productId} />
-        {/* <Suspense fallback={<InformationLoading />}>
-        </Suspense> */}
+        <Suspense fallback={<InformationLoading />}>
+          <Information productId={params.productId} />
+        </Suspense>
 
         <div className="flex items-start gap-6 max-lg:flex-col">
           <div className="flex w-full flex-col gap-5">
             <Container>
-              <Details productId={params.productId} />
-              {/* <Suspense key="details" fallback={<DetailsLoading />}>
-              </Suspense> */}
+              <Suspense key="details" fallback={<DetailsLoading />}>
+                <Details productId={params.productId} />
+              </Suspense>
             </Container>
 
             <Container id="ratings">
-              <Reviews productId={params.productId} />
-              {/* <Suspense key="reviews" fallback={<ReviewsLoading />}>
-              </Suspense> */}
+              <Suspense key="reviews" fallback={<ReviewsLoading />}>
+                <Reviews productId={params.productId} />
+              </Suspense>
             </Container>
 
             <Container id="questions">
-              <Questions productId={params.productId} />
-              {/* <Suspense key="questions" fallback={<QuestionsLoading />}>
-              </Suspense> */}
+              <Suspense key="questions" fallback={<QuestionsLoading />}>
+                <Questions productId={params.productId} />
+              </Suspense>
             </Container>
 
-            {/* <Suspense
+            <Suspense
               key="similarProducts"
               fallback={<SimilarProductsLoading />}
             >
-            </Suspense> */}
-            <Container>
-              <SimilarProducts productId={params.productId} />
-            </Container>
+              <Container>
+                <SimilarProducts productId={params.productId} />
+              </Container>
+            </Suspense>
           </div>
 
-          {/* <Suspense
+          <Suspense
             key="productsfromsamestore"
             fallback={<ProductsFromStoreLoading />}
           >
-          </Suspense> */}
-          <ProductsFromStore productId={params.productId} />
+            <ProductsFromStore productId={params.productId} />
+          </Suspense>
         </div>
       </div>
     </div>
