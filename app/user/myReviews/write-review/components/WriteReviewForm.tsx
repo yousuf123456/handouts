@@ -53,6 +53,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
   const router = useRouter();
 
   const previousProductRating = givenReview?.rating;
+
   const previousStoreResponseIncrementData = {
     posRatings: givenReview?.sellerResponse === 3 ? -1 : 0,
     neuRatings: givenReview?.sellerResponse === 2 ? -1 : 0,
@@ -61,6 +62,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
 
   const onSubmit = () => {
     setIsLoading(true);
+
     const ratingData = {
       sellerResponse: storeRatingValue,
       rating: productRatingValue,
@@ -139,31 +141,6 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
 
         <WrittenReview review={review} setReview={setReview} />
       </div>
-      {/* <div className='flex gap-10'>
-            <ProductReview 
-                orderedProduct={OrderedProduct}
-                productRatingValue={productRatingValue}
-                productRatingHover={productRatingHover}
-                review={review}
-                images={images}
-                setProductRatingHover={setProductRatingHover}
-                setProductRatingValue={setProductRatingValue}
-                setReview={setReview}
-                setImages={setImages}
-            />
-
-            <div className='w-0.5 bg-slate-300' />
-
-            <StoreReview 
-                sellerReview={sellerReview}
-                setSellerReview={setSellerReview}
-                storeRatingValue={storeRatingValue}
-                storeRatingHover={storeRatingHover}
-                setStoreRatingValue={setStoreRatingValue}
-                setStoreRatingHover={setStoreRatingHover}
-                storeName={OrderedProduct.product.storeName}
-            />
-        </div> */}
 
       <div className="bottom-0 left-0 right-0 flex w-full justify-center max-sm:fixed">
         <LoadingButton

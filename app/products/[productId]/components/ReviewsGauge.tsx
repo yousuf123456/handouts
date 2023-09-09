@@ -21,7 +21,7 @@ export const ReviewsGauge: React.FC<ReviewsGaugeProps> = ({
 }) => {
   return (
     <div className="flex w-full max-md:justify-around max-sm:flex-col max-sm:gap-3 sm:items-center md:gap-28">
-      <div className="flex gap-2 max-sm:items-center sm:flex-col sm:gap-0">
+      <div className="flex gap-2 max-sm:items-center max-sm:justify-center sm:flex-col sm:gap-0">
         <h2 className="hidden font-text text-xl font-semibold text-themeSecondary sm:block md:text-2xl">
           {avgRating + "/5"}
         </h2>

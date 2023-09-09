@@ -3,12 +3,11 @@ import { Layout } from "../components/Layout";
 import { Container } from "../components/Container";
 import { ToBeReviewedReviews } from "./components/ToBeReviewedReviews";
 import { HistoryReviews } from "./components/HistoryReviews";
-import { Heading } from "@/app/(site)/components/Heading";
 import { ToggleBar } from "./components/ToggleBar";
 import { ReviewsLoading } from "./components/loadings/ReviewsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
 
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 interface SearchParams {
   isHistory: string;
