@@ -11,9 +11,9 @@ interface SimilarProductsProps {
   productId: string;
 }
 
-export const SimilarProducts: React.FC<SimilarProductsProps> = async ({
+export default async function SimilarProducts({
   productId,
-}) => {
+}: SimilarProductsProps) {
   const productInfo = await getProductInfoById(productId);
 
   const productData = {
@@ -40,4 +40,4 @@ export const SimilarProducts: React.FC<SimilarProductsProps> = async ({
       </ProductsListLayout>
     </div>
   );
-};
+}

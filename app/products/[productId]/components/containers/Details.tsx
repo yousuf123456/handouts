@@ -8,7 +8,7 @@ interface DetailsProps {
   productId: string;
 }
 
-export const Details: React.FC<DetailsProps> = async ({ productId }) => {
+export default async function Details({ productId }: DetailsProps) {
   const productInfo = await getProductInfoById(productId);
   // const questionsCount = store.getState().productMinorInfo.questionsCount;
 
@@ -17,4 +17,4 @@ export const Details: React.FC<DetailsProps> = async ({ productId }) => {
   }
 
   return <ProductDetails product={productInfo} />;
-};
+}

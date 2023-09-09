@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import clsx from "clsx";
 
-import { Drawer } from "@/app/components/Drawer";
+import Drawer from "@/app/components/Drawer";
 import { Input } from "@/components/ui/input";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { FaCheckCircle } from "react-icons/fa";

@@ -9,8 +9,10 @@ import { CategoryBreadCrumbs } from "./CategoryBreadCrumbs";
 import { SelectedFacets } from "./SelectedFacets";
 import { Sorts } from "./Sorts";
 import { Filters } from "./Filters";
-import { Drawer } from "@/app/components/Drawer";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface HeaderProps {
   searchTerm: string | undefined;

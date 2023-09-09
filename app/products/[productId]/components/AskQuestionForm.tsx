@@ -10,8 +10,10 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
-import { Drawer } from "@/app/components/Drawer";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface AskQuestionFormProps {
   productId: string;

@@ -1,11 +1,13 @@
 import React, { Fragment, useState } from "react";
+
 import { Section } from "./containers/Section";
 import { HiChevronRight } from "react-icons/hi";
 import { SectionHeading } from "./SectionHeading";
-import { Drawer } from "@/app/components/Drawer";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Seperator } from "@/app/components/Seperator";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface ProductSpecificationsProps {
   productAttributes: {

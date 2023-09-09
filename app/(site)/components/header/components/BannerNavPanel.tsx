@@ -1,10 +1,12 @@
 "use client";
 
 import React from "react";
-import { ProfileDropDownMenu } from "./ProfileDropDownMenu";
 import { HiChevronLeft } from "react-icons/hi";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const ProfileDropDownMenu = dynamic(() => import("./ProfileDropDownMenu"));
 
 interface BannerNavPanelProps {
   heading: string;

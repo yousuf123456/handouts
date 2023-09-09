@@ -9,9 +9,9 @@ interface ProductsFromStoreProps {
   productId: string;
 }
 
-export const ProductsFromStore: React.FC<ProductsFromStoreProps> = async ({
+export default async function ProductsFromStore({
   productId,
-}) => {
+}: ProductsFromStoreProps) {
   const productsFromSameStore = await getStoreProducts(productId);
 
   if (!productsFromSameStore) {
@@ -25,4 +25,4 @@ export const ProductsFromStore: React.FC<ProductsFromStoreProps> = async ({
       </Container>
     </div>
   );
-};
+}
