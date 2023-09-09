@@ -14,7 +14,6 @@ interface InformationProps {
 }
 
 export async function Information({ productId }: InformationProps) {
-  await new Promise((resolve) => setTimeout(resolve, 5000));
   const productInfo = await getProductInfoById(productId);
   const categories = productInfo?.categoryTreeData as CategoriesType;
 
