@@ -26,7 +26,7 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
     });
   };
 
-  const avgPosRating = (posRatings / ratingsCount) * 100;
+  const avgPosRating = Math.round(posRatings / ratingsCount) * 100;
 
   return (
     <div
@@ -45,7 +45,9 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
         </div>
 
         <div className="flex flex-shrink-0 items-center gap-3">
-          <Badge variant="outline">{avgPosRating || 0 + " Pos Reviews"}</Badge>
+          <Badge variant="outline">
+            {avgPosRating || 0 + " % Pos Reviews"}
+          </Badge>
 
           <HiChevronRight className="h-4 w-4 text-black" />
         </div>
