@@ -26,6 +26,8 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
     });
   };
 
+  const avgPosRating = (posRatings / ratingsCount) * 100;
+
   return (
     <div
       onClick={onClick}
@@ -43,7 +45,7 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
         </div>
 
         <div className="flex flex-shrink-0 items-center gap-3">
-          <Badge variant="outline">90% Pos Reviews</Badge>
+          <Badge variant="outline">{avgPosRating || 0 + " Pos Reviews"}</Badge>
 
           <HiChevronRight className="h-4 w-4 text-black" />
         </div>
