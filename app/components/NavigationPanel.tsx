@@ -33,6 +33,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   showShare,
   showSearchBar,
 }) => {
+  const [bugFixed, setBugFixed] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -48,7 +49,10 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   }, []);
 
   useEffect(() => {
-    if (shareOpen) setShareOpen(false);
+    if (shareOpen && !bugFixed) {
+      setShareOpen(false);
+      setBugFixed(true);
+    }
   }, [shareOpen]);
 
   return (
