@@ -28,10 +28,10 @@ interface ProfileDropDownMenuProps {
   includeAllLinks?: boolean;
 }
 
-export const ProfileDropDownMenu: React.FC<ProfileDropDownMenuProps> = ({
+export default function ProfileDropDownMenu({
   children,
   includeAllLinks,
-}) => {
+}: ProfileDropDownMenuProps) {
   const iconCs = "mr-3 h-5 w-5";
   const {
     home,
@@ -152,4 +152,4 @@ export const ProfileDropDownMenu: React.FC<ProfileDropDownMenuProps> = ({
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

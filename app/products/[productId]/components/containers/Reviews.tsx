@@ -9,7 +9,7 @@ interface ReviewsProps {
   productId: string;
 }
 
-export const Reviews: React.FC<ReviewsProps> = async ({ productId }) => {
+export default async function Reviews({ productId }: ReviewsProps) {
   const ratingAndReviews = (await getProductReviewsById({
     productId,
   })) as unknown as RatingAndReview[];
@@ -19,4 +19,4 @@ export const Reviews: React.FC<ReviewsProps> = async ({ productId }) => {
       <ProductReviews ratingAndReviews={ratingAndReviews} />
     </ReduxProvider>
   );
-};
+}

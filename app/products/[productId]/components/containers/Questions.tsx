@@ -9,7 +9,7 @@ interface QuestionsProps {
   productId: string;
 }
 
-export const Questions: React.FC<QuestionsProps> = async ({ productId }) => {
+export default async function Questions({ productId }: QuestionsProps) {
   const questions = (await getProductQuestionsById({
     productId,
   })) as unknown as Question[];
@@ -20,4 +20,4 @@ export const Questions: React.FC<QuestionsProps> = async ({ productId }) => {
       <ProductQuestions initialQuestions={questions} productId={productId} />
     </ReduxProvider>
   );
-};
+}

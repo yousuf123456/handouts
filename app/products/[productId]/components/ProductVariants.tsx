@@ -5,13 +5,15 @@ import React, { Fragment, useState } from "react";
 import { ProductImage } from "@/app/components/ProductImage";
 import { Section } from "./containers/Section";
 import { HiChevronRight } from "react-icons/hi";
-import { Drawer } from "@/app/components/Drawer";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ProductVariantsValues } from "./ProductVariantsValues";
 import { Seperator } from "@/app/components/Seperator";
 import { ProductQuantity } from "./ProductQuantity";
 import { ProductPrice } from "@/app/components/ProductPrice";
 import { SectionHeading } from "./SectionHeading";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface ProductVariantsProps {
   discountOffLabel: any;

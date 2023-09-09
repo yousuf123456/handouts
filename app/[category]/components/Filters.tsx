@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import React, { useState } from "react";
 
-import { Drawer } from "@/app/components/Drawer";
 import { HiChevronDown } from "react-icons/hi";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -12,12 +11,16 @@ import {
   useRouter,
   useSearchParams,
 } from "next/navigation";
+
 import { getSearchParamsArray } from "@/app/products/[productId]/customer-reviews/utils/getSearchParamsArray";
-import { useAppDispatch, useAppSelector } from "@/app/store/store";
+import { useAppDispatch } from "@/app/store/store";
 import { Bucket } from "./Bucket";
 import { Facet } from "./Facet";
 import { getCategoryNames } from "@/app/utils/getCategoryNames";
 import { removeselectedFacet } from "@/app/store/features/selectedFacetsSlice";
+import dynamic from "next/dynamic";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface FiltersProps {
   topFacets: any;

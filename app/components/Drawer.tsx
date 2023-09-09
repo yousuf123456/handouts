@@ -10,7 +10,7 @@ interface DrawerProps {
   side?: "top" | "bottom" | "left" | "right" | null | undefined;
 }
 
-export function Drawer({
+export default function Drawer({
   open,
   side,
   setOpen,

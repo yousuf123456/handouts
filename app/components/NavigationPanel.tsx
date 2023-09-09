@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "../utils/cn";
-import { Drawer } from "./Drawer";
 import { ShareLinks } from "./ShareLinks";
 import { ShoppingCart } from "lucide-react";
 import { HiChevronLeft } from "react-icons/hi";
@@ -12,8 +11,14 @@ import { HiEllipsisVertical, HiShare } from "react-icons/hi2";
 import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Cart } from "../(site)/components/header/components/Cart";
 import { SearchBar } from "../(site)/components/header/components/SearchBar";
-import { ProfileDropDownMenu } from "../(site)/components/header/components/ProfileDropDownMenu";
-import { getURL } from "next/dist/shared/lib/utils";
+// import { ProfileDropDownMenu } from "../(site)/components/header/components/ProfileDropDownMenu";
+
+import dynamic from "next/dynamic";
+const ProfileDropDownMenu = dynamic(
+  () => import("../(site)/components/header/components/ProfileDropDownMenu"),
+);
+
+const Drawer = dynamic(() => import("./Drawer"));
 
 interface NavigationPanelProps {
   heading?: string;

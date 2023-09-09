@@ -1,13 +1,15 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { Drawer } from "@/app/components/Drawer";
 import { reasons } from "@/app/constants/selectOptions";
 import { cn } from "@/app/utils/cn";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import dynamic from "next/dynamic";
 import React, { useState } from "react";
 import { HiChevronDown, HiPlus } from "react-icons/hi";
+
+const Drawer = dynamic(() => import("@/app/components/Drawer"));
 
 interface SelectReasonModelProps {
   className?: string;
