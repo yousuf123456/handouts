@@ -55,46 +55,46 @@ export default async function ProductDetailsPage({
       <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
-        {/* <Suspense fallback={<InformationLoading />}>
-        </Suspense> */}
-        <Information productId={params.productId} />
+        <Suspense fallback={<InformationLoading />}>
+          <Information productId={params.productId} />
+        </Suspense>
 
         <div className="flex items-start gap-6 max-lg:flex-col">
           <div className="flex w-full flex-col gap-5">
             <Container>
-              {/* <Suspense key="details" fallback={<DetailsLoading />}>
-              </Suspense> */}
-              <Details productId={params.productId} />
+              <Suspense key="details" fallback={<DetailsLoading />}>
+                <Details productId={params.productId} />
+              </Suspense>
             </Container>
 
             <Container id="ratings">
-              {/* <Suspense key="reviews" fallback={<ReviewsLoading />}>
-              </Suspense> */}
-              <Reviews productId={params.productId} />
+              <Suspense key="reviews" fallback={<ReviewsLoading />}>
+                <Reviews productId={params.productId} />
+              </Suspense>
             </Container>
 
             <Container id="questions">
-              {/* <Suspense key="questions" fallback={<QuestionsLoading />}>
-              </Suspense> */}
-              <Questions productId={params.productId} />
+              <Suspense key="questions" fallback={<QuestionsLoading />}>
+                <Questions productId={params.productId} />
+              </Suspense>
             </Container>
 
-            {/* <Suspense
+            <Suspense
               key="similarProducts"
               fallback={<SimilarProductsLoading />}
             >
-            </Suspense> */}
-            <Container>
-              <SimilarProducts productId={params.productId} />
-            </Container>
+              <Container>
+                <SimilarProducts productId={params.productId} />
+              </Container>
+            </Suspense>
           </div>
 
-          {/* <Suspense
+          <Suspense
             key="productsfromsamestore"
             fallback={<ProductsFromStoreLoading />}
           >
-          </Suspense> */}
-          <ProductsFromStore productId={params.productId} />
+            <ProductsFromStore productId={params.productId} />
+          </Suspense>
         </div>
       </div>
     </div>
