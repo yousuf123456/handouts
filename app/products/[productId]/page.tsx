@@ -9,26 +9,27 @@ import { Information } from "./components/containers/Information";
 // import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
 // import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
-import Details from "./components/containers/Details";
-import Questions from "./components/containers/Questions";
-import Reviews from "./components/containers/Reviews";
-import SimilarProducts from "./components/containers/SimilarProducts";
-import ProductsFromStore from "./components/containers/ProductsFromStore";
+// import Details from "./components/containers/Details";
+// import Questions from "./components/containers/Questions";
+// import Reviews from "./components/containers/Reviews";
+// import SimilarProducts from "./components/containers/SimilarProducts";
+// import ProductsFromStore from "./components/containers/ProductsFromStore";
 import prisma from "../../libs/prismadb";
+import dynamic from "next/dynamic";
 
 interface IParams {
   productId: string;
 }
 
-// const Details = dynamic(() => import("./components/containers/Details"));
-// const Questions = dynamic(() => import("./components/containers/Questions"));
-// const Reviews = dynamic(() => import("./components/containers/Reviews"));
-// const ProductsFromStore = dynamic(
-//   () => import("./components/containers/ProductsFromStore"),
-// );
-// const SimilarProducts = dynamic(
-//   () => import("./components/containers/SimilarProducts"),
-// );
+const Details = dynamic(() => import("./components/containers/Details"));
+const Questions = dynamic(() => import("./components/containers/Questions"));
+const Reviews = dynamic(() => import("./components/containers/Reviews"));
+const ProductsFromStore = dynamic(
+  () => import("./components/containers/ProductsFromStore"),
+);
+const SimilarProducts = dynamic(
+  () => import("./components/containers/SimilarProducts"),
+);
 
 // export const dynamicParams = true;
 export const revalidate = 7200;
