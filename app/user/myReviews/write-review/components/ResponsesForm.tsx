@@ -129,7 +129,7 @@ export const ResponsesForm: React.FC<ResponsesFormProps> = ({
 
       <p
         className={cn(
-          "hidden text-sm text-black md:block",
+          "hidden w-16 text-sm text-black md:block",
           noLabelOnRes && "hidden lg:block",
         )}
       >

@@ -6,8 +6,8 @@ import { HistoryReviews } from "./components/HistoryReviews";
 import { ToggleBar } from "./components/ToggleBar";
 import { ReviewsLoading } from "./components/loadings/ReviewsLoading";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
-
-export const dynamic = "force-dynamic";
+import { getUserReviews } from "@/app/actions/getUserReviews";
+import { HistoryReviewType } from "@/app/types";
 
 interface SearchParams {
   isHistory: string;

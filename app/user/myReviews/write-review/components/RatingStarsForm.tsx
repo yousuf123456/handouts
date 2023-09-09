@@ -61,16 +61,22 @@ export const RatingStarsForm: React.FC<RatingStarsFormProps> = ({
         onChangeActive={(event: any, newHover: any) => {
           if (setHover) setHover(newHover);
         }}
-        icon={<FaStar fontSize={"inherit"} className="mx-1" />}
+        icon={
+          <div>
+            <FaStar fontSize={"inherit"} className="mx-1 hover:text-red-300" />
+          </div>
+        }
         emptyIcon={
-          <FaStar fontSize={"inherit"} className="mx-1 text-slate-300" />
+          <div>
+            <FaStar fontSize={"inherit"} className="mx-1 text-slate-300" />
+          </div>
         }
         readOnly={showOnly}
       />
 
       <p
         className={cn(
-          "hidden text-sm text-black md:block",
+          "hidden w-20 text-sm text-black md:block",
           noLabelOnRes && "hidden lg:block",
         )}
       >
