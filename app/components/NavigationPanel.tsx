@@ -33,7 +33,6 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   showShare,
   showSearchBar,
 }) => {
-  const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [url, setUrl] = useState("");
 
@@ -44,14 +43,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   const isProductDetailsPage = pathname.includes("/products");
 
   useEffect(() => {
-    setOpen(true);
-
+    setShareOpen(true);
     setUrl(window.location.href);
   }, []);
-
-  useEffect(() => {
-    if (open) setOpen(false);
-  }, [open]);
 
   return (
     <>
@@ -70,7 +64,6 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
           isProductDetailsPage && "bg-themeBlue",
         )}
       >
-        {open && <div className="absolute inset-0 bg-transparent opacity-0" />}
         <div className="flex justify-between gap-2">
           <div className="flex items-center gap-2">
             <HiChevronLeft onClick={onBack} className="h-6 w-6 text-white" />
@@ -98,7 +91,7 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
             )}
 
             <ProfileDropDownMenu includeAllLinks={true}>
-              <div>
+              <div id="MenuTrigger">
                 <HiEllipsisVertical className="h-6 w-6 text-white" />
               </div>
             </ProfileDropDownMenu>
