@@ -9,7 +9,7 @@ interface DetailsProps {
 }
 
 export default async function Details({ productId }: DetailsProps) {
-  await new Promise((resolver) => setTimeout(resolver, 5000));
+  // await new Promise((resolver) => setTimeout(resolver, 5000));
   const productInfo = await getProductInfoById(productId);
   // const questionsCount = store.getState().productMinorInfo.questionsCount;
 
