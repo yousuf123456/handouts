@@ -4,8 +4,6 @@ import { Heading } from "../Heading";
 import { ExclusiveSection } from "./ExclusiveSection";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
-import dynamic from "next/dynamic";
-
 import clsx from "clsx";
 
 import { useExclusiveSections } from "@/app/hooks/useExclusiveSections";

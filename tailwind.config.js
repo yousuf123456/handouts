@@ -1,7 +1,10 @@
+const { nextui } = require("@nextui-org/react");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
@@ -92,6 +95,10 @@ module.exports = {
     },
   },
   plugins: [
+    nextui({
+      defaultTheme: "light",
+      defaultExtendTheme: "light",
+    }),
     require("tailwindcss-animate"),
     require("tailwind-scrollbar"),
     require("tailwindcss-gradients"),

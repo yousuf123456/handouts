@@ -67,17 +67,14 @@ async function main() {
   //     'Black', 'White', 'Gray', 'Brown', 'Cyan', 'Magenta', 'Gold', 'Silver'
   // ];
   // const sizes = ['Small', 'Medium', 'Large', 'Extra Large', 'XXL'];
-
   // function createRandomProduct()  {
   //     const prefix = "SKU"
   //     const suffix = "-2023"
   //     const colorIndex1 = Math.floor(Math.random() * colorNames.length);
   //     const colorIndex2 = Math.floor(Math.random() * colorNames.length);
   //     const colorIndex3 = Math.floor(Math.random() * colorNames.length);
-
   //     const sizeIndex1 = Math.floor(Math.random() * sizes.length);
   //     const sizeIndex2 = Math.floor(Math.random() * sizes.length);
-
   //     return {
   //         SKU : prefix + faker.string.alpha() + suffix,
   //         name : faker.commerce.productName() ,
@@ -93,14 +90,12 @@ async function main() {
   //         quantity : faker.number.int()
   //     };
   // }
-
   // function createRandomStore () {
   //     return {
   //         name : faker.person.fullName(),
   //         logo : faker.image.avatar(),
   //     }
   // }
-
   // function createRandomVendor(){
   //     return {
   //         name : faker.person.fullName(),
@@ -109,7 +104,6 @@ async function main() {
   //         image : faker.image.avatar()
   //     }
   // }
-
   // function createRandomDiscount() {
   //     return {
   //         name : faker.string.alpha(),
@@ -121,7 +115,6 @@ async function main() {
   //         endingDate : faker.date.anytime(),
   //     }
   // }
-
   // function createVariant(){
   //     const variants = {
   //         color : {
@@ -135,7 +128,6 @@ async function main() {
   //                 images : [faker.image.url()]
   //             }
   //         },
-
   //         size : {
   //             title : "Size",
   //             sm : {
@@ -154,7 +146,6 @@ async function main() {
   //     }
   //     return variants
   // }
-
   // async function DeleteAllDataBaseRecords(){
   //     await prisma.discount.deleteMany();
   //     await prisma.product.deleteMany();
@@ -163,9 +154,7 @@ async function main() {
   //     // await prisma.category.deleteMany();
   //     await prisma.question.deleteMany();
   // }
-
   // await DeleteAllDataBaseRecords();
-
   // const categories = [
   //     [
   //         {
@@ -288,18 +277,14 @@ async function main() {
   //         }
   //     ]
   // ]
-
   // for (let index = 0; index < 10; index++) {
   //     const vendor = createRandomVendor();
   //     const store = createRandomStore();
   //     const discount = createRandomDiscount();
-
   //     const category = categories[index]
-
   //     const Vendor = await prisma.vendor.create({
   //         data : vendor
   //     });
-
   //     const Store = await prisma.store.create({
   //         data : {
   //             ...store,
@@ -310,7 +295,6 @@ async function main() {
   //             }
   //         }
   //     });
-
   //     const Discount = await prisma.discount.create({
   //         data : {
   //             ...discount,
@@ -322,14 +306,11 @@ async function main() {
   //             }
   //         }
   //     });
-
   //     for (let index = 0; index < 10; index++) {
-
   //         const variants = createVariant();
   //         const product = createRandomProduct();
   //         const nameWords = product.name.split(' ');
   //         const keyword = nameWords[Math.floor(Math.random() * nameWords.length)];
-
   //         await prisma.product.create({
   //             data : {
   //                 ...product,
@@ -354,9 +335,7 @@ async function main() {
   //         })
   //     }
   // }
-
   //sep
-
   // const categories = [
   //   {
   //     name : "Home",
@@ -371,7 +350,6 @@ async function main() {
   //       }
   //     }
   //   },
-
   //   {
   //     name : "Decor",
   //     children : {
@@ -385,7 +363,6 @@ async function main() {
   //       }
   //     }
   //   },
-
   //   {
   //     name : "Paintings",
   //     children : {
@@ -394,7 +371,6 @@ async function main() {
   //       }
   //     }
   //   },
-
   //   {
   //     name : "Hand Arts",
   //     children : {
@@ -403,7 +379,6 @@ async function main() {
   //       }
   //     }
   //   },
-
   //   {
   //     name : "Lounge",
   //     children : {
@@ -418,123 +393,45 @@ async function main() {
   //     }
   //   }
   // ]
-
   // const categoriesNames = await prisma.category.findMany({
   //   where : {
   //     name : { in : ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"] }
   //   }
   // });
-
   // const categoriesTreeData = await Promise.all(categoriesNames.map(async(categoryName, i)=> {
   //   const categoryData = await getCategory(categoryName.name);
-
   //   return categoryData
   // }));
-
   // const names = ["Lounge", "Home", "Decor", "Paintings", "Hand Arts"]
-
   // const products = await prisma.product.findMany({ skip : 80, take : 20 })
   // const productsIds = products.map((product)=> product.id)
-
   // await prisma.product.updateMany({
   //   where : {
   //     id : {
   //       in : productsIds
   //     }
   //   },
-
   //   data : {
   //     category : categoriesTreeData[4]?.parent.name,
   //     categoryTreeData : categoriesTreeData[4]?.rawCategoryData
   //   }
   // })
-
   // sep
   // const users = await prisma.user.findMany();
-
   // users.forEach(async (user) => {
   //   const updatedAddressDiary = user.addressDiary.map((address: any) => ({
   //     ...address,
   //     _id: new ObjectId(),
   //   }));
-
   //   await prisma.user.update({
   //     where: {
   //       id: user.id,
   //     },
-
   //     data: {
   //       addressDiary: updatedAddressDiary,
   //     },
   //   });
   // });
-
-  const combinations = [
-    {
-      id: "1",
-      combination: {
-        color: "Red",
-        size: "sm",
-      },
-      price: 50,
-      stock: 10,
-    },
-    {
-      id: "2",
-      combination: {
-        color: "Red",
-        size: "md",
-      },
-      price: 500,
-      stock: 10,
-    },
-    {
-      id: "3",
-      combination: {
-        color: "Red",
-        size: "lg",
-      },
-      price: 77,
-      stock: 10,
-    },
-    {
-      id: "4",
-      combination: {
-        color: "Blue",
-        size: "sm",
-      },
-      price: 780,
-      stock: 0,
-    },
-    {
-      id: "5",
-      combination: {
-        color: "Blue",
-        size: "md",
-      },
-      price: 70,
-      stock: 10,
-    },
-    {
-      id: "6",
-      combination: {
-        color: "Blue",
-        size: "lg",
-      },
-      price: 505,
-      stock: 10,
-    },
-  ];
-
-  await prisma.product.update({
-    where: {
-      id: "64bd1973b6cbecb92c110ec3",
-    },
-
-    data: {
-      combinations: combinations,
-    },
-  });
 }
 
 main()

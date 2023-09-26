@@ -9,6 +9,7 @@ import { SignCta } from "./SignCta";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
 import { RiShoppingCart2Fill } from "react-icons/ri";
 import { CtaLink } from "../../CtaLink";
+import Link from "next/link";
 
 export const Navbar = () => {
   return (
@@ -49,13 +50,15 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden md:block">
-          <Button
-            variant="outline"
-            size="sm"
-            className="border-themeSecondary font-semibold text-themeSecondary hover:bg-themeSecondary "
-          >
-            Sell on Handouts
-          </Button>
+          <Link href="sell-on-handouts/landing">
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-themeSecondary font-semibold text-themeSecondary hover:bg-themeSecondary "
+            >
+              Sell on Handouts
+            </Button>
+          </Link>
         </div>
 
         <div className="sm:hidden">

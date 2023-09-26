@@ -1,66 +1,66 @@
-"use client"
+"use client";
 
-import React from 'react'
+import React from "react";
 
-import { CtaLink } from '../../CtaLink'
-import { SignCta } from './SignCta'
-import { usePathname } from 'next/navigation'
-import { ReduxProvider } from '@/app/context/ReduxProvider'
-import { Categories } from './Categories'
+import { CtaLink } from "../../CtaLink";
+import { SignCta } from "./SignCta";
+import { usePathname } from "next/navigation";
+import { ReduxProvider } from "@/app/context/ReduxProvider";
+import { Categories } from "./Categories";
 
 export const DesktopCTANavbar = () => {
-
   const links = [
     {
-      name : "Hot Deals",
-      href : ""
+      name: "Hot Deals",
+      href: "",
     },
     {
-      name : "Orders",
-      href : "/user/orders"
+      name: "Orders",
+      href: "/user/orders",
     },
     {
-      name : "Returns",
-      href : "/user/returns"
+      name: "Returns",
+      href: "/user/returns",
     },
     {
-      name : "Customer Care",
-      href : ""
-    }
+      name: "Customer Care",
+      href: "",
+    },
   ];
 
-  const isSignPage = usePathname() === "/user/sign"
+  const pathname = usePathname();
+  const isSignPage = pathname === "/user/sign";
+  const isSellerSignPage = pathname === "/seller/sign";
 
   return (
-    <div className='h-10 lg:h-12 bg-themeBlue bg-opacity-80 px-8 sm:px-12 md:px-16 lg:px-24 flex justify-between items-center shadow-lg'>
-      <div className='h-full flex gap-4 sm:gap-8 lg:gap-12 items-center'>
-        <Categories />
+    <>
+      {!isSellerSignPage && (
+        <div className="flex h-10 items-center justify-between bg-themeBlue bg-opacity-80 px-8 shadow-lg sm:px-12 md:px-16 lg:h-12 lg:px-24">
+          <div className="flex h-full items-center gap-4 sm:gap-8 lg:gap-12">
+            <Categories />
 
-        {
-        !isSignPage && (
-          <div className='hidden min-[920px]:flex gap-4 items-center'>
-            {
-              links.map((link) => (
-                <CtaLink key={link.name} href={link.href}>
-                  <p className='whitespace-nowrap underline font-text text-sm font-medium text-white'>
-                    { link.name }
-                  </p>
-                </CtaLink>
-              ))
-            }
+            {!isSignPage && (
+              <div className="hidden items-center gap-4 min-[920px]:flex">
+                {links.map((link) => (
+                  <CtaLink key={link.name} href={link.href}>
+                    <p className="whitespace-nowrap font-text text-sm font-medium text-white underline">
+                      {link.name}
+                    </p>
+                  </CtaLink>
+                ))}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {
-        !isSignPage && (
-          <div className='flex sm:block'>
-            <ReduxProvider>
-              <SignCta />
-            </ReduxProvider>
-          </div>
-        )
-      }
-    </div>
-  )
-}
+          {!isSignPage && (
+            <div className="flex sm:block">
+              <ReduxProvider>
+                <SignCta />
+              </ReduxProvider>
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
+};

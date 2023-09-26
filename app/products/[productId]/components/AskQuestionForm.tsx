@@ -137,9 +137,13 @@ export const AskQuestionForm: React.FC<AskQuestionFormProps> = ({
               </p>
             </div>
 
-            <Button2 size="sm" className="h-8 text-xs">
+            <LoadingButton
+              isLoading={isLoading}
+              onClick={askQuestion}
+              className="h-8 rounded-md bg-black text-xs text-white hover:bg-slate-800 hover:text-white"
+            >
               Send
-            </Button2>
+            </LoadingButton>
           </div>
         </Drawer>
       </div>

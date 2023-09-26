@@ -21,6 +21,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   birthDay DateTime?
+  role String?
   gender String?
   addressDiary Json[] 
   cartItemsCount Int?
@@ -93,10 +94,12 @@ model AddressOption {
 
 model Vendor {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  email String
-  hashedPassword String
-  image String?
+  phone String?
+  profile Json?
+  address Json?
+  Id_BankInfo Json?
+  allInfoProvided Boolean?
+  superTokensUserId String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -149,6 +152,7 @@ model Product {
   details String[]
   category String?
   categoryTreeData Json[]
+  superTokensUserId String
   avgRating Float @default(0)
   ratingsSum Int @default(0)
   ratingsCount Int @default(0)
@@ -164,6 +168,8 @@ model Product {
   discountId String? @db.ObjectId
   discount Discount? @relation(fields: [discountId], references: [id])
 
+  clicks Int @default(0)
+  numOfSales Int @default(0)
   couponId String? @db.ObjectId
   coupon Coupon? @relation(fields: [couponId], references: [id])
 
@@ -173,6 +179,14 @@ model Product {
   ratingAndReviews RatingAndReview[]
   questions Question[]
   cartItems CartItem[]
+}
+
+model ProductClick {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  superTokensUserId String
+  productId String
+  storeId String
 }
 
 model Keyword {
@@ -223,6 +237,7 @@ model Package {
   ammount Int
   storeId String
   status String
+  superTokensUserId String?
   delieveredAt DateTime? @updatedAt
 
   orderedProducts OrderedProduct[]
@@ -238,6 +253,7 @@ model OrderedProduct {
   cancellationReason String?
   returnReason String?
   quantity Int 
+  superTokensUserId String?
   priceAtOrderTime Int
   selectedCombination Json?
   hasBeenReviewed Boolean @default(false)
@@ -251,6 +267,8 @@ model OrderedProduct {
 
   returnRequestId String? @db.ObjectId
   returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id])
+
+  ratingAndReview RatingAndReview?
 }
 
 model CancellationRequest {
@@ -390,6 +408,9 @@ model RatingAndReview {
 
   productId String @db.ObjectId
   product Product @relation(fields: [productId], references: [id])
+
+  orderedProductId String @unique @db.ObjectId
+  orderedProduct OrderedProduct? @relation(fields: [orderedProductId], references: [id])
 }
 
 model Question {

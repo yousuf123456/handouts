@@ -1,11 +1,13 @@
 "use client";
 import { Avatar } from "@/app/components/Avatar";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "@/app/store/store";
 import { setCartItemsCount } from "@/app/store/features/cartSlice";
 import dynamic from "next/dynamic";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Button } from "@/components/ui/button";
 
 const ProfileDropDownMenu = dynamic(() => import("./ProfileDropDownMenu"));
 
@@ -13,6 +15,7 @@ export const SignCta = () => {
   const [hasSetCount, setHasSetCount] = useState(false);
 
   const session = useSession();
+
   const isLoggedIn = session.status === "authenticated";
   const dispatch = useAppDispatch();
 

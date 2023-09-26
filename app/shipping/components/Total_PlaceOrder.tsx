@@ -66,26 +66,31 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
     !fromCart ? formatedProducts[0].cartItems : cartItems,
   );
 
-  const products = !fromCart ? formatedProducts[0].cartItems : cartItems;
+  // const products = !fromCart ? formatedProducts[0].cartItems : cartItems;
 
   const router = useRouter();
 
   const onPlaceOrder = () => {
     setIsLoading(true);
 
-    const packagesData = formatedProducts.map((formatedProduct, i) => {
-      const orderedProducts = formatedProduct.cartItems.map((cartItem, i) => {
+    let productIds: string[] = [];
+
+    const packagesData = formatedProducts.map((formatedProduct: any) => {
+      const orderedProducts = formatedProduct.cartItems.map((cartItem: any) => {
+        productIds.push(cartItem.product.id);
         const orderedProduct = {
           status: "Payment Pending",
           quantity: cartItem.quantity,
           selectedCombination: cartItem.selectedCombination,
           priceAtOrderTime: Math.round(getProductPrice(cartItem)),
+          superTokensUserId: cartItem.product.superTokensUserId,
           product: {
             id: cartItem.product.id,
-            image: cartItem.product.image,
             name: cartItem.product.name,
-            storeName: cartItem.product.storeName,
+            image: cartItem.product.image,
             storeId: cartItem.product.storeId,
+            category: cartItem.product.category,
+            storeName: cartItem.product.storeName,
           },
         };
 
@@ -93,6 +98,7 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
       });
 
       const Package = {
+        superTokensUserId: orderedProducts[0].superTokensUserId,
         ammount: getFormatedCartItemTotal(formatedProduct),
         storeId: formatedProduct.storeId,
         status: "Payment Pending",
@@ -118,10 +124,11 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
 
     axios
       .post("../../api/placeOrder", {
+        fromCart,
         orderData,
+        productIds,
         packagesData,
         storesAssociatedToOrder,
-        fromCart,
       })
       .then((res) => {
         if (fromCart) dispatch(flushCart());

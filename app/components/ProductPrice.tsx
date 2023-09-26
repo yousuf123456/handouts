@@ -53,7 +53,10 @@ export const ProductPrice: React.FC<ProductPriceProps> = ({
 
       {productOnSale() && (
         <div
-          className={clsx("flex", mode ? "flex-col items-end gap-0" : "gap-2")}
+          className={clsx(
+            "flex items-end",
+            mode ? "flex-col items-end gap-0" : "gap-2",
+          )}
         >
           <p
             className={clsx(
