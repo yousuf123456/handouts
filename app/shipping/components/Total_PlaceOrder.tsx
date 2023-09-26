@@ -92,6 +92,12 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
             category: cartItem.product.category,
             storeName: cartItem.product.storeName,
           },
+
+          store: {
+            connect: {
+              id: cartItem.cartItem.product.storeId,
+            },
+          },
         };
 
         return orderedProduct;
