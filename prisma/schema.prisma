@@ -125,14 +125,15 @@ model Store {
   vendorId String @db.ObjectId @unique
   vendor Vendor @relation(fields: [vendorId], references: [id])    
 
-  products Product[]
-
   orderIds String[] @db.ObjectId
   orders Order[] @relation(fields: [orderIds], references: [id])
-  discounts Discount[]
+
   coupons Coupon[]
-  ratingAndReviews RatingAndReview[]
+  products Product[]
+  discounts Discount[]
   questions Question[]
+  orderedProduct OrderedProduct[]
+  ratingAndReviews RatingAndReview[]
 }   
 
 model Product {
@@ -267,6 +268,9 @@ model OrderedProduct {
 
   returnRequestId String? @db.ObjectId
   returnRequest ReturnRequest? @relation(fields: [returnRequestId], references: [id])
+
+  storeId String @db.ObjectId
+  store Store @relation(fields: [storeId], references: [id])
 
   ratingAndReview RatingAndReview?
 }
