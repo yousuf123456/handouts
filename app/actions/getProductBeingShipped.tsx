@@ -1,30 +1,34 @@
-import { getCurrentUser } from "./getCurrentUser"
-import prisma from "../libs/prismadb"
+import { getCurrentUser } from "./getCurrentUser";
+import prisma from "../libs/prismadb";
 
+export const getProductBeingShipped = async (
+  fromCart: boolean,
+  productId?: string,
+) => {
+  if (fromCart) {
+    return null;
+  }
 
-export const getProductBeingShipped = async(fromCart : boolean, productId? : string)=> {
-    if(fromCart) {
-        return null;
-    }
+  const pendingShippedProduct = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
 
-    const pendingShippedProduct = await prisma.product.findUnique({
-        where : {
-            id : productId
-        },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      image: true,
+      storeId: true,
+      category: true,
+      discount: true,
+      storeName: true,
+      combinations: true,
+      superTokensUserId: true,
+    },
+  });
 
-        select : {
-            id: true,
-            name: true,
-            image: true,
-            storeName : true,
-            storeId : true,
-            price: true,
-            combinations : true,
-            discount: true
-        }
-    });
+  if (!pendingShippedProduct) return null;
 
-    if(!pendingShippedProduct) return null
-
-    return [pendingShippedProduct]
-}
+  return [pendingShippedProduct];
+};

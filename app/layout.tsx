@@ -6,6 +6,9 @@ import { SessionProviderContext } from "./context/SessionProviderContext";
 import { Inter, Poppins, Nunito } from "next/font/google";
 import { QueryProvider } from "./context/QueryProvider";
 import { LayoutWrapper } from "./context/LayoutWrapper";
+import { NextUiProvider } from "./context/NextUiProvider";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+// import { UserProvider } from "./context/UserProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,9 +39,11 @@ export default function RootLayout({
       <body className={`${inter.className}`}>
         <SessionProviderContext>
           <QueryProvider>
-            <Header />
-            <LayoutWrapper>{children}</LayoutWrapper>
-            <Footer />
+            <NextUiProvider>
+              <Header />
+              <LayoutWrapper>{children}</LayoutWrapper>
+              <Footer />
+            </NextUiProvider>
           </QueryProvider>
         </SessionProviderContext>
       </body>

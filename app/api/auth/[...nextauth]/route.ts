@@ -1,11 +1,17 @@
-import NextAuth, { AuthOptions, DefaultSession } from "next-auth";
+import NextAuth, { AuthOptions, DefaultSession, DefaultUser } from "next-auth";
+
 declare module "next-auth" {
   interface Session {
     user?: {
-      phone?: string | null | undefined;
       id?: string | null | undefined;
+      phone?: string | null | undefined;
+      role?: "user" | "seller" | "admin";
       cartItemsCount?: number | null | undefined;
     } & DefaultSession["user"];
+  }
+
+  interface User {
+    role: string | undefined | null;
   }
 }
 
@@ -15,7 +21,6 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../../libs/prismadb";
 
-import bcrypt from "bcrypt";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: AuthOptions = {
@@ -26,11 +31,33 @@ export const authOptions: AuthOptions = {
   },
   providers: [
     FacebookProvider({
+      profile(profile) {
+        return {
+          emailVerified: profile.emailVerified,
+          phone: "",
+          email: profile.email,
+          image: profile.image,
+          name: profile.name,
+          role: "user",
+        } as any;
+      },
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
     }),
 
     GoogleProvider({
+      profile(profile) {
+        return {
+          emailVerified: profile.emailVerified,
+          phone: "",
+          email: profile.email,
+          image: profile.image,
+          name: profile.name,
+          id: profile.sub,
+          role: "user",
+        } as any;
+      },
+
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
@@ -56,40 +83,46 @@ export const authOptions: AuthOptions = {
       },
 
       async authorize(credentials, req) {
-        const { email_phone, password } = credentials as unknown as {
+        const { email_phone, password, name } = credentials as unknown as {
           email_phone: string;
           password: string;
+          name: string;
         };
 
-        if (!email_phone || !password) {
-          throw new Error("Incomplete Credentials");
-        }
-
-        const user = await prisma.user.findFirst({
+        const user = (await prisma.user.findFirst({
           where: {
-            OR: [
-              {
-                email: email_phone,
-              },
-              {
-                phone: email_phone,
-              },
-            ],
+            name: name,
           },
-        });
+        })) as any;
+        // if (!email_phone || !password) {
+        //   throw new Error("Incomplete Credentials");
+        // }
 
-        if (!user || !user.hashedPassword) {
-          throw new Error("Invalid Credentials");
-        }
+        // const user = await prisma.user.findFirst({
+        //   where: {
+        //     OR: [
+        //       {
+        //         email: email_phone,
+        //       },
+        //       {
+        //         phone: email_phone,
+        //       },
+        //     ],
+        //   },
+        // });
 
-        const passwordIscorrect = await bcrypt.compare(
-          password,
-          user.hashedPassword,
-        );
+        // if (!user || !user.hashedPassword) {
+        //   throw new Error("Invalid Credentials");
+        // }
 
-        if (!passwordIscorrect) {
-          throw new Error("Invalid Credentials");
-        }
+        // const passwordIscorrect = await bcrypt.compare(
+        //   password,
+        //   user.hashedPassword,
+        // );
+
+        // if (!passwordIscorrect) {
+        //   throw new Error("Invalid Credentials");
+        // }
 
         return user;
       },
@@ -98,13 +131,14 @@ export const authOptions: AuthOptions = {
 
   callbacks: {
     async session({ session, token, user }) {
-      const userDetails = await prisma.user.findUnique({
+      const userDetails = await prisma.user.findFirst({
         where: {
           email: session.user?.email!,
         },
 
         select: {
           id: true,
+          role: true,
           phone: true,
           cartItemsCount: true,
         },
@@ -112,18 +146,15 @@ export const authOptions: AuthOptions = {
 
       if (session?.user !== undefined) {
         session.user.id = userDetails?.id;
-        session.user.cartItemsCount = userDetails?.cartItemsCount;
         session.user.phone = userDetails?.phone;
+        session.user.role = userDetails?.role as any;
+        session.user.cartItemsCount = userDetails?.cartItemsCount;
       }
+
+      token.role = userDetails?.role;
 
       return Promise.resolve(session);
     },
-
-    // async redirect(params): Promise<string> {
-    //   return params.url.startsWith(params.baseUrl)
-    //   ? Promise.resolve(params.url)
-    //   : Promise.resolve(params.baseUrl)
-    // }
   },
 
   debug: process.env.NODE_ENV === "development",

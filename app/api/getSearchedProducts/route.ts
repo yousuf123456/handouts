@@ -125,9 +125,11 @@ export async function POST(req: Request) {
           image: 1,
           price: 1,
           ratings: 1,
+          storeId: 1,
           ratingsCount: 1,
           avgRating: 1,
           discount: 1,
+          superTokensUserId: 1,
         },
       },
     ];

@@ -274,7 +274,7 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                       selectedCombination?.price ||
                       cartItem?.product?.price
                     }
-                    className="mb-1 text-base font-semibold text-themeSecondary"
+                    className="mb-1 font-semibold text-themeSecondary sm:text-base lg:text-base"
                     mode="flex-col"
                   />
                 </div>

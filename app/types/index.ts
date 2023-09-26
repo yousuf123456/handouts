@@ -16,6 +16,7 @@ export type fullCategoryDiscountedProductType = Product & {
 
 export type ProductCardType = {
   discount: Discount | null;
+  superTokensUserId: string;
   ratingsCount: number;
   avgRating: number;
   image: string;
@@ -107,11 +108,13 @@ export type CombinationsType = {
 export type CartItemProductType = {
   id: string;
   name: string;
-  image: string | null;
-  storeName: string;
-  storeId: string;
   price: number;
+  storeId: string;
+  storeName: string;
+  image: string | null;
+  category: string | null;
   discount: Discount | null;
+  superTokensUserId: string;
 };
 
 export type CartItemType = {
@@ -183,9 +186,11 @@ export type OrderedProductType = {
     id: string;
     name: string;
     storeId: string;
+    category: string;
     storeName: string;
     image: string | null;
   };
+  superTokensUserId: string;
   priceAtOrderTime: number;
   hasBeenReviewed: boolean;
   cancellationRequestId: string;
@@ -228,6 +233,7 @@ export type StatusType =
   | "Delievered"
   | "Cancelled"
   | "Cancellation in Process";
+
 export type ReturnStatusType =
   | "Return in Process"
   | "Approved"
@@ -235,7 +241,13 @@ export type ReturnStatusType =
   | "Refund Pending"
   | "Refunded";
 
+export type SellerAccountVerificationStepsType =
+  | "Add Profile"
+  | "Add Address"
+  | "Verify Id & Bank";
+
 export const cancellationSteps = ["Cancellation in Process", "Cancelled"];
+
 export const returnSteps = [
   "Return in Process",
   "Approved",
