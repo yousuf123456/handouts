@@ -5,7 +5,7 @@ import { cn } from "../utils/cn";
 interface DrawerProps {
   open: boolean;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   side?: "top" | "bottom" | "left" | "right" | null | undefined;
 }
