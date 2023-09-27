@@ -25,7 +25,6 @@ interface NavigationPanelProps {
   showCart?: boolean;
   showShare?: boolean;
   showSearchBar?: boolean;
-  bugFixerProp?: any;
 }
 
 export const NavigationPanel: React.FC<NavigationPanelProps> = ({
@@ -33,10 +32,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   showCart,
   showShare,
   showSearchBar,
-  bugFixerProp,
 }) => {
-  const [bugFixedProp, setBugFixerProp] = useState(bugFixerProp);
   const [shareOpen, setShareOpen] = useState(false);
+  const [fakeModelOpen, setFakeModelOpen] = useState(false);
   const [url, setUrl] = useState("");
 
   const router = useRouter();
@@ -46,8 +44,12 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
   const isProductDetailsPage = pathname.includes("/products");
 
   useEffect(() => {
-    if (bugFixedProp) setBugFixerProp("Bug Fixed");
-  }, [bugFixedProp]);
+    setFakeModelOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (fakeModelOpen) setFakeModelOpen(false);
+  }, [fakeModelOpen]);
 
   // useEffect(() => {
   //   if (shareOpen && !bugFixed) {
@@ -58,6 +60,9 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
 
   return (
     <>
+      {fakeModelOpen && (
+        <div className=" fixed left-0 top-0 h-2 w-2 bg-transparent" />
+      )}
       {!isProductDetailsPage && (
         <div
           className={cn(
