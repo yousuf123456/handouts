@@ -60,9 +60,8 @@ export const NavigationPanel: React.FC<NavigationPanelProps> = ({
 
   return (
     <>
-      {fakeModelOpen && (
-        <div className=" fixed left-0 top-0 h-2 w-2 bg-transparent" />
-      )}
+      <Drawer open={fakeModelOpen} setOpen={setFakeModelOpen}></Drawer>
+
       {!isProductDetailsPage && (
         <div
           className={cn(
