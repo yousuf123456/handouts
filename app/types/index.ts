@@ -180,6 +180,7 @@ export type OrderedProductType = {
   id: string;
   status: string;
   createdAt: Date;
+  storeId: string;
   quantity: number;
   packageId: string;
   product: {
