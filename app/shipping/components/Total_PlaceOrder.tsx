@@ -74,7 +74,6 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
     setIsLoading(true);
 
     let productIds: string[] = [];
-
     const packagesData = formatedProducts.map((formatedProduct: any) => {
       const orderedProducts = formatedProduct.cartItems.map((cartItem: any) => {
         productIds.push(cartItem.product.id);
@@ -95,7 +94,7 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
 
           store: {
             connect: {
-              id: cartItem.cartItem.product.storeId,
+              id: cartItem.product.storeId,
             },
           },
         };
