@@ -12,6 +12,7 @@ type ReqType = {
   orderFeedback: string;
   proofImages: string[];
   orderId: string;
+  storeIds: { id: string }[];
 };
 
 const getRequestStatus = (updatedOrderedProducts: OrderedProductType[]) => {
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
     const {
       type,
       orderId,
+      storeIds,
       proofImages,
       orderFeedback,
       updatedPackages,
@@ -91,6 +93,10 @@ export async function POST(req: Request) {
             connect: {
               id: orderId,
             },
+          },
+
+          stores: {
+            connect: storeIds,
           },
         },
       });

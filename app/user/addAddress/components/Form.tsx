@@ -20,10 +20,15 @@ import { useRouter } from "next/navigation";
 
 interface FormProps {
   update: boolean;
+  redirect: string | undefined;
   editingAddress: AddressType | undefined;
 }
 
-export const Form: React.FC<FormProps> = ({ editingAddress, update }) => {
+export const Form: React.FC<FormProps> = ({
+  editingAddress,
+  update,
+  redirect,
+}) => {
   const initialIsDefaultShippingAddress = editingAddress
     ? editingAddress.isDefaultShippingAddress
     : false;
@@ -108,13 +113,12 @@ export const Form: React.FC<FormProps> = ({ editingAddress, update }) => {
         editAddress: editingAddress ? true : false,
       })
       .then((res) => {
-        console.log(res.data);
         dispatch(
           editingAddress
             ? replaceWithNewAddress(res.data)
             : addAddress(res.data),
         );
-        router.push("/user/addressDiary");
+        router.push(redirect || "/user/addressDiary");
       })
       .catch((e) => {
         console.log(e);

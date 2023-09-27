@@ -11,6 +11,7 @@ import { User } from "@prisma/client";
 interface SearchParams {
   id: string | undefined;
   update: string | undefined;
+  redirect?: string;
 }
 
 export default async function AddAddressPage({
@@ -37,6 +38,7 @@ export default async function AddAddressPage({
       <div className="mt-8 px-3 min-[420px]:px-6">
         <ReduxProvider>
           <Form
+            redirect={searchParams.redirect}
             update={searchParams.update === "true"}
             editingAddress={address as AddressType | undefined}
           />

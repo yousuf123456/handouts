@@ -1,41 +1,37 @@
-import { Category, Product } from "@prisma/client";
-import prisma from "../libs/prismadb"
+import prisma from "../libs/prismadb";
 
-export const getDiscountedProducts = async(byCategory : boolean) => {
-
-    if (byCategory) {
-      const productsWithDiscounts = await prisma.product.findMany({
-        take : 10, 
-        where : {
-          OR : [
-            {
-              store : {
-                discounts : {
-                  some : {
-                    isApplicableForStore : true
-                  }
-                }
+export const getDiscountedProducts = async (byCategory: boolean) => {
+  if (byCategory) {
+    const productsWithDiscounts = await prisma.product.findMany({
+      take: 10,
+      where: {
+        OR: [
+          {
+            store: {
+              discounts: {
+                some: {
+                  isApplicableForStore: true,
+                },
               },
             },
+          },
 
-            {
-              NOT : {discount : null}
-            }
-          ]
-        },
+          {
+            NOT: { discount: null },
+          },
+        ],
+      },
 
-        include : {
-          discount : true
-        }
-      }); 
+      include: {
+        discount: true,
+      },
+    });
 
-      if (productsWithDiscounts) {
-        return productsWithDiscounts;
-      }
-      return []
+    if (productsWithDiscounts) {
+      return productsWithDiscounts;
     }
-
-    else {
-      return []
-    }
-}
+    return [];
+  } else {
+    return [];
+  }
+};

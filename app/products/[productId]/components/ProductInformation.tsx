@@ -35,20 +35,21 @@ interface ProductInformationProps {
 export const ProductInformation: React.FC<ProductInformationProps> = ({
   product,
 }) => {
-  useEffect(() => {
-    const productData = {
-      categoryTreeData: product.categoryTreeData,
-      description: product.description,
-      attributes: product.attributes,
-      keywords: product.keywords,
-      name: product.name,
-    };
+  // This is now done on only click not on each render
+  // useEffect(() => {
+  //   const productData = {
+  //     categoryTreeData: product.categoryTreeData,
+  //     description: product.description,
+  //     attributes: product.attributes,
+  //     keywords: product.keywords,
+  //     name: product.name,
+  //   };
 
-    axios.post("../../../api/browsingHistoryAdd", {
-      productData: productData,
-      productId: product.id,
-    });
-  }, []);
+  //   axios.post("../../../api/browsingHistoryAdd", {
+  //     productData: productData,
+  //     productId: product.id,
+  //   });
+  // }, []);
 
   const [quantity, setQuantity] = useState(1);
 

@@ -59,6 +59,10 @@ export const getSimilarProducts = async (
         superTokensUserId: 1,
         avgRating: 1,
         discount: 1,
+        attributes: 1,
+        description: 1,
+        keywords: 1,
+        categoryTreeData: 1,
       },
     },
   ];

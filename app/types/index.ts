@@ -23,6 +23,10 @@ export type ProductCardType = {
   price: number;
   name: string;
   id: string;
+  description: string;
+  attributes: any;
+  keywords: string[];
+  categoryTreeData: any;
 };
 
 type MGdiscount = {

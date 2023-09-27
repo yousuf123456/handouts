@@ -32,6 +32,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   //36 sm40 lg48
 
   const onClick = () => {
+    const productData = {
+      categoryTreeData: product.categoryTreeData,
+      description: product.description,
+      attributes: product.attributes,
+      keywords: product.keywords,
+      name: product.name,
+    };
+
+    axios.post("../../../api/browsingHistoryAdd", {
+      productData: productData,
+      productId: product.id,
+    });
+
     axios.post("../api/productClick", {
       productId: productId,
       //@ts-ignore

@@ -128,6 +128,9 @@ model Store {
   orderIds String[] @db.ObjectId
   orders Order[] @relation(fields: [orderIds], references: [id])
 
+    returnRequestIds String[] @db.ObjectId
+  returnRequests ReturnRequest[] @relation(fields: [returnRequestIds], references: [id])
+
   coupons Coupon[]
   products Product[]
   discounts Discount[]
@@ -301,6 +304,9 @@ model ReturnRequest {
   status String
 
   orderedProducts OrderedProduct[]
+
+  storeIds String[] @db.ObjectId
+  stores Store[] @relation(fields: [storeIds], references: [id])
 
   orderId String @db.ObjectId
   order Order @relation(fields: [orderId], references: [id])
