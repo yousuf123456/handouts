@@ -25,12 +25,12 @@ export const OrderActions: React.FC<OrderActionsProps> = ({
     : `/user/orders/${orderId}`;
 
   return (
-    <div className="mt-4 flex w-full justify-end gap-3">
+    <div className="mt-4 flex w-full justify-end gap-3 sm:hidden">
       {orderStatus === "Payment Pending" && (
         <Button
           variant="outline"
           size="sm"
-          className="border-green-400 text-[11px] leading-3 text-green-400"
+          className="border-green-400 text-[11px] leading-3 text-green-400 hover:bg-green-400"
         >
           Pay Now
         </Button>

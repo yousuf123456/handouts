@@ -8,6 +8,7 @@ import { getUpdatedPackages } from "@/app/utils/getUpdatedPackages";
 import { useRouter } from "next/navigation";
 
 import axios from "axios";
+import { find, includes } from "lodash";
 
 interface SubmitRequestProps {
   packages: PackageType[];
@@ -43,21 +44,31 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
     const { updatedOrderedProducts, updatedPackagesWithUpdatedStatus } =
       getUpdatedPackages(packages, selectedOrderedProducts, type);
 
-    console.log(updatedOrderedProducts[0].storeId);
-    // setIsLoading(true);
-    // axios.post("../../../../../api/orderRequest", {
-    //   updatedPackages : updatedPackagesWithUpdatedStatus,
-    //   updatedOrderedProducts : updatedOrderedProducts,
-    //   orderFeedback : feedback,
-    //   proofImages : proofImages,
-    //   orderId : orderId,
-    //   type : type
-    // })
-    // .then((res)=> {
-    //   router.push(`/user/orders/${orderId}/request-result?type=${type}&requestId=${res.data.requestId}&process=${res.data.process}`)
-    // })
-    // .catch((e)=> console.log(e))
-    // .finally(()=> setIsLoading(false));
+    let storeIds: { id: string }[] = [];
+
+    updatedOrderedProducts.map((orderedProduct) => {
+      if (find(storeIds, { id: orderedProduct.storeId })) return;
+      storeIds.push({ id: orderedProduct.storeId });
+    });
+
+    setIsLoading(true);
+    axios
+      .post("../../../../../api/orderRequest", {
+        updatedPackages: updatedPackagesWithUpdatedStatus,
+        updatedOrderedProducts: updatedOrderedProducts,
+        orderFeedback: feedback,
+        proofImages: proofImages,
+        storeIds: storeIds,
+        orderId: orderId,
+        type: type,
+      })
+      .then((res) => {
+        router.push(
+          `/user/orders/${orderId}/request-result?type=${type}&requestId=${res.data.requestId}&process=${res.data.process}`,
+        );
+      })
+      .catch((e) => console.log(e))
+      .finally(() => setIsLoading(false));
   };
 
   const disabled =

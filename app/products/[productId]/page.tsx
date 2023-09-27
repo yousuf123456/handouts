@@ -14,8 +14,6 @@ import Questions from "./components/containers/Questions";
 import Reviews from "./components/containers/Reviews";
 import SimilarProducts from "./components/containers/SimilarProducts";
 import ProductsFromStore from "./components/containers/ProductsFromStore";
-// import prisma from "../../libs/prismadb";
-// import dynamic from "next/dynamic";
 
 interface IParams {
   productId: string;
@@ -52,7 +50,12 @@ export default async function ProductDetailsPage({
 
   return (
     <div className="w-full overflow-x-hidden bg-slate-100 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
-      <NavigationPanel showSearchBar showCart showShare />
+      <NavigationPanel
+        bugFixerProp={"This is a bug fixer prop"}
+        showSearchBar
+        showCart
+        showShare
+      />
 
       <div className="flex flex-col gap-6">
         <Suspense fallback={<InformationLoading />}>

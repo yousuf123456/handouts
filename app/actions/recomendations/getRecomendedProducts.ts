@@ -104,6 +104,10 @@ export const getRecomendedProducts = async () => {
         discount: 1,
         ratingsCount: 1,
         superTokensUserId: 1,
+        attributes: 1,
+        description: 1,
+        keywords: 1,
+        categoryTreeData: 1,
       },
     },
   ];

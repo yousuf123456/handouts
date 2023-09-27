@@ -9,8 +9,12 @@ export const WhySellOnHandouts = () => {
       <Heading>Why to sell on Handouts ?</Heading>
 
       <div className="grid grid-cols-3 content-around gap-12">
-        {handoutsFeatures.map((feature) => (
-          <FeatureCard heading={feature.heading} label={feature.label} />
+        {handoutsFeatures.map((feature, i) => (
+          <FeatureCard
+            key={i}
+            heading={feature.heading}
+            label={feature.label}
+          />
         ))}
       </div>
     </div>

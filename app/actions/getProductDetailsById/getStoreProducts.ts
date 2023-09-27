@@ -23,6 +23,10 @@ export const getStoreProducts = async (productId: string) => {
       avgRating: true,
       ratingsCount: true,
       superTokensUserId: true,
+      attributes: true,
+      description: true,
+      keywords: true,
+      categoryTreeData: true,
     },
 
     take: 4,
