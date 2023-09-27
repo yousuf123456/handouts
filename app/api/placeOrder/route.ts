@@ -30,7 +30,6 @@ export async function POST(req: Request) {
               id: currentUser.id,
             },
           },
-
           packages: {
             create: packagesData,
           },
@@ -40,6 +39,7 @@ export async function POST(req: Request) {
           },
         },
       }),
+
       prisma.product.updateMany({
         where: {
           id: {
