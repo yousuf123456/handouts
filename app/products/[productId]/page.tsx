@@ -50,12 +50,7 @@ export default async function ProductDetailsPage({
 
   return (
     <div className="w-full overflow-x-hidden bg-slate-100 sm:px-4 sm:py-4 lg:mt-8 lg:px-8 lg:py-8 xl:px-20">
-      <NavigationPanel
-        bugFixerProp={"This is a bug fixer prop"}
-        showSearchBar
-        showCart
-        showShare
-      />
+      <NavigationPanel showSearchBar showCart showShare />
 
       <div className="flex flex-col gap-6">
         <Suspense fallback={<InformationLoading />}>

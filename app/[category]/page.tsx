@@ -1,13 +1,8 @@
-import React, { Suspense } from "react";
-import Loading from "./loading";
+import React from "react";
 
-import { SearchedProducts } from "./components/SearchedProducts";
-import { Facets } from "./components/Facets";
-import { searchProducts } from "../actions/searchProducts";
 import { IParams } from "../types";
 
 import { getCategory } from "../actions/getCategory";
-import { getCategoryTree } from "../utils/getCategoryTree";
 import { formatCategoryParam } from "../utils/formatCategoryParam";
 import { SearchedTermResults } from "./components/SearchedTermResults";
 import { NavigationPanel } from "../components/NavigationPanel";
