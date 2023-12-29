@@ -6,16 +6,23 @@ import { NavigationItem } from "@/app/components/NavigationItem";
 import { HiCash } from "react-icons/hi";
 import { Total_PlaceOrder } from "./Total_PlaceOrder";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
-import { CartItemProductType } from "@/app/types";
+import { CartItemProductType, VoucherType } from "@/app/types";
 import { AddressInfo } from "./AddressInfo";
 import { BannerNavPanel } from "@/app/(site)/components/header/components/BannerNavPanel";
 
 interface CheckoutBannerProps {
+  vouchers: VoucherType[];
   fromCart: boolean | undefined;
   product: CartItemProductType[] | null;
+  appliedVouchers: { [key: string]: VoucherType };
 }
 
-export const CheckoutBanner = ({ fromCart, product }: CheckoutBannerProps) => {
+export const CheckoutBanner = ({
+  fromCart,
+  product,
+  vouchers,
+  appliedVouchers,
+}: CheckoutBannerProps) => {
   return (
     <div className="min-h-80 flex w-full flex-col items-center justify-between bg-slate-900 py-4">
       <BannerNavPanel heading="Checkout" />
@@ -50,7 +57,11 @@ export const CheckoutBanner = ({ fromCart, product }: CheckoutBannerProps) => {
         </div>
 
         <ReduxProvider>
-          <Total_PlaceOrder product={product} />
+          <Total_PlaceOrder
+            appliedVouchers={appliedVouchers}
+            collectedVouchers={vouchers}
+            product={product}
+          />
         </ReduxProvider>
       </div>
     </div>

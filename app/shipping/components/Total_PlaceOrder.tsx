@@ -5,24 +5,26 @@ import { Button } from "@/app/components/Button";
 import TotalTable from "@/app/components/TotalTable";
 import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CartItemProductType, PackageType } from "@/app/types";
-import { useTotal } from "@/app/hooks/useTotal";
+import { CartItemProductType, PackageType, VoucherType } from "@/app/types";
+import { getTotal } from "@/app/utils/getTotal";
 import { formatCartItems } from "@/app/utils/formatCartItems";
-import { Order } from "@prisma/client";
 import { getProductPrice } from "@/app/utils/getProductPrice";
 import axios from "axios";
 import BackdropLoader from "@/app/components/BackdropLoader";
 import { flushCart } from "@/app/store/features/cartSlice";
-import { stat } from "fs";
 import { getFormatedCartItemTotal } from "@/app/utils/getFormatedCartItemTotal";
 import { MobileTotal } from "@/app/components/MobileTotal";
 
 interface Total_PlaceOrderProps {
+  appliedVouchers: { [key: string]: VoucherType };
   product: CartItemProductType[] | null;
+  collectedVouchers: VoucherType[];
 }
 
 export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
   product,
+  collectedVouchers,
+  appliedVouchers,
 }) => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -62,85 +64,119 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
       formatCartItems(productToBeFormatted)
     : formatCartItems(cartItems);
 
-  const { subTotal, productsAmmount } = useTotal(
-    !fromCart ? formatedProducts[0].cartItems : cartItems,
-  );
+  const { subTotal, productsAmmount } = getTotal({
+    items: !fromCart ? formatedProducts[0].cartItems : cartItems,
+
+    appliedVouchers: appliedVouchers,
+  });
 
   // const products = !fromCart ? formatedProducts[0].cartItems : cartItems;
 
   const router = useRouter();
 
+  const getUserDistrict = async () => {
+    let district: string = "";
+
+    if (window.navigator) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await axios.get(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`,
+          );
+          const addressComponents = response.data.address;
+          district =
+            addressComponents.district ||
+            addressComponents.county ||
+            "Could not get the district";
+        } catch (error) {
+          district = "Could not get the district";
+        }
+      });
+    }
+
+    return district;
+  };
+
   const onPlaceOrder = () => {
     setIsLoading(true);
 
-    let productIds: string[] = [];
-    const packagesData = formatedProducts.map((formatedProduct: any) => {
-      const orderedProducts = formatedProduct.cartItems.map((cartItem: any) => {
-        productIds.push(cartItem.product.id);
-        const orderedProduct = {
-          status: "Payment Pending",
-          quantity: cartItem.quantity,
-          selectedCombination: cartItem.selectedCombination,
-          priceAtOrderTime: Math.round(getProductPrice(cartItem)),
-          superTokensUserId: cartItem.product.superTokensUserId,
-          product: {
-            id: cartItem.product.id,
-            name: cartItem.product.name,
-            image: cartItem.product.image,
-            storeId: cartItem.product.storeId,
-            category: cartItem.product.category,
-            storeName: cartItem.product.storeName,
-          },
+    getUserDistrict().then((res) => {
+      let productIds: string[] = [];
+      const packagesData = formatedProducts.map((formatedProduct: any) => {
+        const orderedProducts = formatedProduct.cartItems.map(
+          (cartItem: any) => {
+            productIds.push(cartItem.product.id);
+            const orderedProduct = {
+              status: "Payment Pending",
+              quantity: cartItem.quantity,
+              selectedCombination: cartItem.selectedCombination,
+              priceAtOrderTime: Math.round(getProductPrice(cartItem)),
+              superTokensUserId: cartItem.product.superTokensUserId,
+              product: {
+                id: cartItem.product.id,
+                name: cartItem.product.name,
+                image: cartItem.product.image,
+                storeId: cartItem.product.storeId,
+                category: cartItem.product.category,
+                storeName: cartItem.product.storeName,
+              },
 
-          store: {
-            connect: {
-              id: cartItem.product.storeId,
-            },
+              store: {
+                connect: {
+                  id: cartItem.product.storeId,
+                },
+              },
+            };
+
+            return orderedProduct;
+          },
+        );
+
+        const Package = {
+          superTokensUserId: orderedProducts[0].superTokensUserId,
+          ammount: getFormatedCartItemTotal(formatedProduct),
+          storeId: formatedProduct.storeId,
+          status: "Payment Pending",
+          orderedProducts: {
+            create: orderedProducts,
           },
         };
 
-        return orderedProduct;
+        return Package;
       });
 
-      const Package = {
-        superTokensUserId: orderedProducts[0].superTokensUserId,
-        ammount: getFormatedCartItemTotal(formatedProduct),
-        storeId: formatedProduct.storeId,
-        status: "Payment Pending",
-        orderedProducts: {
-          create: orderedProducts,
-        },
+      const storesAssociatedToOrder = formatedProducts.map(
+        (formatedProduct) => ({
+          id: formatedProduct.storeId,
+        }),
+      );
+
+      const orderData = {
+        totalAmmount: Math.round(subTotal),
+        totalQuantity: productsAmmount,
+        shippingAddress: selectedShippingAddress,
+        billingAddress: selectedBillingAddress,
+        emailTo: selectedEmailTo,
+        boughtFromLocation: res,
       };
 
-      return Package;
+      axios
+        .post("../../api/placeOrder", {
+          fromCart,
+          orderData,
+          productIds,
+          packagesData,
+
+          storesAssociatedToOrder,
+        })
+        .then((res) => {
+          if (fromCart) dispatch(flushCart());
+          router.push(`/payment?checkoutOrderId=${res.data.id}`);
+        })
+        .catch((e) => console.log(e))
+        .finally(() => setIsLoading(false));
     });
-
-    const storesAssociatedToOrder = formatedProducts.map((formatedProduct) => ({
-      id: formatedProduct.storeId,
-    }));
-
-    const orderData = {
-      totalAmmount: Math.round(subTotal),
-      totalQuantity: productsAmmount,
-      shippingAddress: selectedShippingAddress,
-      billingAddress: selectedBillingAddress,
-      emailTo: selectedEmailTo,
-    };
-
-    axios
-      .post("../../api/placeOrder", {
-        fromCart,
-        orderData,
-        productIds,
-        packagesData,
-        storesAssociatedToOrder,
-      })
-      .then((res) => {
-        if (fromCart) dispatch(flushCart());
-        router.push(`/payment?checkoutOrderId=${res.data.id}`);
-      })
-      .catch((e) => console.log(e))
-      .finally(() => setIsLoading(false));
   };
 
   return (

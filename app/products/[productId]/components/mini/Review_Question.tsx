@@ -11,7 +11,7 @@ export const Review_Question: React.FC<Review_Question> = ({
   className,
 }) => {
   return (
-    <p className={cn("font-text text-sm font-medium text-black", className)}>
+    <p className={cn("font-roboto text-sm font-medium text-black", className)}>
       {children}
     </p>
   );

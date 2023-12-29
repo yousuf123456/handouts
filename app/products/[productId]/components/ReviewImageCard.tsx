@@ -12,15 +12,14 @@ export const ReviewImageCard: React.FC<ReviewImageCardProps> = ({
 }) => {
   return (
     <div className="h-20 w-20 bg-slate-50">
-      <div
-        onClick={onClick}
-        className="aspect-auto relative h-full w-full bg-slate-200"
-      >
+      <div onClick={onClick} className="relative h-20 w-20 bg-slate-100">
         <Image
+          width={"0"}
+          height={"0"}
           src={image}
           alt="Image"
-          className="cursor-pointer object-cover"
-          fill
+          sizes="100vw"
+          className="h-auto w-full cursor-pointer"
         />
       </div>
     </div>

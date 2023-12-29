@@ -22,11 +22,11 @@ export const ReviewsGauge: React.FC<ReviewsGaugeProps> = ({
   return (
     <div className="flex w-full max-md:justify-around max-sm:flex-col max-sm:gap-3 sm:items-center md:gap-28">
       <div className="flex gap-2 max-sm:items-center max-sm:justify-center sm:flex-col sm:gap-0">
-        <h2 className="hidden font-text text-xl font-semibold text-themeSecondary sm:block md:text-2xl">
+        <h2 className="hidden text-center font-roboto text-xl text-themeSecondary sm:block md:text-2xl">
           {avgRating + "/5"}
         </h2>
 
-        <h2 className="font-text text-sm font-semibold text-black sm:hidden">
+        <h2 className="font-roboto text-sm text-black sm:hidden">
           {avgRating + " Rating "}
         </h2>
 
@@ -36,11 +36,11 @@ export const ReviewsGauge: React.FC<ReviewsGaugeProps> = ({
             iconSize="text-[14px] md:text-[16px]"
           />
 
-          <p className="hidden font-text text-sm font-medium text-themeSecondary sm:block md:text-base">
+          <p className="hidden text-center font-roboto text-[15px] font-medium leading-5 text-themeSecondary sm:block">
             {ratingsCount + " Reviews"}
           </p>
 
-          <p className="font-text text-xs font-semibold text-black sm:hidden">
+          <p className="font-roboto text-xs text-black sm:hidden">
             {"(" + ratingsCount + ")"}
           </p>
         </div>

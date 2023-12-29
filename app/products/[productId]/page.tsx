@@ -1,17 +1,20 @@
 import React, { Suspense } from "react";
 
 import { Container } from "./components/Container";
-import { Information } from "./components/containers/Information";
 import { InformationLoading } from "./components/containers/loadings/InformationLoading";
 import { ReviewsLoading } from "./components/containers/loadings/ReviewsLoading";
 import { QuestionsLoading } from "./components/containers/loadings/QuestionsLoading";
 import { DetailsLoading } from "./components/containers/loadings/DetailsLoading";
 import { ProductsFromStoreLoading } from "./components/containers/loadings/ProductsFromStoreLoading";
-import { SimilarProductsLoading } from "./components/containers/loadings/SimilarProductsLoading";
+
 import { NavigationPanel } from "@/app/components/NavigationPanel";
+
+import dynamic from "next/dynamic";
+
+import Reviews from "./components/containers/Reviews";
 import Details from "./components/containers/Details";
 import Questions from "./components/containers/Questions";
-import Reviews from "./components/containers/Reviews";
+import Information from "./components/containers/Information";
 import SimilarProducts from "./components/containers/SimilarProducts";
 import ProductsFromStore from "./components/containers/ProductsFromStore";
 
@@ -40,6 +43,8 @@ interface IParams {
 //   });
 //   return products.map((product) => ({ productId: product.id }));
 // }
+
+export const revalidate = 3600;
 
 export default async function ProductDetailsPage({
   params,
@@ -77,14 +82,7 @@ export default async function ProductDetailsPage({
               </Suspense>
             </Container>
 
-            <Container>
-              <Suspense
-                key="similarProducts"
-                fallback={<SimilarProductsLoading />}
-              >
-                <SimilarProducts productId={params.productId} />
-              </Suspense>
-            </Container>
+            <SimilarProducts productId={params.productId} />
           </div>
 
           <Suspense

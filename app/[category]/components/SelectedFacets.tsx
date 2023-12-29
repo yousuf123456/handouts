@@ -11,12 +11,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { updateSearchParam } from "@/app/utils/updateSearchParam";
 
 export const SelectedFacets = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
   const pathName = usePathname() || "/";
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const params = Object.fromEntries(searchParams.entries());
+
     dispatch(setSelectedFacets(params));
   }, []);
 

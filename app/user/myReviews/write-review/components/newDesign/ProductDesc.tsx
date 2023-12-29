@@ -5,7 +5,6 @@ interface ProductDescProps {
   product: {
     id: string;
     name: string;
-    storeId: string;
     storeName: string;
     image: string | null;
   };

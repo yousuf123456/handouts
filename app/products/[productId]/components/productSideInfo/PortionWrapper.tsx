@@ -14,7 +14,9 @@ export const PortionWrapper: React.FC<PortionWrapperProps> = ({
 }) => {
   return (
     <div className={cn("flex flex-col gap-1", className)}>
-      <p className="text-sm font-medium text-black">{portionName}</p>
+      <p className="font-roboto text-sm font-medium text-black">
+        {portionName}
+      </p>
       {children}
     </div>
   );

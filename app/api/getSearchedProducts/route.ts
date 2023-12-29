@@ -6,10 +6,20 @@ import { IParams } from "@/app/types";
 
 export async function POST(req: Request) {
   try {
-    const { params, category }: { params: IParams; category: string } =
-      await req.json();
+    const {
+      params,
+      category,
+      storeId,
+      fromSpecificStore,
+    }: {
+      params: IParams;
+      category: string;
+      storeId: string | undefined;
+      fromSpecificStore: boolean | undefined;
+    } = await req.json();
 
     const filterArray = [];
+
     const {
       categoryObject,
       colorsObject,
@@ -30,6 +40,7 @@ export async function POST(req: Request) {
       params.sortBy === "price-up" || params.sortBy === "price-down"
         ? "price"
         : params.sortBy;
+
     const sortObject = sortByField
       ? {
           [sortByField]:
@@ -41,37 +52,44 @@ export async function POST(req: Request) {
         }
       : {};
 
+    const normalHandoutsSearchMatchObject = {
+      text: {
+        query: params.q || category,
+        path: params.q ? "keywords" : "categoryTreeData.name",
+        fuzzy: {
+          maxEdits: 1,
+        },
+        score: {
+          function: {
+            multiply: [
+              {
+                path: {
+                  value: "avgRating",
+                  undefined: 2,
+                },
+              },
+              {
+                score: "relevance",
+              },
+            ],
+          },
+        },
+      },
+    };
+
+    const searchInSpecificStoreMatchObject = {
+      equals: {
+        value: { $oid: storeId },
+        path: "storeId",
+      },
+    };
+
     const pipeline: any = [
       {
         $search: {
           index: "productsSearch",
           compound: {
-            must: [
-              {
-                text: {
-                  query: params.q || category,
-                  path: params.q ? "keywords" : "categoryTreeData.name",
-                  fuzzy: {
-                    maxEdits: 1,
-                  },
-                  score: {
-                    function: {
-                      multiply: [
-                        {
-                          path: {
-                            value: "avgRating",
-                            undefined: 2,
-                          },
-                        },
-                        {
-                          score: "relevance",
-                        },
-                      ],
-                    },
-                  },
-                },
-              },
-            ],
+            must: [],
 
             should: [
               {
@@ -104,21 +122,6 @@ export async function POST(req: Request) {
       { $limit: 15 },
 
       {
-        $lookup: {
-          from: "Discount",
-          localField: "discountId",
-          foreignField: "_id",
-          as: "discount",
-        },
-      },
-
-      {
-        $addFields: {
-          discount: { $arrayElemAt: ["$discount", 0] },
-        },
-      },
-
-      {
         $project: {
           id: 1,
           name: 1,
@@ -126,17 +129,25 @@ export async function POST(req: Request) {
           price: 1,
           ratings: 1,
           storeId: 1,
-          ratingsCount: 1,
+          keywords: 1,
           avgRating: 1,
-          discount: 1,
+          promoPrice: 1,
           attributes: 1,
           description: 1,
-          keywords: 1,
+          ratingsCount: 1,
           categoryTreeData: 1,
           superTokensUserId: 1,
+          promoPriceEndingDate: 1,
+          promoPriceStartingDate: 1,
         },
       },
     ];
+
+    if (fromSpecificStore)
+      pipeline[0].$search.compound.must.push(searchInSpecificStoreMatchObject);
+
+    if (!fromSpecificStore || (fromSpecificStore && params.q))
+      pipeline[0].$search.compound.must.push(normalHandoutsSearchMatchObject);
 
     if (pipeline[0].$search?.compound)
       //@ts-ignore

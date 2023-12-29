@@ -13,8 +13,8 @@ import Image from "next/image";
 
 interface ProductReviewProps {
   href?: string;
-  images?: string[];
   review?: string;
+  images?: string[];
   compact?: boolean;
   showOnly?: boolean;
   hideForms?: boolean;
@@ -128,13 +128,14 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
             placeholder={placeholder}
           />
         )}
-        {showFormsCondition && (
+
+        {/* {showFormsCondition && (
           <ReviewImages
             images={images}
             addImage={addImage}
             removeImage={removeImage}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

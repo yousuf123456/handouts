@@ -39,13 +39,15 @@ export const StoreInfoCTA: React.FC<StoreInfoCTAProps> = ({
             <Avatar image={logo} />
           </div>
 
-          <p className="line-clamp-1 font-text text-sm font-semibold text-black">
+          <p className="line-clamp-1 font-roboto text-sm text-black">
             {storeName}
           </p>
         </div>
 
         <div className="flex flex-shrink-0 items-center gap-3">
-          <Badge variant="outline">{avgPosRating + "% Pos Reviews"}</Badge>
+          <Badge variant="outline" className="font-roboto font-medium">
+            {avgPosRating + "% Pos Reviews"}
+          </Badge>
 
           <HiChevronRight className="h-4 w-4 text-black" />
         </div>

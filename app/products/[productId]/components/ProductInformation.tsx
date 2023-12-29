@@ -2,10 +2,18 @@
 import React, { useEffect, useState } from "react";
 
 import { AverageStats } from "./AverageStats";
-import { CombinationsType, ProductInfo, VariantsType } from "@/app/types";
+import {
+  CombinationsType,
+  FreeShippingType,
+  ProductInfo,
+  VariantsType,
+  VoucherType,
+} from "@/app/types";
+
 import { ProductVariants } from "./ProductVariants";
 import { ProductCTAs } from "./ProductCTAs";
 import { useAppDispatch } from "@/app/store/store";
+
 import {
   setAvgRating,
   setDetailedRatingsCount,
@@ -13,11 +21,11 @@ import {
   setRatingsCount,
 } from "@/app/store/features/productMinorInfoSlice";
 
+// import find from "lodash/find";
+
 import { ProductPrice } from "@/app/components/ProductPrice";
 import { getPriceInfo } from "@/app/utils/getPriceInfo";
 import { ProductSideInfo } from "./productSideInfo/ProductSideInfo";
-import find from "lodash/find";
-import axios from "axios";
 import { ProductImages } from "./ProductImages";
 import { ProductRating } from "./ProductRating";
 import { HiChevronRight } from "react-icons/hi";
@@ -27,30 +35,20 @@ import { Section } from "./containers/Section";
 import { ProductSpecifications } from "./ProductSpecifications";
 import { StoreInfo } from "./productSideInfo/StoreInfo";
 import { Services } from "./productSideInfo/Services";
+import { Promotions } from "./Promotions";
+import { FreeShipping } from "./FreeShipping";
 
 interface ProductInformationProps {
   product: ProductInfo;
+  vouchers: VoucherType[];
+  freeShipping: FreeShippingType | undefined;
 }
 
 export const ProductInformation: React.FC<ProductInformationProps> = ({
   product,
+  vouchers,
+  freeShipping,
 }) => {
-  // This is now done on only click not on each render
-  // useEffect(() => {
-  //   const productData = {
-  //     categoryTreeData: product.categoryTreeData,
-  //     description: product.description,
-  //     attributes: product.attributes,
-  //     keywords: product.keywords,
-  //     name: product.name,
-  //   };
-
-  //   axios.post("../../../api/browsingHistoryAdd", {
-  //     productData: productData,
-  //     productId: product.id,
-  //   });
-  // }, []);
-
   const [quantity, setQuantity] = useState(1);
 
   const [selectedVariantPicture, setSelectedVariantPicture] = useState<
@@ -73,9 +71,6 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
     }
   }, [product?.ratingsCount, product?.questionsCount, dispatch]);
 
-  const { productOnSale, discountOff, isPercentOff, discountOffLabel } =
-    getPriceInfo(product!);
-
   // Make it real
   const fakeDetailedImages = [
     "/images/exclusiveSection/frames.jpg",
@@ -86,7 +81,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
 
   const variants = product?.variants as VariantsType | undefined;
 
-  const productCombinations = product?.combinations as
+  const productCombinations = product?.combinations as unknown as
     | CombinationsType[]
     | undefined;
 
@@ -98,12 +93,17 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
     defaultProductCombination,
   );
 
-  const changeCombination = (
+  const { productOnSale, discountOff, discountOffLabel, currentPrice } =
+    getPriceInfo((selectedCombination as any) || product!);
+
+  const changeCombination = async (
     variant: string,
     value: string,
     images: string[],
   ) => {
     if (!selectedCombination && !defaultProductCombination) return;
+
+    const find = (await import("lodash/find")).default;
 
     if (find(selectedCombination, { [variant]: value })) {
       setSelectedVariantPicture([]);
@@ -132,7 +132,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
 
   return (
     <>
-      <div className="flex gap-0 max-lg:flex-col max-sm:bg-neutral-50">
+      <div className="flex max-lg:flex-col max-lg:gap-8 max-sm:bg-neutral-50">
         <ProductImages
           setSelectedVariantPicture={setSelectedVariantPicture}
           selectedVariantPicture={selectedVariantPicture}
@@ -140,7 +140,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
           images={fakeDetailedImages}
         />
 
-        <div className="relative flex w-full flex-col gap-4 px-0 max-md:-top-4 max-sm:-top-6 sm:gap-6 sm:px-3 md:gap-8 md:px-6 lg:ml-2 xl:ml-6">
+        <div className="relative flex w-full flex-col gap-4 px-0 sm:gap-6 sm:px-3 md:gap-8 md:px-6 lg:ml-2 xl:ml-6">
           <Section mode="padding">
             <div className="flex flex-col gap-2 sm:gap-4 md:gap-6 lg:gap-8">
               <div className="flex flex-col gap-3 sm:gap-2">
@@ -151,7 +151,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
                 <div className="sm:hidden">
                   <ProductPrice
                     discountOff={discountOff}
-                    isPercentOff={isPercentOff}
+                    currentprice={currentPrice!}
                     productOnSale={productOnSale}
                     discountOffLabel={discountOffLabel}
                     price={
@@ -174,9 +174,10 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
                         onClick={scrollToQuestions}
                         className="flex cursor-pointer items-center gap-1 sm:hidden"
                       >
-                        <p className="text-xs font-medium text-black">
+                        <p className="font-roboto text-xs font-medium text-black">
                           {product?.questionsCount + " questions "}
                         </p>
+
                         <HiChevronRight className="h-4 w-4 text-black" />
                       </div>
                     </div>
@@ -202,8 +203,8 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
               <div className="hidden sm:block">
                 <ProductPrice
                   discountOff={discountOff}
+                  currentprice={currentPrice!}
                   productOnSale={productOnSale}
-                  isPercentOff={isPercentOff}
                   discountOffLabel={discountOffLabel}
                   price={
                     variants && selectedCombination
@@ -220,7 +221,7 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
             variants={variants}
             setQuantity={setQuantity}
             discountOff={discountOff}
-            isPercentOff={isPercentOff}
+            currentPrice={currentPrice!}
             productOnSale={productOnSale}
             productPicture={product.image}
             discountOffLabel={discountOffLabel}
@@ -240,6 +241,10 @@ export const ProductInformation: React.FC<ProductInformationProps> = ({
               productAttributes={product?.attributes as any}
             />
           </div>
+
+          <FreeShipping freeShipping={freeShipping} />
+
+          <Promotions initialVouchers={vouchers} productId={product.id} />
 
           <div className="hidden md:block">
             <ProductQuantity quantity={quantity} setQuantity={setQuantity} />

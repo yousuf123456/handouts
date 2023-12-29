@@ -3,25 +3,23 @@ import prisma from "../../../../libs/prismadb";
 
 import { ReviewsGauge } from "../../components/ReviewsGauge";
 import { BreadCrumbs } from "@/app/user/orders/components/BreadCrumbs";
-import { getProductReviewsById } from "@/app/actions/getProductDetailsById/getProductReviewsById";
-import { RatingAndReview } from "@prisma/client";
+import { getProduct_StoreReviewsById } from "@/app/actions/getProductDetailsById/getProduct_StoreReviewsById";
+
 import { RatingAndReviewCard } from "../../components/RatingAndReviewCard";
 import { PaginationControl } from "@/app/user/components/PaginationControl";
 import { PRODUCTS_REVIEWS_PER_PAGE } from "@/app/constants/consts";
 import { Heading } from "@/app/(site)/components/Heading";
 import { Seperator } from "@/app/components/Seperator";
 import { SortAndFilters } from "./SortAndFilters";
+
 import { NoQuestions_ReviewsMessage } from "../../components/mini/NoQuestions_ReviewsMessage";
-import { NavigationPanel } from "@/app/components/NavigationPanel";
+import { HistoryReviewType } from "@/app/types";
 
 interface ReviewsProps {
   productId: string;
   filter: string | undefined;
-  cursor: string | undefined;
   sortBy: "rating" | undefined;
-  prevPage: number | undefined;
   pageNumber: number | undefined;
-  tieBreaker: string | undefined;
   direction: "desc" | "asc" | undefined;
 }
 
@@ -49,28 +47,20 @@ async function getProductReviewInfo(productId: string) {
 
 export const Reviews: React.FC<ReviewsProps> = async ({
   pageNumber,
-  tieBreaker,
   productId,
   direction,
-  prevPage,
   filter,
   sortBy,
-  cursor,
 }) => {
   const productReviewInfo = await getProductReviewInfo(productId);
-  const productReviews = (await getProductReviewsById({
+
+  const productReviews = (await getProduct_StoreReviewsById({
     productId,
     page: pageNumber,
-    prevPage,
-    cursor,
     sortBy,
     direction,
-    tieBreaker,
     filter,
-  })) as unknown as RatingAndReview[];
-
-  const lastReview = productReviews[productReviews.length - 1];
-  const firstReview = productReviews[0];
+  })) as unknown as HistoryReviewType[];
 
   const crumbs = [
     {
@@ -110,11 +100,7 @@ export const Reviews: React.FC<ReviewsProps> = async ({
 
         <Seperator />
 
-        <SortAndFilters
-          goingBack={(prevPage || 1) > (pageNumber || 1)}
-          firstReview={firstReview}
-          lastReview={lastReview}
-        />
+        <SortAndFilters />
 
         <Seperator />
 
@@ -134,20 +120,12 @@ export const Reviews: React.FC<ReviewsProps> = async ({
           <div className="flex justify-start">
             <div className="w-fit">
               <PaginationControl
-                jumpingDisabled={true}
-                lastItemTieBreaker={lastReview.id}
-                firstItemTieBreaker={firstReview.id}
-                count={productReviewInfo.ratingsCount}
+                jumpingDisabled={false}
                 ITEMS_PER_PAGE={PRODUCTS_REVIEWS_PER_PAGE}
-                lastCursor={
-                  sortBy === "rating"
-                    ? (lastReview.rating as number)
-                    : lastReview.id
-                }
-                firstCursor={
-                  sortBy === "rating"
-                    ? (firstReview.rating as number)
-                    : firstReview.id
+                count={
+                  filter
+                    ? productReviewInfo.detailedRatingsCount[filter]
+                    : productReviewInfo.ratingsCount
                 }
               />
             </div>

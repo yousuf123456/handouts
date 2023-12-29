@@ -1,6 +1,7 @@
 import React from "react";
 import { Reviews } from "./components/Reviews";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
+import { RatingAndReviewBucketCount } from "@/app/constants/consts";
 
 interface IParams {
   productId: string;
@@ -8,11 +9,8 @@ interface IParams {
 
 interface SearchParams {
   page: string | undefined;
-  cursor: string | undefined;
   filter: string | undefined;
   sortBy: "rating" | undefined;
-  prevPage: string | undefined;
-  tieBreaker: string | undefined;
   direction: "desc" | "asc" | undefined;
 }
 
@@ -28,14 +26,11 @@ export default async function CustomerReviewsPage({
       <NavigationPanel heading="Product Reviews" />
 
       <Reviews
-        cursor={searchParams.cursor}
         productId={params.productId}
         sortBy={searchParams.sortBy}
         filter={searchParams.filter}
         direction={searchParams.direction}
-        tieBreaker={searchParams.tieBreaker}
         pageNumber={parseInt(searchParams.page || "0")}
-        prevPage={parseInt(searchParams.prevPage || "0")}
       />
     </div>
   );

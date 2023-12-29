@@ -21,6 +21,7 @@ interface StoreInfoProps {
     neuRatings: number;
     negRatings: number;
     createdAt: Date;
+    id: string;
   };
 }
 
@@ -45,23 +46,23 @@ export const StoreInfo: React.FC<StoreInfoProps> = ({ store }) => {
 
           <div className="mt-4 flex w-full flex-col items-start gap-2">
             <div className="flex w-full flex-col gap-0">
-              <p className="text-xs font-semibold">
+              <p className="font-roboto text-sm text-black">
                 {avgStorePosRatings + "% Positive Reviews"}
               </p>
             </div>
 
             <div className="flex w-full flex-col gap-0">
-              <p className="font-text text-xs font-medium text-slate-600">
+              <p className="font-roboto text-xs font-medium text-slate-600">
                 Joined On:
               </p>
-              <p className="font-text text-sm font-medium text-black">
+              <p className="font-roboto text-sm font-medium text-black">
                 {format(store?.createdAt!, "do / MMMM / Y")}
               </p>
             </div>
           </div>
 
-          <CtaLink href="">
-            <p className="mt-4 font-text text-sm font-semibold text-themeBlue underline hover:opacity-70">
+          <CtaLink href={`/stores/${store.id}`}>
+            <p className="mt-4 font-roboto text-sm font-semibold text-themeBlue underline hover:opacity-70">
               Visit Store
             </p>
           </CtaLink>
@@ -97,10 +98,10 @@ export const StoreInfo: React.FC<StoreInfoProps> = ({ store }) => {
 
             <div className="flex max-md:w-full max-md:justify-around md:gap-16">
               <div className="flex flex-col items-center">
-                <h3 className="text-sm font-bold text-black sm:text-base">
+                <h3 className="font-roboto text-sm font-medium text-black sm:text-base">
                   {avgStorePosRatings + " % "}
                 </h3>
-                <p className="text-xs text-slate-600 md:text-sm">
+                <p className="text-xs text-slate-500 md:text-sm">
                   Positive Reviews
                 </p>
               </div>
@@ -110,10 +111,10 @@ export const StoreInfo: React.FC<StoreInfoProps> = ({ store }) => {
               </div>
 
               <div className="flex flex-col items-center">
-                <h3 className="text-sm font-bold text-black sm:text-base">
+                <h3 className="font-roboto text-sm font-medium text-black sm:text-base">
                   {format(store?.createdAt!, "do / MMMM / Y")}
                 </h3>
-                <p className="text-xs text-slate-600 md:text-sm">Joined On</p>
+                <p className="text-xs text-slate-500 md:text-sm">Joined On</p>
               </div>
             </div>
 

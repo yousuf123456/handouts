@@ -1,11 +1,98 @@
 import React from "react";
+
+import prisma from "../libs/prismadb";
+import { Checkout } from "./components/Checkout";
 import { getProductBeingShipped } from "../actions/getProductBeingShipped";
-import { CheckoutBanner } from "./components/CheckoutBanner";
-import { CheckoutItems } from "./components/CheckoutItems";
-import { ReduxProvider } from "../context/ReduxProvider";
-import { CombinationsType } from "../types";
-import { json } from "stream/consumers";
 import { getCurrentUser } from "../actions/getCurrentUser";
+import { CartItemType, FreeShippingType } from "../types";
+import { getFreeShippingFilter } from "../actions/getProductDetailsById/getProductInfoById";
+
+export type FreeShippingsType = {
+  storeId: { $oid: string };
+  freeShipping: FreeShippingType[];
+}[];
+
+const getCartItemsPromos = async () => {
+  const currentUser = await getCurrentUser({ getCart: true });
+
+  if (!currentUser) return null;
+
+  const cartItems = currentUser.cartItems as CartItemType[];
+
+  const productIds = cartItems.map((cartItem) => cartItem.product.id);
+  const storeIds = cartItems.map((cartItem) => cartItem.product.storeId);
+  const mongoStoreIds = cartItems.map((cartItem) => ({
+    $oid: cartItem.product.storeId,
+  }));
+
+  const pipeline = [
+    {
+      $match: {
+        _id: { $oid: currentUser.id },
+      },
+    },
+    {
+      $project: {
+        collectedVouchers: {
+          $filter: {
+            as: "collectedVoucher",
+            input: "$collectedVouchers",
+            cond: {
+              $and: [
+                {
+                  $in: ["$$collectedVoucher.storeId", storeIds],
+                },
+                {
+                  $or: [
+                    {
+                      $eq: ["$$collectedVoucher.applicableOn", "Entire Store"],
+                    },
+                    {
+                      $in: ["$$collectedVoucher.productIds", productIds],
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      },
+    },
+  ];
+
+  const collectedVouchersData = (
+    await prisma.user.aggregateRaw({
+      pipeline,
+    })
+  )[0] as any;
+
+  const freeShippingPipeline = [
+    {
+      $match: {
+        storeIds: {
+          $in: [mongoStoreIds, "$storeId"],
+        },
+      },
+    },
+    {
+      $project: {
+        storeId: 1,
+        freeShipping: {
+          $filter: getFreeShippingFilter(productIds),
+        },
+      },
+    },
+  ];
+
+  const freeShippings = (await prisma.promoToolsBucket.aggregateRaw({
+    pipeline: freeShippingPipeline,
+  })) as unknown as FreeShippingsType;
+
+  return {
+    collectedVouchers: collectedVouchersData.collectedVouchers,
+    freeShippings,
+  };
+};
 
 interface IParams {
   fromCart: string | undefined;
@@ -19,34 +106,42 @@ export default async function ShippingPage({
 }: {
   searchParams: IParams;
 }) {
+  const fromCart = searchParams.fromCart === "true";
+
   const pendingShippedProduct = await getProductBeingShipped(
-    searchParams.fromCart === "true",
+    fromCart,
     searchParams.productId,
   );
 
-  return (
-    <div className="flex flex-col gap-0 overflow-x-hidden bg-slate-200 max-md:pb-16">
-      <CheckoutBanner
-        fromCart={searchParams.fromCart === "true"}
-        product={pendingShippedProduct}
-      />
+  const cartItemsCollectedPromos = fromCart ? await getCartItemsPromos() : null;
 
-      <ReduxProvider>
-        <CheckoutItems
-          fromCart={searchParams.fromCart === "true"}
-          product={pendingShippedProduct}
-          quantity={
-            searchParams.quantity ? parseInt(searchParams?.quantity) : undefined
-          }
-          combination={
-            searchParams.combination && searchParams.combination !== "undefined"
-              ? searchParams.combination === "null"
-                ? null
-                : JSON.parse(searchParams.combination)
-              : undefined
-          }
-        />
-      </ReduxProvider>
-    </div>
+  if (!searchParams.fromCart && pendingShippedProduct === null)
+    return "Something went wrong";
+
+  return (
+    <Checkout
+      fromCart={searchParams.fromCart === "true"}
+      freeShippings={
+        pendingShippedProduct?.freeShippings ||
+        cartItemsCollectedPromos?.freeShippings ||
+        []
+      }
+      vouchers={
+        pendingShippedProduct?.collectedVouchers ||
+        cartItemsCollectedPromos?.collectedVouchers ||
+        []
+      }
+      product={pendingShippedProduct?.productBeingShipped || null}
+      quantity={
+        searchParams.quantity ? parseInt(searchParams?.quantity) : undefined
+      }
+      combination={
+        searchParams.combination && searchParams.combination !== "undefined"
+          ? searchParams.combination === "null"
+            ? null
+            : JSON.parse(searchParams.combination)
+          : undefined
+      }
+    />
   );
 }

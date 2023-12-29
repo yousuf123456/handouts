@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { IParams } from "../../types";
 import { Facets } from "./Facets";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
@@ -11,13 +11,18 @@ import { getCategoryTree } from "@/app/utils/getCategoryTree";
 import { useQuery } from "@tanstack/react-query";
 
 import Loading from "../loading";
-import axios from "axios";
-import { NavigationPanel } from "@/app/components/NavigationPanel";
 
-function fetchSearchedProducts(searchParams: any, category: any) {
+function fetchSearchedProducts(
+  searchParams: any,
+  category: any,
+  fromSpecificStore?: boolean,
+  storeId?: string,
+) {
   const body = {
     params: searchParams,
     category: category,
+    fromSpecificStore,
+    storeId,
   };
   return fetch("../../api/getSearchedProducts", {
     method: "POST",
@@ -25,10 +30,17 @@ function fetchSearchedProducts(searchParams: any, category: any) {
   }).then(async (res) => await res.json());
 }
 
-function fetchFacetsData(searchTerm: any, category: any) {
+function fetchFacetsData(
+  searchTerm: any,
+  category: any,
+  fromSpecificStore?: boolean,
+  storeId?: string,
+) {
   const body = {
     searchTerm: searchTerm,
     category: category,
+    fromSpecificStore,
+    storeId,
   };
   return fetch("../../api/getFacets", {
     method: "POST",
@@ -37,15 +49,19 @@ function fetchFacetsData(searchTerm: any, category: any) {
 }
 
 interface SearchedTermResults {
+  fromSpecificStore?: boolean;
   searchParams: IParams;
-  categoryData: any;
+  categoryData?: any;
+  storeId?: string;
   category: string;
 }
 
 export const SearchedTermResults: React.FC<SearchedTermResults> = ({
+  fromSpecificStore,
   searchParams,
   categoryData,
   category,
+  storeId,
 }) => {
   const {
     data,
@@ -54,7 +70,8 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
     refetch: refetchProducts,
   } = useQuery(
     ["searchedProductsData"],
-    () => fetchSearchedProducts(searchParams, category),
+    () =>
+      fetchSearchedProducts(searchParams, category, fromSpecificStore, storeId),
     {
       refetchOnWindowFocus: false,
       enabled: false,
@@ -67,7 +84,7 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
     refetch: refetchFacets,
   } = useQuery(
     ["facetsData"],
-    () => fetchFacetsData(searchParams.q, category),
+    () => fetchFacetsData(searchParams.q, category, fromSpecificStore, storeId),
     {
       refetchOnWindowFocus: false,
     },
@@ -108,6 +125,7 @@ export const SearchedTermResults: React.FC<SearchedTermResults> = ({
               searchTerm={searchParams.q}
               facets={facetsData[0].facet}
               categoryTree={categoryTreeData}
+              fromSpecificStore={fromSpecificStore}
               fullCategoryTree={fullCategoryTreeData}
               count={facetsData[0].count.lowerBound}
             />

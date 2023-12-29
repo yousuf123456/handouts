@@ -3,7 +3,6 @@ import React from "react";
 import Link from "next/link";
 
 import { ProductCardType, fullCategoryDiscountedProductType } from "../types";
-import { priceLabel } from "../utils/priceLabel";
 import { RatingStars } from "./RatingStars";
 
 import { getPriceInfo } from "../utils/getPriceInfo";
@@ -24,8 +23,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   dynamic,
   showDiscountLabel,
 }) => {
-  const { productOnSale, discountOff, isPercentOff, discountOffLabel } =
-    getPriceInfo(product);
+  const { productOnSale, discountOff, discountOffLabel, currentPrice } =
+    getPriceInfo(product as any);
 
   //@ts-ignore
   const productId = product?.id || product?._id?.$oid;
@@ -34,7 +33,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const onClick = () => {
     const productData = {
       categoryTreeData: product.categoryTreeData,
-      description: product.description,
       attributes: product.attributes,
       keywords: product.keywords,
       name: product.name,
@@ -62,7 +60,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             dynamic ? "w-full" : "w-[152px] sm:w-40 lg:w-48",
           )}
         >
-          {productOnSale() && showDiscountLabel && (
+          {productOnSale && showDiscountLabel && (
             <div className="absolute left-0 top-0 z-50 rounded-tl-sm bg-rose-500 px-2 py-1 transition-all">
               <p className="font-text text-xs font-extrabold tracking-wide text-white sm:text-sm">
                 {discountOffLabel}
@@ -86,18 +84,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <div>
               <div className="flex items-center gap-1 sm:gap-2">
                 <h2 className="font-text text-sm font-semibold tracking-wide text-blue-600 sm:text-base md:text-lg">
-                  <FormattedCurrency
-                    quantity={
-                      priceLabel(
-                        productOnSale(),
-                        isPercentOff,
-                        discountOff(),
-                        product?.price,
-                      ) || 0
-                    }
-                  />
+                  <FormattedCurrency quantity={currentPrice!} />
                 </h2>
-                {productOnSale() && (
+                {productOnSale && (
                   <p className="font-text text-[10px] font-semibold opacity-75 sm:text-xs">
                     <s>
                       <FormattedCurrency quantity={product.price} />

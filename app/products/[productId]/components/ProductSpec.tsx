@@ -1,29 +1,20 @@
-import React from 'react'
+import React from "react";
 
 interface ProductSpecProps {
-    Key : string;
-    value : any
+  Key: string;
+  value: any;
 }
 
-export const ProductSpec: React.FC<ProductSpecProps> = ({
-    Key,
-    value
-}) => {
-
+export const ProductSpec: React.FC<ProductSpecProps> = ({ Key, value }) => {
   return (
-    <div className='flex gap-2 items-center'>
-        <p className='capitalize text-sm font-text text-slate-600'>
-            { Key + " : " }
-        </p>
+    <div className="flex items-center gap-2">
+      <p className="font-roboto text-[13px] capitalize leading-5 text-slate-600 sm:text-sm">
+        {Key + " : "}
+      </p>
 
-        <p className='text-sm font-text text-black'>
-            {
-                Array.isArray(value) ?
-                value.join(",  ")
-                :
-                value
-            }
-        </p>
+      <p className="font-roboto text-[13px] leading-5 text-black sm:text-sm">
+        {Array.isArray(value) ? value.join(",  ") : value}
+      </p>
     </div>
-  )
-}
+  );
+};

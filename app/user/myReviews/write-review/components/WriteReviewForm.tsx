@@ -16,10 +16,17 @@ import { ServiceRatings } from "./newDesign/ServiceRatings";
 import { AddImages } from "./newDesign/AddImages";
 import { WrittenReview } from "./newDesign/WrittenReview";
 
+export interface FormImageType {
+  url: string;
+  file?: File;
+  isDeleting?: boolean;
+}
+
 interface WriteReviewFormProps {
   OrderedProduct: OrderedProductType;
-  isHistory: boolean;
   reviewId: string | undefined;
+  bucketId: string | undefined;
+  isHistory: boolean;
   givenReview: any;
 }
 
@@ -28,6 +35,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
   givenReview,
   isHistory,
   reviewId,
+  bucketId,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -46,9 +54,11 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
     givenReview?.sellerReview || "",
   );
 
-  const [images, setImages] = useState<string[]>(
-    givenReview?.reviewImages || [],
-  );
+  const initialImages = givenReview?.reviewImages
+    ? givenReview.reviewImages?.map((image: string) => ({ url: image }))
+    : [];
+
+  const [images, setImages] = useState<FormImageType[]>(initialImages);
 
   const router = useRouter();
 
@@ -60,14 +70,21 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
     negRatings: givenReview?.sellerResponse === 1 ? -1 : 0,
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setIsLoading(true);
 
+    const resp = await uploadReviewImages();
+    if (!resp) {
+      setIsLoading(false);
+      toast.error("Seomthing goes wrong");
+    }
+
     const ratingData = {
+      reviewImagesData: resp?.reviewImagesData,
+      reviewImages: resp?.reviewImages,
       sellerResponse: storeRatingValue,
       rating: productRatingValue,
       sellerReview: sellerReview,
-      reviewImages: images,
       review: review,
     };
 
@@ -96,6 +113,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
       reviewId,
       isHistory,
       ratingData,
+      bucketId: givenReview.bucketId,
       storeResponseIncrementData,
       orderedProductId: OrderedProduct.id,
       productId: OrderedProduct.product.id,
@@ -119,6 +137,44 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
       .finally(() => setIsLoading(false));
   };
 
+  const uploadReviewImages = async () => {
+    const imagesNotToBeUploaded = images.filter((img) => !img.file);
+    const imagesToUpload = images.filter((img) => img.file);
+
+    if (imagesToUpload.length === 0)
+      return {
+        reviewImages: imagesNotToBeUploaded.map((img) => img.url),
+        reviewImagesData: givenReview?.reviewImagesData,
+      };
+
+    const imagesFormData = new FormData();
+    imagesToUpload.map((img, i) =>
+      imagesFormData.append(`image-${i}`, img.file!),
+    );
+
+    const res = await axios.post(
+      "../../../../api/uploadToDrive",
+      imagesFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+
+    if (res.status !== 500 && res.status !== 400 && res.status !== 401) {
+      const imageUrls = imagesNotToBeUploaded.map((img) => img.url);
+      const newReviewImagesData = givenReview?.reviewImagesData
+        ? [...givenReview.reviewImagesData]
+        : [];
+
+      res.data.imagesData.map((imgData: { id: string; url: string }) => {
+        imageUrls.push(imgData.url);
+        newReviewImagesData.push(imgData);
+      });
+
+      return { reviewImages: imageUrls, reviewImagesData: newReviewImagesData };
+    }
+  };
+
   return (
     <div className="flex w-full flex-col gap-12">
       <div className="flex w-full flex-col gap-6 max-sm:pb-12">
@@ -138,7 +194,14 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
           setStoreRatingHover={setStoreRatingHover}
         />
 
-        <AddImages images={images} setImages={setImages} />
+        <AddImages
+          images={images}
+          bucketId={bucketId}
+          reviewId={reviewId}
+          setImages={setImages}
+          isEditingReview={!!reviewId}
+          reviewImagesData={givenReview?.reviewImagesData}
+        />
 
         <WrittenReview review={review} setReview={setReview} />
       </div>

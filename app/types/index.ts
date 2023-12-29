@@ -1,21 +1,18 @@
 import {
   CancellationRequest,
-  Discount,
   Order,
   OrderedProduct,
   Package,
   Prisma,
   Product,
-  RatingAndReview,
   ReturnRequest,
+  ratingAndReview,
+  question,
 } from "@prisma/client";
 
-export type fullCategoryDiscountedProductType = Product & {
-  discount: Discount | null;
-};
+export type fullCategoryDiscountedProductType = Product & {};
 
 export type ProductCardType = {
-  discount: Discount | null;
   superTokensUserId: string;
   ratingsCount: number;
   avgRating: number;
@@ -57,15 +54,12 @@ export type searchedProduct = {
     updatedAt: { $date: string };
     vendorId: { $oid: string };
   };
-  ratingAndReviews: RatingAndReview[];
+  ratingAndReviews: HistoryReviewType[];
 };
 
-export type FullProductType = Product & {
-  discount: Discount | null;
-};
+export type FullProductType = Product & {};
 
 export type ProductInfo = Product & {
-  discount: Discount | null;
   store: {
     ratingsCount: number;
     logo: string | null;
@@ -74,6 +68,7 @@ export type ProductInfo = Product & {
     neuRatings: number;
     negRatings: number;
     createdAt: Date;
+    id: string;
   };
 };
 
@@ -82,7 +77,6 @@ export type CardProductType = {
   name: string;
   price: number;
   image: string | null;
-  discount: Discount | null;
   avgRating: number;
   ratingsCount: number;
 };
@@ -107,6 +101,9 @@ export type CombinationsType = {
   price: number;
   stock: number;
   default?: boolean;
+  promoPrice?: number;
+  promoPriceEndingDate?: Date;
+  promoPriceStartingDate?: Date;
 };
 
 export type CartItemProductType = {
@@ -117,8 +114,10 @@ export type CartItemProductType = {
   storeName: string;
   image: string | null;
   category: string | null;
-  discount: Discount | null;
   superTokensUserId: string;
+  promoPrice: number | null;
+  promoPriceEndingDate: Date | null;
+  promoPriceStartingDate: Date | null;
 };
 
 export type CartItemType = {
@@ -133,9 +132,11 @@ export type CartItemType = {
 export type Cart_FavouriteItemProductType = {
   id: string;
   name: string;
-  image: string | null;
   price: number;
-  discount: Discount | null;
+  image: string | null;
+  promoPrice: number | null;
+  promoPriceEndingDate: Date | null;
+  promoPriceStartingDate: Date | null;
 };
 
 export type CategoriesType = {
@@ -205,15 +206,31 @@ export type OrderedProductType = {
   cancellationReason: string | null | undefined;
 };
 
-export type HistoryReviewType = RatingAndReview & {
-  product: {
-    purchasedAt: Date;
-    image: string | null;
-    id: string;
+export type HistoryReviewType = ratingAndReview & {
+  _id: ObjectId;
+  bucketId: string;
+  userId: ObjectId;
+  storeId: ObjectId;
+  productId: ObjectId;
+  createdAt: MongoDate;
+  answeredAt: MongoDate;
+  orderedProductId: ObjectId;
+  userInformation: {
     name: string;
-    storeName: string;
+    image: string;
   };
 };
+
+export type QuestionType = question & {
+  _id: ObjectId;
+  userId: ObjectId;
+  createdAt: MongoDate;
+  answeredAt?: MongoDate;
+};
+
+export type ObjectId = { $oid: string };
+
+export type MongoDate = { $date: string };
 
 export type PackageType = Package & {
   orderedProducts: OrderedProduct[];
@@ -266,3 +283,72 @@ export type PaymentMethods =
   | "Jazzcash"
   | "Credit/Debit Card"
   | "Cash on Delievery";
+
+export type VoucherType = {
+  _id: { $oid: string };
+  createdAt: Date;
+  usedBy: string[];
+  storeId: string;
+  voucherName: string;
+  voucherCode?: string;
+  productIds: string[];
+  vouchersUsed: number;
+  minOrderValue: number;
+  totalVouchers: number;
+  discountOffValue: number;
+  endingDate: { $date: Date };
+  startingDate: { $date: Date };
+  usageLimitPerCustomer: number;
+  maxDiscountValue: number | null;
+  collectStartDate: { $date: Date };
+  voucherType: "Collectible Voucher" | "Voucher Code";
+  discountType: "Money Value" | "Percentage Value";
+  applicableOn: "Entire Store" | "Specific Products";
+};
+
+export type BundleType = {
+  _id: { $oid: string };
+  endingDate: Date;
+  createdAt: Date;
+  promoName: string;
+  startingDate: Date;
+  productIds: string[];
+  giftProductIds: string[];
+  comboProductIds: string[];
+  discountType: "Percentage Value" | "Money Value";
+  promoType: "Quantity" | "Buy 1 Get 1 Free" | "Free Gift" | "Combo";
+  quantityBundleConditions: { quantity: number; discountOffValue: number }[];
+};
+
+export type FreeShippingType = {
+  _id: { $oid: string };
+  budget: number;
+  productIds: string[];
+  createdAt: MongoDate;
+  promotionName: string;
+  minOrderValue: number;
+  endingDate: MongoDate;
+  startingDate: MongoDate;
+  condition: "No Condition" | "Min Order Value";
+  applicableOn: "Entire Store" | "Specific Products";
+};
+
+export type LayoutComponentType = {
+  data: any;
+  name: string;
+  pcOnly: boolean;
+  movable: boolean;
+  mobileOnly: boolean;
+  componentName: string;
+  dataFormComponentName: string;
+  withoutModuleHeading?: boolean;
+};
+
+export type StorePageType = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  publishedAt: Date;
+  isPublished: Boolean;
+  layout: LayoutComponentType[];
+};

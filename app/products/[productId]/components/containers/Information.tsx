@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+
 import { ProductInformation } from "../ProductInformation";
 import { getProductInfoById } from "@/app/actions/getProductDetailsById/getProductInfoById";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
@@ -12,15 +13,16 @@ interface InformationProps {
   productId: string;
 }
 
-export async function Information({ productId }: InformationProps) {
+export default async function Information({ productId }: InformationProps) {
   const productInfo = await getProductInfoById(productId);
-  const categories = productInfo?.categoryTreeData as CategoriesType;
 
-  const categoryTree = getCategoryTree(categories, null)[0];
-
-  if (!productInfo) {
+  if (!productInfo || !productInfo.data) {
     return <p>Product not found</p>;
   }
+
+  const categories = productInfo.data.categoryTreeData as CategoriesType;
+
+  const categoryTree = getCategoryTree(categories, null)[0];
 
   return (
     <Suspense fallback={<InformationLoading />}>
@@ -28,7 +30,7 @@ export async function Information({ productId }: InformationProps) {
         <div className="flex flex-col gap-2">
           <div className="hidden gap-1 sm:flex">
             <CategoryBreadCrumbs
-              productName={productInfo.name}
+              productName={productInfo.data.name}
               categoryTree={categoryTree}
               crumbColor="#f43f5e"
             />
@@ -36,7 +38,11 @@ export async function Information({ productId }: InformationProps) {
 
           <div className="flex flex-col gap-6">
             <Container noPaddingOnRes>
-              <ProductInformation product={productInfo} />
+              <ProductInformation
+                product={productInfo.data}
+                vouchers={productInfo.vouchers}
+                freeShipping={productInfo.freeShipping}
+              />
             </Container>
           </div>
         </div>

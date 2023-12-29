@@ -45,7 +45,8 @@ const SelectedFacetsSlice = createSlice({
       Object.keys(action.payload).map((key) => {
         if (key === "from") return;
         const values = action.payload[key].split(",");
-        if (key !== "q") {
+
+        if (key !== "q" && key !== "section") {
           state.facets[key] = values;
         }
       });

@@ -20,6 +20,7 @@ export async function POST(req: Request) {
     const [createdOrder, updatedProducts] = await prisma.$transaction([
       prisma.order.create({
         data: {
+          boughtFromLocation: orderData.boughtFromLocation,
           shippingAddress: orderData.shippingAddress,
           billingAddress: orderData.billingAddress,
           totalQuantity: orderData.totalQuantity,
@@ -31,9 +32,15 @@ export async function POST(req: Request) {
             },
           },
           packages: {
-            create: packagesData,
+            create: {
+              ...packagesData,
+              customer: {
+                connect: {
+                  id: currentUser.id,
+                },
+              },
+            },
           },
-
           associatedStores: {
             connect: storesAssociatedToOrder,
           },

@@ -33,12 +33,14 @@ export const Facets: React.FC<FacetsProps> = ({ facets, categoryTreeData }) => {
       <div className="px-0 py-4 lg:px-4 lg:py-8">
         <div className="flex flex-col gap-3 xl:gap-6">
           <ReduxProvider>
-            {isCategory && (
+            {isCategory && categoryTreeData && (
               <Facet facetName="category" facetBuckets={categoryFacetBuckets} />
             )}
 
             <PriceFacet />
+
             <RatingFacet />
+
             {Object.keys(facets).map((facetKey) => {
               if (facetKey === "category" && isCategory) return;
 

@@ -1,16 +1,16 @@
 "use client";
 import { Heading } from "@/app/(site)/components/Heading";
-import { Question } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 
 import { QuestionCard } from "./QuestionCard";
 import { NoQuestions_ReviewsMessage } from "./mini/NoQuestions_ReviewsMessage";
 import { CtaLink } from "@/app/(site)/components/CtaLink";
 import { AskQuestionForm } from "./AskQuestionForm";
-import { store, useAppSelector } from "@/app/store/store";
+import { useAppSelector } from "@/app/store/store";
+import { QuestionType } from "@/app/types";
 
 interface ProductQuestionsProps {
-  initialQuestions: Question[] | null;
+  initialQuestions: QuestionType[] | null;
   productId: string;
 }
 
@@ -21,6 +21,7 @@ export const ProductQuestions: React.FC<ProductQuestionsProps> = ({
   const initialQuestionsCount = useAppSelector(
     (state) => state.productMinorInfo.questionsCount,
   );
+
   useEffect(() => {
     setQuestionsCount(initialQuestionsCount);
   }, [initialQuestionsCount]);
@@ -33,7 +34,7 @@ export const ProductQuestions: React.FC<ProductQuestionsProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-0">
           <Heading>Questions</Heading>
-          <p className="font-text text-sm font-medium">
+          <p className="font-roboto text-xs font-medium md:text-sm">
             Total {questionsCount} Questions
           </p>
         </div>

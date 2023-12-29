@@ -23,9 +23,9 @@ const StyledTableCell: any = styled(TableCell)(({ theme }) => ({
 }));
 
 interface TotalTableProps {
-  subTotal: number;
   productsAmmount: number;
   paddingLeft?: number;
+  subTotal: number;
   labels: string[];
 }
 

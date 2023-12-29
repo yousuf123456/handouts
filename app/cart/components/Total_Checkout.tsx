@@ -5,7 +5,7 @@ import TotalTable from "../../components/TotalTable";
 import { Button } from "@/app/components/Button";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/app/store/store";
-import { useTotal } from "@/app/hooks/useTotal";
+import { getTotal } from "@/app/utils/getTotal";
 import clsx from "clsx";
 import { MobileTotal } from "@/app/components/MobileTotal";
 
@@ -19,7 +19,7 @@ export const Total_Checkout: React.FC<Total_Checkout> = ({}) => {
 
   const cartItems = useAppSelector((state) => state.cart.cartItems);
 
-  const { subTotal, productsAmmount } = useTotal(cartItems);
+  const { subTotal, productsAmmount } = getTotal({ items: cartItems });
 
   return (
     <>

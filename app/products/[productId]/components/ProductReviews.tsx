@@ -2,24 +2,26 @@
 import React from "react";
 
 import { Heading } from "@/app/(site)/components/Heading";
-import { RatingAndReview } from "@prisma/client";
 import { RatingAndReviewCard } from "./RatingAndReviewCard";
 import { CtaLink } from "@/app/(site)/components/CtaLink";
 import { NoQuestions_ReviewsMessage } from "./mini/NoQuestions_ReviewsMessage";
 import { useAppSelector } from "@/app/store/store";
 import { ReviewsGauge } from "./ReviewsGauge";
+import { HistoryReviewType } from "@/app/types";
 
 interface ProductReviewsProps {
-  ratingAndReviews: RatingAndReview[] | null;
+  ratingAndReviews: HistoryReviewType[] | null;
 }
 
 export const ProductReviews: React.FC<ProductReviewsProps> = ({
   ratingAndReviews,
 }) => {
   const avgRating = useAppSelector((state) => state.productMinorInfo.avgRating);
+
   const ratingsCount = useAppSelector(
     (state) => state.productMinorInfo.ratingsCount,
   );
+
   const detailedRatingsCount = useAppSelector(
     (state) => state.productMinorInfo.detailedRatingsCount,
   );
@@ -38,9 +40,9 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="felx flex-col gap-0">
+      <div className="felx flex-col gap-1">
         <Heading>Ratings and Reviews</Heading>
-        <p className="font-text text-xs font-medium md:text-sm">
+        <p className="font-roboto text-xs font-medium md:text-sm">
           Total {ratingsCount} Reviews
         </p>
       </div>
@@ -66,7 +68,7 @@ export const ProductReviews: React.FC<ProductReviewsProps> = ({
 
         {ratingAndReviews && ratingAndReviews.length !== 0 && (
           <CtaLink
-            href={`/products/${ratingAndReviews[0].productId}/customer-reviews`}
+            href={`/products/${ratingAndReviews[0].productId.$oid}/customer-reviews`}
           >
             <p className="font-text text-sm font-semibold text-themeBlue underline max-sm:text-center sm:text-base">
               View All
