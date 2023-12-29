@@ -26,5 +26,5 @@ export const convertToCartItems = (
     return convertedCartItem;
   });
 
-  return convertedCartItems;
+  return convertedCartItems as any;
 };

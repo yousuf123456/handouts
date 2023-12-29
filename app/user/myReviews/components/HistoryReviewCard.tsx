@@ -6,21 +6,23 @@ import { ServiceRatings } from "../write-review/components/newDesign/ServiceRati
 
 import Image from "next/image";
 import Link from "next/link";
+import { HistoryReviewType } from "@/app/types";
 
 interface HistoryReviewCardProps {
-  review: any;
+  review: HistoryReviewType;
 }
 
 export const HistoryReviewCard: React.FC<HistoryReviewCardProps> = ({
   review,
 }) => {
-  const href = `/user/myReviews/write-review?reviewId=${review.id}&isHistory=true`;
+  const href = `/user/myReviews/write-review?reviewId=${review._id.$oid}&bucketId=${review.bucketId}&isHistory=true`;
 
   return (
     <div className="w-full border-b-2 border-r-slate-300 px-0 py-6 min-[1120px]:pr-16 xl:pr-24">
       <div className="flex flex-col gap-2">
         <ReviewCardHeader
           storeName={review.product.storeName}
+          //@ts-ignore
           purchasedAt={review.product.purchasedAt}
         />
 
@@ -35,7 +37,7 @@ export const HistoryReviewCard: React.FC<HistoryReviewCardProps> = ({
                 showOnly
                 href={href}
                 size="small"
-                productRatingValue={review.rating}
+                productRatingValue={review.rating || 0}
               />
             </div>
           </div>
@@ -50,7 +52,7 @@ export const HistoryReviewCard: React.FC<HistoryReviewCardProps> = ({
                     size="small"
                     withoutBorder
                     noLabelOnRes
-                    productRatingValue={review.rating}
+                    productRatingValue={review.rating || 0}
                   />
                 </div>
               </div>
@@ -84,9 +86,16 @@ export const HistoryReviewCard: React.FC<HistoryReviewCardProps> = ({
               {review.reviewImages.map((image: string, i: number) => (
                 <div
                   key={i}
-                  className="relative h-16 w-16 overflow-hidden rounded-md"
+                  className="relative flex h-16 w-16 items-center overflow-hidden rounded-sm bg-slate-200"
                 >
-                  <Image alt="Image" fill src={image} />
+                  <Image
+                    alt="Image"
+                    src={image}
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="h-auto w-full"
+                  />
                 </div>
               ))}
             </div>

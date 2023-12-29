@@ -56,10 +56,6 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
 
   const { minWidth } = useBreakpoint(BREAKPOINTS);
 
-  useEffect(() => {
-    console.log(minWidth);
-  }, [minWidth]);
-
   const dispatch = useAppDispatch();
 
   const onQuantityChange = (didDecrement: boolean) => {
@@ -148,12 +144,13 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
       .finally(() => setIsLoading(false));
   };
 
-  const { productOnSale, discountOff, isPercentOff, discountOffLabel } =
+  const { productOnSale, discountOff, currentPrice, discountOffLabel } =
     getPriceInfo(cartItem?.product || favouriteItem);
 
   const nameClassName =
     "text-sm sm:text-base tracking-tight sm:tracking-normal font-medium text-themeSecondary line-clamp-3";
-  const selectedCombination = cartItem?.selectedCombination as CombinationsType;
+  const selectedCombination =
+    cartItem?.selectedCombination as unknown as CombinationsType;
 
   return (
     <>
@@ -206,8 +203,8 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                     <ProductPrice
                       discountLabelsClassName="text-xs"
                       discountOff={discountOff}
+                      currentprice={currentPrice!}
                       productOnSale={productOnSale}
-                      isPercentOff={isPercentOff}
                       discountOffLabel={discountOffLabel}
                       price={
                         favouriteItem?.price ||
@@ -266,8 +263,8 @@ export const Cart_FavouriteItemCard: React.FC<Cart_FavouriteItemCardProps> = ({
                 <div className="hidden flex-shrink-0 flex-col gap-3 sm:flex">
                   <ProductPrice
                     discountOff={discountOff}
+                    currentprice={currentPrice!}
                     productOnSale={productOnSale}
-                    isPercentOff={isPercentOff}
                     discountOffLabel={discountOffLabel}
                     price={
                       favouriteItem?.price ||

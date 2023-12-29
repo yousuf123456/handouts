@@ -1,37 +1,57 @@
-import { OrderedProduct } from '@prisma/client';
-import { PipelineStage } from "mongoose";
-import prisma from "../libs/prismadb"
 
-export const getUserReviewById = async(reviewId : string | undefined)=> {
+import prisma from "../libs/prismadb";
 
-    const productReview = await prisma.ratingAndReview.findUnique({
-        where : {
-            id : reviewId
-        }
-    });
+export const getUserReviewById = async (
+  bucketId: string | undefined,
+  reviewId: string | undefined,
+) => {
+  if (!bucketId || !reviewId) return undefined;
 
-    const pipeline: any = [
-        {
-            $match : {
-                'product.id' : productReview?.productId
-            }
-        }
-    ]
+  const pipeline: any = [
+    {
+      $match: {
+        _id: { $oid: bucketId },
+      },
+    },
+    {
+      $project: {
+        ratingAndReviews: {
+          $filter: {
+            input: "$ratingAndReviews",
+            as: "ratingAndReview",
+            cond: {
+              $eq: ["$$ratingAndReview._id", { $oid: reviewId }],
+            },
+          },
+        },
+      },
+    },
+  ];
 
-    const orderedProducts = await prisma.orderedProduct.aggregateRaw({
-        pipeline : pipeline
-    }) as any;
+  const productReviewData = (await prisma.ratingAndReviewBucket.aggregateRaw({
+    pipeline,
+  })) as any;
 
-    // const orderedProduct = orderedProducts.map((orderedProduct: any)=> (
-    //     {
-    //         ...orderedProduct,
-    //         id : orderedProduct.id.$oid,
-    //         packageId : orderedProduct.packageId.$oid
-    //     }
-    // ))[0]
+  const productReview = productReviewData[0]?.ratingAndReviews[0];
 
-    return {
-        productReview,
-        orderedProduct : orderedProducts[0]
-    }
-}
+  if (!productReview) return undefined;
+
+  productReview.bucketId = productReviewData[0]?._id.$oid;
+
+  const pipeline2: any = [
+    {
+      $match: {
+        "product.id": productReview?.productId.$oid,
+      },
+    },
+  ];
+
+  const orderedProducts = (await prisma.orderedProduct.aggregateRaw({
+    pipeline: pipeline2,
+  })) as any;
+
+  return {
+    productReview,
+    orderedProduct: orderedProducts[0],
+  };
+};

@@ -12,7 +12,9 @@ export const ProductQuantity: React.FC<ProductQuantityProps> = ({
 }) => {
   return (
     <div className="mt-0 flex gap-2">
-      <h3 className="min-w-[80px] font-text text-xs sm:text-sm">Quantity :</h3>
+      <h3 className="min-w-[80px] font-roboto text-xs sm:text-sm">
+        Quantity :
+      </h3>
       <Quantity quantity={quantity} setQuantity={setQuantity} />
     </div>
   );

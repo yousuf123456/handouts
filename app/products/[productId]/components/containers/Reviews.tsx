@@ -1,17 +1,17 @@
 import React from "react";
 import { ProductReviews } from "../ProductReviews";
-import { getProductReviewsById } from "@/app/actions/getProductDetailsById/getProductReviewsById";
+import { getProduct_StoreReviewsById } from "@/app/actions/getProductDetailsById/getProduct_StoreReviewsById";
 import { ReduxProvider } from "@/app/context/ReduxProvider";
-import { RatingAndReview } from "@prisma/client";
+import { HistoryReviewType } from "@/app/types";
 
 interface ReviewsProps {
   productId: string;
 }
 
 export default async function Reviews({ productId }: ReviewsProps) {
-  const ratingAndReviews = (await getProductReviewsById({
+  const ratingAndReviews = (await getProduct_StoreReviewsById({
     productId,
-  })) as unknown as RatingAndReview[];
+  })) as unknown as HistoryReviewType[];
 
   return (
     <ReduxProvider>

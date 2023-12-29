@@ -11,7 +11,7 @@ export const ToggleBar = () => {
   const isHistory = searchParams.get("isHistory") === "true";
 
   const toggleBarItemCs =
-    "px-3 py-1 text-sm sm:text-base font-text font-semibold transition-all bg-white cursor-pointer";
+    "px-3 py-1 text-sm sm:text-base font-text transition-all bg-white cursor-pointer";
 
   return (
     <div className="flex justify-center md:justify-start">

@@ -1,6 +1,5 @@
 "use client";
 
-import { Question } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { Seperator } from "@/app/components/Seperator";
 import { QuestionCard } from "../../components/QuestionCard";
@@ -8,9 +7,10 @@ import { PaginationControl } from "@/app/user/components/PaginationControl";
 import { PRODUCTS_QUESTIONS_PER_PAGE } from "@/app/constants/consts";
 import { NoQuestions_ReviewsMessage } from "../../components/mini/NoQuestions_ReviewsMessage";
 import { AskQuestionForm } from "../../components/AskQuestionForm";
+import { QuestionType } from "@/app/types";
 
 interface QuestionsForumProps {
-  initialQuestions: Question[];
+  initialQuestions: QuestionType[];
   initialQuestionsCount: number;
   productId: string;
 }
@@ -26,9 +26,6 @@ export const QuestionsForum: React.FC<QuestionsForumProps> = ({
   useEffect(() => {
     setQuestions(initialQuestions);
   }, [initialQuestions]);
-
-  const firstQuestion = questions[0];
-  const lastQuestion = questions[questions.length - 1];
 
   return (
     <div className="flex flex-col gap-6">
@@ -80,9 +77,6 @@ export const QuestionsForum: React.FC<QuestionsForumProps> = ({
         <div className="w-fit">
           <PaginationControl
             count={questionsCount}
-            jumpingDisabled={true}
-            lastCursor={lastQuestion.id}
-            firstCursor={firstQuestion.id}
             ITEMS_PER_PAGE={PRODUCTS_QUESTIONS_PER_PAGE}
           />
         </div>

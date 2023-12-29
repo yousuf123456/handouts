@@ -1,49 +1,41 @@
 "use client";
-import React from "react";
-import { Heading } from "../Heading";
-import { ExclusiveSection } from "./ExclusiveSection";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import React, { useEffect, useState } from "react";
 
 import clsx from "clsx";
+import { Heading } from "../Heading";
+import { ExclusiveSection } from "./ExclusiveSection";
 
 import { useExclusiveSections } from "@/app/hooks/useExclusiveSections";
 import { useBreakpoint } from "@/app/hooks/useBreakpoints";
-import { Carousel } from "react-responsive-carousel";
-
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { cn } from "@/app/utils/cn";
+import Autoplay from "embla-carousel-autoplay";
 
 export const ExclusiveSections = () => {
+  const [api, setApi] = useState<CarouselApi>();
   const exclusiveSections = useExclusiveSections();
-
-  const chevronClassName =
-    "z-50 w-6 h-full sm:w-8 cursor-pointer min-[900px]:hidden flex justify-center items-center transition-all bg-themeSecondary bg-opacity-30 hover:bg-opacity-60 text-white font-bold";
-
-  const renderArrowPrev = (
-    clickHandler: () => void,
-    hasPrev: boolean,
-    label: string,
-  ) => (
-    <HiChevronLeft
-      className={clsx("absolute top-1/2 -translate-y-1/2", chevronClassName)}
-      onClick={clickHandler}
-    />
-  );
-  const renderArrowNext = (
-    clickHandler: () => void,
-    hasPrev: boolean,
-    label: string,
-  ) => (
-    <HiChevronRight
-      className={clsx(
-        "absolute right-0 top-1/2 -translate-y-1/2",
-        chevronClassName,
-      )}
-      onClick={clickHandler}
-    />
-  );
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const breakpoint = useBreakpoint();
   const showCarousel = breakpoint < 900;
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on("select", () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const chevronCs =
+    "absolute top-1/2 hidden -translate-y-1/2 justify-center sm:flex";
 
   return (
     <div className="flex flex-col gap-1">
@@ -67,29 +59,44 @@ export const ExclusiveSections = () => {
 
         {showCarousel && (
           <Carousel
-            preventMovementUntilSwipeScrollTolerance
-            swipeScrollTolerance={50}
-            axis="horizontal"
-            showArrows={true}
-            autoPlay={true}
-            infiniteLoop={true}
-            interval={4500}
-            transitionTime={500}
-            swipeable={true}
-            showStatus={false}
-            stopOnHover={false}
-            renderArrowPrev={renderArrowPrev}
-            renderArrowNext={renderArrowNext}
+            setApi={setApi}
+            opts={{ loop: true }}
+            plugins={[
+              Autoplay({
+                delay: 6000,
+              }),
+            ]}
           >
-            {exclusiveSections.map((exclusiveSection, index) => (
-              <ExclusiveSection
-                key={index}
-                id={String(index)}
-                image={exclusiveSection.image}
-                text={exclusiveSection.text}
-                className={clsx("")}
-              />
-            ))}
+            <CarouselContent>
+              {exclusiveSections.map((exclusiveSection, index) => (
+                <CarouselItem key={index}>
+                  <ExclusiveSection
+                    key={index}
+                    id={String(index)}
+                    image={exclusiveSection.image}
+                    text={exclusiveSection.text}
+                    className={clsx("")}
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+
+            <CarouselNext className={cn(chevronCs, "right-0")} />
+            <CarouselPrevious className={cn(chevronCs, "left-0")} />
+
+            <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-3 sm:hidden">
+              {Array.from({ length: exclusiveSections.length || 0 }).map(
+                (_, i) => (
+                  <div
+                    key={i}
+                    className={cn(
+                      "h-[6px] w-[6px] rounded-full bg-black opacity-30",
+                      i === selectedIndex && "opacity-90",
+                    )}
+                  />
+                ),
+              )}
+            </div>
           </Carousel>
         )}
       </div>

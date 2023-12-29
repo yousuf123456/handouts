@@ -65,16 +65,12 @@ export const PaginationControl: React.FC<PaginationControlProps> = ({
 
     let searchParamsArray = [`page=${nextPageToGo}`];
 
-    if (!offset)
-      searchParamsArray = [
-        ...searchParamsArray,
-        `prevPage=${currentPage}`,
-        `cursor=${cursor}`,
-      ];
+    if (!offset) searchParamsArray = [...searchParamsArray];
 
-    const tieBreaker =
-      nextPageToGo > currentPage ? lastItemTieBreaker : firstItemTieBreaker;
-    if (sortBy) searchParamsArray.push(`tieBreaker=${tieBreaker}`);
+    if (jumpingDisabled) {
+      searchParamsArray.push(`prevPage=${currentPage}`);
+      searchParamsArray.push(`cursor=${cursor}`);
+    }
 
     if (isHistory && toBeReviewed)
       searchParamsArray = [

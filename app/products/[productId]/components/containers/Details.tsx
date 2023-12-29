@@ -9,9 +9,9 @@ export default async function Details({ productId }: DetailsProps) {
   const productInfo = await getProductInfoById(productId);
   // const questionsCount = store.getState().productMinorInfo.questionsCount;
 
-  if (!productInfo) {
+  if (!productInfo || !productInfo.data) {
     return <p>No product was found</p>;
   }
 
-  return <ProductDetails product={productInfo} />;
+  return <ProductDetails product={productInfo.data} />;
 }

@@ -18,7 +18,10 @@ type UserWithBehaviourDoc = {
   };
 };
 
-export const getRecomendedProducts = async () => {
+export const getRecomendedProducts = async (params?: {
+  fromSpecificStore?: boolean;
+  storeId?: string;
+}) => {
   const currentUser = (await getCurrentUser({
     getBehaviourDoc: true,
   })) as UserWithBehaviourDoc;
@@ -26,17 +29,23 @@ export const getRecomendedProducts = async () => {
   if (!currentUser || !currentUser.behaviour) {
     const recomendedProducts = await prisma.product.findMany({
       take: 20,
-
       select: {
+        promoPriceStartingDate: true,
+        promoPriceEndingDate: true,
         ratingsCount: true,
+        promoPrice: true,
         avgRating: true,
-        discount: true,
         storeId: true,
         image: true,
         price: true,
         name: true,
         id: true,
       },
+      ...(params?.fromSpecificStore && {
+        where: {
+          storeId: params?.storeId,
+        },
+      }),
     });
 
     return recomendedProducts;
@@ -100,17 +109,26 @@ export const getRecomendedProducts = async () => {
         image: 1,
         price: 1,
         storeId: 1,
-        avgRating: 1,
-        discount: 1,
-        ratingsCount: 1,
-        superTokensUserId: 1,
-        attributes: 1,
-        description: 1,
+
         keywords: 1,
+        avgRating: 1,
+        attributes: 1,
+
+        ratingsCount: 1,
         categoryTreeData: 1,
+        superTokensUserId: 1,
       },
     },
   ];
+
+  if (params?.fromSpecificStore) {
+    pipeline[0].$search.compound.must.push({
+      equals: {
+        value: { $oid: params.storeId },
+        path: "storeId",
+      },
+    });
+  }
 
   const recomendedProducts = await prisma.product.aggregateRaw({
     pipeline: pipeline,

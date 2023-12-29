@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar } from "./components/Navbar";
 import { DesktopCTANavbar } from "./components/DesktopCTANavbar";
 import { usePathname } from "next/navigation";
 import { cn } from "@/app/utils/cn";
 import { getRoutes } from "@/app/utils/getRoutes";
+import axios from "axios";
 
 export const Header = () => {
   const pathname = usePathname();

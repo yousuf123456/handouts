@@ -3,11 +3,16 @@ import React, { Fragment, useState } from "react";
 import { Section } from "./containers/Section";
 import { HiChevronRight } from "react-icons/hi";
 import { SectionHeading } from "./SectionHeading";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 
+import dynamic from "next/dynamic";
 const Drawer = dynamic(() => import("@/app/components/Drawer"));
+const SheetHeader = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetHeader),
+);
+const SheetTitle = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetTitle),
+);
 
 interface ProductSpecificationsProps {
   productAttributes: {

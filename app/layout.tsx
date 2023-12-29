@@ -2,15 +2,20 @@ import "./globals.css";
 
 import { Footer } from "./(site)/components/footer/Footer";
 import { Header } from "./(site)/components/header/Header";
-import { SessionProviderContext } from "./context/SessionProviderContext";
-import { Inter, Poppins, Nunito } from "next/font/google";
+import { Inter, Poppins, Nunito, Roboto } from "next/font/google";
 import { QueryProvider } from "./context/QueryProvider";
 import { LayoutWrapper } from "./context/LayoutWrapper";
 import { NextUiProvider } from "./context/NextUiProvider";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-// import { UserProvider } from "./context/UserProvider";
+import { ToasterContext } from "./context/ToasterContext";
+import { SessionProviderContext } from "./context/SessionProviderContext";
 
 const inter = Inter({ subsets: ["latin"] });
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-roboto",
+});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,13 +36,19 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  session,
 }: {
   children: React.ReactNode;
+  session: any;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${nunito.variable}`}>
+    <html
+      lang="en"
+      className={`${poppins.variable} ${nunito.variable} ${roboto.variable}`}
+    >
       <body className={`${inter.className}`}>
-        <SessionProviderContext>
+        <SessionProviderContext session={session}>
+          <ToasterContext />
           <QueryProvider>
             <NextUiProvider>
               <Header />

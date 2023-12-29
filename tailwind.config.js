@@ -86,6 +86,7 @@ module.exports = {
       },
       fontFamily: {
         text: ["var(--font-poppins)"],
+        roboto: ["var(--font-roboto)"],
         heading: ["var(--font-poppins)"],
         superHeading: ["var(--font-nunito)"],
       },

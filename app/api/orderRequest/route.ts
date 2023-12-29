@@ -7,6 +7,7 @@ import { CancellationRequest, ReturnRequest } from "@prisma/client";
 
 type ReqType = {
   updatedOrderedProducts: OrderedProductType[];
+  proofImagesData: { url: string; id: string }[];
   type: "Cancellation" | "Return";
   updatedPackages: PackageType[];
   orderFeedback: string;
@@ -50,6 +51,7 @@ export async function POST(req: Request) {
       storeIds,
       proofImages,
       orderFeedback,
+      proofImagesData,
       updatedPackages,
       updatedOrderedProducts,
     }: ReqType = await req.json();
@@ -79,9 +81,10 @@ export async function POST(req: Request) {
     } else {
       request = await prisma.returnRequest.create({
         data: {
+          proofImages,
+          orderFeedback,
+          proofImagesData,
           status: requestStatus,
-          proofImages: proofImages,
-          orderFeedback: orderFeedback,
 
           requester: {
             connect: {

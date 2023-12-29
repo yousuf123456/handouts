@@ -1,14 +1,19 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-
 import React, { useEffect, useState } from "react";
-
-import { Carousel } from "react-responsive-carousel";
-import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 import Image from "next/image";
 import clsx from "clsx";
-import { Skeleton, useMediaQuery } from "@mui/material";
-import { ProductImage } from "@/app/components/ProductImage";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
+import {
+  Carousel,
+  CarouselApi,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+import { cn } from "@/lib/utils";
 
 interface ProductImagesProps {
   setSelectedVariantPicture: React.Dispatch<React.SetStateAction<string[]>>;
@@ -23,22 +28,21 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
   mainImage,
   images,
 }) => {
+  const [api, setApi] = React.useState<CarouselApi>();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedPicture, setSelectedPicture] = useState("");
-
-  const displayCount = 3;
-  const chevronsClassName =
-    "w-8 h-8 p-1 flex-shrink-0 rounded-full transition-all hover:bg-slate-100 text-slate-400 cursor-pointer";
 
   const moveToTheNextImage = () => {
     if (selectedIndex < images.length - 1) {
       setSelectedIndex((prev) => prev + 1);
+      if (api) api.scrollNext();
     }
   };
 
   const moveToThePreviousImage = () => {
     if (selectedIndex > 0) {
       setSelectedIndex((prev) => prev - 1);
+      if (api) api.scrollPrev();
     }
   };
 
@@ -51,8 +55,7 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
   }, [selectedIndex]);
 
   const isVeryLargeDevices = useMediaQuery("(min-width:1024px)");
-  const isLargeDevices = useMediaQuery("(max-width:1024px)");
-  const isSmallDevices = useMediaQuery("(max-width:640px)");
+  const isMediumDevices = useMediaQuery("(max-width:768px)");
 
   const imagesToMapOver = selectedVariantPicture.length
     ? selectedVariantPicture
@@ -63,9 +66,18 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
     if (selectedVariantPicture.length) setSelectedIndex(-1);
   }, [selectedVariantPicture]);
 
+  useEffect(() => {
+    console.log(isMediumDevices);
+    if (!api || !isMediumDevices) return;
+
+    api.on("select", () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
   return (
-    <div className="relative flex items-start gap-2 max-lg:justify-start lg:flex-col">
-      <div className="relative hidden h-72 w-72 overflow-hidden rounded-sm max-lg:order-2 lg:block xl:h-80 xl:w-80">
+    <div className="relative flex  gap-2 max-lg:justify-start lg:flex-col">
+      <div className="relative hidden aspect-[16/9] h-auto w-full overflow-hidden rounded-sm max-lg:order-2 md:block lg:h-72 lg:w-72 xl:h-80 xl:w-80">
         <Image
           src={selectedVariantPicture[0] || selectedPicture || mainImage || ""}
           alt="Product Picture"
@@ -74,90 +86,93 @@ export const ProductImages: React.FC<ProductImagesProps> = ({
         />
       </div>
 
-      <div className="flex w-full gap-6">
-        <div className="hidden h-80 flex-col flex-wrap gap-4 md:flex lg:hidden">
-          {images.map((img, i) => (
+      <div className="relative w-full md:hidden">
+        <Carousel setApi={setApi}>
+          <CarouselContent>
+            {imagesToMapOver.map((img, i) => (
+              <CarouselItem key={i}>
+                <div
+                  key={img}
+                  className="relative aspect-1 h-auto w-full sm:aspect-[16/9]"
+                >
+                  <Image
+                    src={img || ""}
+                    alt="Product Picture"
+                    loading={"eager"}
+                    className=" object-cover"
+                    fill
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+
+        <div className="absolute bottom-5 left-1/2 flex -translate-x-1/2 gap-3">
+          {Array.from({ length: images.length || 0 }).map((_, i) => (
             <div
               key={i}
-              onClick={() => setSelectedIndex(i)}
-              className="relative h-16 w-[60px] cursor-pointer overflow-hidden rounded-sm"
-            >
-              <ProductImage src={img} />
-            </div>
+              className={cn(
+                "h-2 w-2 rounded-full bg-black opacity-30",
+                i === selectedIndex && "opacity-90",
+              )}
+            />
           ))}
-        </div>
-
-        <div className="h-fit w-full lg:hidden">
-          <Carousel
-            onChange={(index) => {
-              setSelectedIndex(index);
-            }}
-            preventMovementUntilSwipeScrollTolerance
-            swipeScrollTolerance={50}
-            selectedItem={selectedVariantPicture.length ? 0 : selectedIndex}
-            showArrows={!isSmallDevices}
-            showStatus={false}
-            swipeable={true}
-          >
-            {imagesToMapOver.map((img, i) => (
-              <div
-                key={img}
-                className="relative aspect-1 h-auto w-full sm:aspect-[16/9]"
-              >
-                <Image
-                  src={img || ""}
-                  alt="Product Picture"
-                  loading={"eager"}
-                  className=" object-cover"
-                  fill
-                />
-              </div>
-            ))}
-          </Carousel>
         </div>
       </div>
 
-      {isVeryLargeDevices && images?.length !== 0 && (
-        <div className="flex h-auto w-72 items-center justify-center gap-1 lg:items-center xl:w-80">
-          <HiChevronLeft
-            onClick={moveToThePreviousImage}
-            className={chevronsClassName}
-          />
-
+      {!isMediumDevices && images?.length !== 0 && (
+        <div className="hidden justify-center max-lg:flex-col md:flex lg:ml-3 lg:w-full">
           <Carousel
-            centerMode
-            showStatus={false}
-            showThumbs={false}
-            showArrows={false}
-            showIndicators={false}
-            selectedItem={selectedIndex}
-            centerSlidePercentage={100 / displayCount}
+            orientation={isVeryLargeDevices ? "horizontal" : "vertical"}
+            className="max-lg:h-[192px] lg:w-[80%]"
+            setApi={setApi}
           >
-            {images.map((image: string, i) => (
-              <div
-                onClick={() => {
-                  if (selectedIndex !== i) {
-                    setSelectedIndex(i);
-                  } else {
-                    setSelectedPicture(image);
-                    setSelectedVariantPicture([]);
-                  }
-                }}
-                key={i}
-                className={clsx(
-                  "relative h-14 w-14 flex-shrink-0 cursor-pointer xl:h-16 xl:w-16",
-                  i === selectedIndex && "border-2 border-slate-500",
-                )}
-              >
-                <Image src={image} alt="Image" fill className="object-cover" />
-              </div>
-            ))}
-          </Carousel>
+            <CarouselContent className="max-lg:-mt-0 max-lg:h-[192px]">
+              {images.map((image, i) => (
+                <CarouselItem
+                  key={i}
+                  className="basis-1/3 p-1 max-lg:items-center lg:flex lg:justify-end"
+                >
+                  <div
+                    onClick={() => {
+                      if (selectedIndex !== i) {
+                        setSelectedIndex(i);
+                        if (api) api.scrollTo(i);
+                      } else {
+                        setSelectedPicture(image);
+                        setSelectedVariantPicture([]);
+                      }
+                    }}
+                    key={i}
+                    className={clsx(
+                      "relative h-14 w-14 flex-shrink-0 cursor-pointer xl:h-16 xl:w-16",
+                      i === selectedIndex &&
+                        "rounded-sm ring-[1px] ring-blue-500 ring-offset-2",
+                    )}
+                  >
+                    <Image
+                      fill
+                      src={image}
+                      alt="Image"
+                      className="object-cover"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
 
-          <HiChevronRight
-            onClick={moveToTheNextImage}
-            className={clsx(chevronsClassName, "lg:relative lg:-left-5")}
-          />
+            <CarouselPrevious
+              disabled={selectedIndex === 0}
+              onClick={moveToThePreviousImage}
+            />
+
+            <CarouselNext
+              className="z-[9999]"
+              disabled={selectedIndex === images.length - 1}
+              onClick={moveToTheNextImage}
+            />
+          </Carousel>
         </div>
       )}
     </div>

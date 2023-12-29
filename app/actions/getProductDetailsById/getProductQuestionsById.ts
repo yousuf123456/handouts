@@ -1,53 +1,48 @@
-
-import { PRODUCTS_QUESTIONS_PER_PAGE } from "@/app/constants/consts";
-import prisma from "../../libs/prismadb"
-import { getPaginationPipeline } from "./getProductReviewsById";
+import prisma from "../../libs/prismadb";
+import {
+  PRODUCTS_QUESTIONS_PER_PAGE,
+  QuestionsPerBucketCount,
+} from "@/app/constants/consts";
+import { getPaginationPipeline } from "./getProduct_StoreReviewsById";
 
 interface Params {
-    productId : string;
-    page? : number | undefined;
-    cursor? : string | undefined;
-    prevPage? : number | undefined;
+  productId: string;
+  page?: number | undefined;
 }
 
-export const getProductQuestionsById = async(params : Params) => {
+export const getProductQuestionsById = async (params: Params) => {
+  const { productId, page } = params;
 
-    const {
-        productId,
-        prevPage,
-        cursor,
-        page
+  if (!productId || productId === "undefined") return [];
 
-    } = params
+  const storeId = (
+    await prisma.product.findUnique({
+      where: { id: productId },
+      select: { storeId: true },
+    })
+  )?.storeId;
 
-    if (productId === undefined || productId === "undefined" || productId === null) {
-        return null
-    }
+  if (!storeId) return [];
 
-    let pipeline = [
-        {
-            $match : {
-               productId : {$oid : productId} 
-            }
-        },
+  const pipeline = [
+    {
+      $match: {
+        storeId: { $oid: storeId },
+      },
+    },
+  ];
 
-        {
-            $addFields : {
-                id : { $toString : "$_id" },
-                createdAt : { $toString : "$createdAt" }
-            }
-        },
+  const paginatedPipeline = getPaginationPipeline({
+    page,
+    pipeline,
+    itemsFieldName: "questions",
+    ITEMS_PER_PAGE: PRODUCTS_QUESTIONS_PER_PAGE,
+    ITEMS_PER_BUCKET_COUNT: QuestionsPerBucketCount,
+  });
 
-        {
-            $limit : PRODUCTS_QUESTIONS_PER_PAGE
-        }
-    ]
+  const questionsData = (await prisma.questionsBucket.aggregateRaw({
+    pipeline: paginatedPipeline,
+  })) as any;
 
-    const paginationPipeline = getPaginationPipeline({pipeline, page, prevPage, cursor})
-
-    const productQuestions = await prisma.question.aggregateRaw({
-        pipeline : paginationPipeline
-    });
-
-    return productQuestions;
-}
+  return questionsData[0]?.questions || [];
+};

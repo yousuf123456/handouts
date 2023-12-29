@@ -1,36 +1,24 @@
-import prisma from "../libs/prismadb"
+import prisma from "../libs/prismadb";
 
-export const getProductById = async(productId : string | undefined) => {
+// export const getProductById = async (productId: string | undefined) => {
+//   if (productId === undefined || productId === null) {
+//     return null;
+//   }
 
-    if (productId === undefined || productId === null) {
-        return null
-    }
+//   const product = await prisma.product.findUnique({
+//     where: {
+//       id: productId,
+//     },
 
-    const product = await prisma.product.findUnique({
-        where : {
-            id : productId
-        },
+//     include: {
+//       ratingAndReviews: {
+//         take: 8,
+//       },
+//       questions: {
+//         take: 8,
+//       },
+//     },
+//   });
 
-        include : {
-            discount : true,
-            ratingAndReviews : {
-                take : 8
-            },
-            questions : {
-                take : 8
-            },
-
-            store : {
-                include : {
-                    discounts : {
-                        where : {
-                            isApplicableForStore : true
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    return product;
-}
+//   return product;
+// };

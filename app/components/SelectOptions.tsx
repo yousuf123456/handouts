@@ -25,6 +25,7 @@ interface SelectOptionsProps {
   required?: boolean;
   disabled?: boolean;
   options?: string[];
+  value?: string;
   label: string;
   field?: any;
 }
@@ -38,6 +39,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
   required,
   onChange,
   options,
+  value,
   label,
   field,
 }) => {
@@ -46,6 +48,7 @@ export const SelectOptions: React.FC<SelectOptionsProps> = ({
   return (
     <Select
       {...field}
+      value={value}
       required={required}
       disabled={disabled}
       onValueChange={(value) => {

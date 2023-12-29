@@ -1,19 +1,26 @@
 "use client";
+import React, { useState } from "react";
+
 import { CtaLink } from "@/app/(site)/components/CtaLink";
-import { Button } from "@/app/components/Button";
 import { Button as Button2 } from "@/components/ui/button";
+
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 import { LoadingButton } from "@/app/components/LoadingButton";
 import { Textarea } from "@/components/ui/textarea";
-import { Question } from "@prisma/client";
-import axios from "axios";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { QuestionType } from "@/app/types";
+
 import dynamic from "next/dynamic";
 
 const Drawer = dynamic(() => import("@/app/components/Drawer"));
+const SheetHeader = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetHeader),
+);
+const SheetTitle = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetTitle),
+);
 
 interface AskQuestionFormProps {
   productId: string;
@@ -48,13 +55,13 @@ export const AskQuestionForm: React.FC<AskQuestionFormProps> = ({
       })
       .then((res) => {
         if (res.data) {
-          const question: Question = res.data;
-          setQuestions((prev: Question[]) => [question, ...prev]);
           setQuestionsCount((prev) => prev! + 1);
+          const question: QuestionType = res.data;
+          setQuestions((prev: QuestionType[]) => [question, ...prev]);
         }
       })
       .catch((e) => {
-        toast.error(e);
+        toast.error("Something goes wrong");
       })
       .finally(() => setIsLoading(false));
   };

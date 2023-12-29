@@ -20,8 +20,16 @@ export const ImageModel: React.FC<ImageModelProps> = ({
         onClick={handleClose}
         className="flex h-full w-full items-center justify-center"
       >
-        <div className="relative max-sm:aspect-1 max-sm:h-auto max-sm:w-[85%] sm:h-96 sm:w-96">
-          <Image src={image} alt="Image" className="object-cover" fill />
+        <div className="relative h-full w-[85%] sm:w-[75%]">
+          <Image
+            fill
+            width={0}
+            height={0}
+            alt="Image"
+            src={image}
+            sizes="100vw"
+            className="h-auto w-full"
+          />
         </div>
       </div>
     </Model>

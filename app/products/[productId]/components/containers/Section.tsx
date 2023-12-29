@@ -18,7 +18,8 @@ export const Section = ({
           mode === "full"
             ? "max-sm:bg-white max-sm:px-4 max-sm:py-2"
             : "max-sm:rounded-md max-sm:bg-white max-sm:p-2",
-          variant === "differentiate" && "bg-white px-4 py-2 sm:bg-slate-50",
+          variant === "differentiate" &&
+            "bg-white max-md:px-4 max-md:py-2 sm:bg-slate-50 md:bg-transparent",
           "w-full",
         )}
       >

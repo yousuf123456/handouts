@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import axios from "axios";
 import { find, includes } from "lodash";
+import toast from "react-hot-toast";
 
 interface SubmitRequestProps {
   packages: PackageType[];
@@ -40,7 +41,7 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
 
   const router = useRouter();
 
-  const onClick = () => {
+  const onClick = async () => {
     const { updatedOrderedProducts, updatedPackagesWithUpdatedStatus } =
       getUpdatedPackages(packages, selectedOrderedProducts, type);
 
@@ -51,13 +52,17 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
       storeIds.push({ id: orderedProduct.storeId });
     });
 
+    const uploadedProofImagesData = await uploadProofImages();
+    if (!uploadedProofImagesData) return toast.error("Something goes wrong");
+
     setIsLoading(true);
     axios
       .post("../../../../../api/orderRequest", {
+        proofImagesData: uploadedProofImagesData.proofImagesData,
         updatedPackages: updatedPackagesWithUpdatedStatus,
+        proofImages: uploadedProofImagesData.proofImages,
         updatedOrderedProducts: updatedOrderedProducts,
         orderFeedback: feedback,
-        proofImages: proofImages,
         storeIds: storeIds,
         orderId: orderId,
         type: type,
@@ -69,6 +74,36 @@ export const SubmitRequest: React.FC<SubmitRequestProps> = ({
       })
       .catch((e) => console.log(e))
       .finally(() => setIsLoading(false));
+  };
+
+  const uploadProofImages = async () => {
+    const imagesToUploadFormData = new FormData();
+    proofImages.map((img, i) => {
+      imagesToUploadFormData.append(`image-${i}`, img.file!);
+    });
+
+    const res = await axios.post(
+      "../../../../../api/uploadToDrive",
+      imagesToUploadFormData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+
+    if (res.status !== 500 && res.status !== 401 && res.status !== 400) {
+      const uploadedImageUrls: string[] = [];
+      const proofImagesData: { id: string; url: string }[] = [];
+
+      res.data.imagesData.map((imgData: { id: string; url: string }) => {
+        uploadedImageUrls.push(imgData.url);
+        proofImagesData.push(imgData);
+      });
+
+      return {
+        proofImages: uploadedImageUrls,
+        proofImagesData: proofImagesData,
+      };
+    }
   };
 
   const disabled =

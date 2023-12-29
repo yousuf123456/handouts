@@ -4,10 +4,11 @@ import { HiQuestionMarkCircle, HiCheckCircle } from "react-icons/hi";
 import { HeaderInfo } from "./mini/HeaderInfo";
 import { Review_Question } from "./mini/Review_Question";
 import clsx from "clsx";
+import { QuestionType } from "@/app/types";
 
 interface QuestionCardProps {
   // Have to make it real
-  question: any;
+  question: QuestionType;
 }
 
 export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
@@ -21,7 +22,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         <div className="flex flex-col">
           <HeaderInfo
             name={question.userInformation.name}
-            date={question.createdAt}
+            date={question.createdAt.$date}
           />
 
           <Review_Question className={className}>
@@ -36,7 +37,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
           <div className="flex flex-col">
             <HeaderInfo
               name={question.storeInformation.name}
-              date={question.answeredAt}
+              date={question.answeredAt.$date}
             />
 
             <Review_Question className={className}>

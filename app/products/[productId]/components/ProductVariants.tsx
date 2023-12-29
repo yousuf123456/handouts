@@ -5,26 +5,32 @@ import React, { Fragment, useState } from "react";
 import { ProductImage } from "@/app/components/ProductImage";
 import { Section } from "./containers/Section";
 import { HiChevronRight } from "react-icons/hi";
-import { SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ProductVariantsValues } from "./ProductVariantsValues";
 import { Seperator } from "@/app/components/Seperator";
 import { ProductQuantity } from "./ProductQuantity";
 import { ProductPrice } from "@/app/components/ProductPrice";
 import { SectionHeading } from "./SectionHeading";
+
 import dynamic from "next/dynamic";
 
 const Drawer = dynamic(() => import("@/app/components/Drawer"));
+const SheetHeader = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetHeader),
+);
+const SheetTitle = dynamic(() =>
+  import("@/components/ui/sheet").then((mod) => mod.SheetTitle),
+);
 
 interface ProductVariantsProps {
-  discountOffLabel: any;
   quantity: number;
+  discountOffLabel: any;
+  currentPrice: number;
+  productOnSale: boolean;
   price: number | undefined;
-  productOnSale: () => boolean;
   productPicture: string | null;
   variants: VariantsType | undefined;
-  isPercentOff: boolean | null | undefined;
+  discountOff: number | null | undefined;
   selectedVariantPicture: string | undefined;
-  discountOff: () => number | null | undefined;
   selectedCombination: CombinationsType | undefined;
   setQuantity: React.Dispatch<React.SetStateAction<number>>;
   changeCombination: (variant: string, value: string, images: string[]) => void;
@@ -34,8 +40,8 @@ interface ProductVariantsProps {
 export const ProductVariants: React.FC<ProductVariantsProps> = ({
   productOnSale,
   discountOff,
-  isPercentOff,
   discountOffLabel,
+  currentPrice,
   price,
   variants,
   quantity,
@@ -130,7 +136,7 @@ export const ProductVariants: React.FC<ProductVariantsProps> = ({
                 <ProductPrice
                   price={price}
                   discountOff={discountOff}
-                  isPercentOff={isPercentOff}
+                  currentprice={currentPrice}
                   productOnSale={productOnSale}
                   discountOffLabel={discountOffLabel}
                   containerCs="flex-col max-sm:items-start"

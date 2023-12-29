@@ -1,28 +1,54 @@
-import { CartItemProductType, Cart_FavouriteItemProductType, ProductInfo } from "../types"
-import { calculateDiscountOff } from "./calculateDiscount"
+import {
+  CartItemProductType,
+  Cart_FavouriteItemProductType,
+  ProductInfo,
+} from "../types";
 
 export const getPriceInfo = (
-    product : ProductInfo | Cart_FavouriteItemProductType | CartItemProductType | undefined
+  product:
+    | ProductInfo
+    | Cart_FavouriteItemProductType
+    | CartItemProductType
+    | undefined,
 ) => {
-    const productOnSale = ()=>{
-        return !!(product?.discount)
-    }
+  const isPromoPriceExpired = () => {
+    if (!product?.promoPriceEndingDate || !product.promoPriceStartingDate)
+      return true;
 
-    let discountOff = (): number | null | undefined=>{
-        if (product?.discount) {
-            return calculateDiscountOff(product)
-        }
+    const currentDate = new Date();
 
-        return null
-    }
+    if (
+      currentDate < product.promoPriceStartingDate ||
+      currentDate > product.promoPriceEndingDate
+    )
+      return true;
 
-    const isPercentOff = !!product?.discount?.isPercentOff;
-    const discountOffLabel = isPercentOff ? "-" + discountOff() + "% off" : "-" + discountOff() + " Rs off";
+    return false;
+  };
 
-    return {
-        productOnSale : productOnSale,
-        discountOff : discountOff,
-        isPercentOff : isPercentOff,
-        discountOffLabel : discountOffLabel
-    }
-}
+  const onDiscount = !!product?.promoPrice && !isPromoPriceExpired();
+
+  const currentPrice = () => {
+    if (
+      !product?.promoPrice ||
+      !product.promoPriceEndingDate ||
+      !product.promoPriceStartingDate
+    )
+      return product?.price;
+
+    if (isPromoPriceExpired()) return product.price;
+
+    return product.promoPrice;
+  };
+
+  const priceOff = (product?.price || 0) - (product?.promoPrice || 0);
+
+  const priceOffLabel = priceOff + " Rs Off";
+
+  return {
+    discountOffLabel: priceOffLabel,
+    currentPrice: currentPrice(),
+    productOnSale: onDiscount,
+    discountOff: priceOff,
+  };
+};

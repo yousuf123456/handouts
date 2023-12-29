@@ -1,25 +1,17 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 import { SelectOptions } from "@/app/components/SelectOptions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { RatingAndReview } from "@prisma/client";
 import { FaArrowUp, FaFlask } from "react-icons/fa";
 import { getSearchParamsArray } from "../utils/getSearchParamsArray";
 import { filterOptions, sortOptions } from "@/app/constants/selectOptions";
 
-interface SortAndFiltersProps {
-  lastReview: RatingAndReview;
-  firstReview: RatingAndReview;
-  goingBack: boolean;
-}
+export const SortAndFilters = ({}) => {
+  const [sortByState, setSortByState] = useState<string | undefined>();
+  const [filterState, setFilterState] = useState<string | undefined>();
 
-export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
-  lastReview,
-  firstReview,
-  goingBack,
-}) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
@@ -29,14 +21,19 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
   const sortByDirection = searchParams.get("direction");
 
   const onSort = (value: any) => {
+    setFilterState(undefined);
+    setSortByState(value);
+
     const paramsToRemove = [
-      "sortBy",
-      "direction",
-      "cursor",
       "page",
+      "sortBy",
+      "filter",
+      "cursor",
       "prevPage",
+      "direction",
       "tieBreaker",
     ];
+
     let paramsArray = getSearchParamsArray(searchParams, paramsToRemove);
 
     const linkOption = sortOptions.filter(
@@ -58,17 +55,10 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
   };
 
   const onFilter = (value: any) => {
-    const linkOption = filterOptions.filter(
-      (option) => option.label === value,
-    )[0];
-    const paramsToRemove = ["filter"];
+    setSortByState(undefined);
+    setFilterState(value);
 
-    const paramsArray = getSearchParamsArray(searchParams, paramsToRemove);
-
-    if (!linkOption.remove) paramsArray.push(`filter=${value[0]}`);
-    const paramsString = paramsArray.join("&");
-
-    router.push(`${pathname}?${paramsString}`);
+    router.push(`${pathname}?filter=${value[0]}`);
   };
 
   const sortDefaultValue =
@@ -88,15 +78,14 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
       <div className={filterSortContainerCs}>
         <div className="flex items-center gap-1">
           <FaArrowUp className="h-3 w-3 text-slate-400" />
-          <p className="text-xs font-semibold text-slate-500 sm:text-sm">
-            Sort
-          </p>
+          <p className="text-xs text-slate-500 sm:text-sm">Sort</p>
         </div>
 
         <div className="flex-shrink-0">
           <SelectOptions
             label="Sort"
             onChange={onSort}
+            value={sortByState}
             linkOptions={sortOptions}
             defaultValue={sortDefaultValue}
           />
@@ -106,14 +95,13 @@ export const SortAndFilters: React.FC<SortAndFiltersProps> = ({
       <div className={filterSortContainerCs}>
         <div className="flex items-center gap-1">
           <FaFlask className="h-3 w-3 text-slate-400" />
-          <p className="text-xs font-semibold text-slate-500 sm:text-sm">
-            Filter
-          </p>
+          <p className="text-xs text-slate-500 sm:text-sm">Filter</p>
         </div>
         <div className="flex-shrink-0">
           <SelectOptions
             label="Filter"
             onChange={onFilter}
+            value={filterState}
             linkOptions={filterOptions}
             defaultValue={filterDefaultValue}
           />

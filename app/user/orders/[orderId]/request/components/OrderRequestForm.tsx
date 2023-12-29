@@ -1,52 +1,47 @@
-import { getOrderById } from '@/app/actions/getOrderById'
-import React from 'react'
-import { SelectItemsList } from './SelectItemsList';
-import { FeedbackForm } from './FeedbackForm';
-import { Policies } from './Policies';
-import { SubmitRequest } from './SubmitRequest';
-import { ReduxProvider } from '@/app/context/ReduxProvider';
-import { ProductImagesForm } from './ProductImagesForm';
+import { getOrderById } from "@/app/actions/getOrderById";
+import React from "react";
+import { SelectItemsList } from "./SelectItemsList";
+import { FeedbackForm } from "./FeedbackForm";
+import { Policies } from "./Policies";
+import { SubmitRequest } from "./SubmitRequest";
+import { ReduxProvider } from "@/app/context/ReduxProvider";
+import { ProductImagesForm } from "./ProductImagesForm";
 
 interface OrderRequestFormProps {
-    orderId : string;
-    type : "Cancellation" | "Return";
+  orderId: string;
+  type: "Cancellation" | "Return";
 }
 
-export const OrderRequestForm: React.FC<OrderRequestFormProps> = async({
-    orderId,
-    type
+export const OrderRequestForm: React.FC<OrderRequestFormProps> = async ({
+  orderId,
+  type,
 }) => {
+  const order = await getOrderById(orderId);
 
-    const order = await getOrderById(orderId);
-
-    if(!order){
-        return (
-            <p>
-                Sorry order was not found
-            </p>
-        )
-    }
+  if (!order) {
+    return <p>Sorry order was not found</p>;
+  }
 
   return (
-    <div className='flex flex-col gap-8'>
-        <ReduxProvider>
-            <SelectItemsList
-                requestType={type}
-                packages={order.packages}
-            />
+    <div className="flex flex-col gap-8">
+      <ReduxProvider>
+        <SelectItemsList requestType={type} packages={order.packages} />
 
-            <FeedbackForm />
+        <FeedbackForm />
 
-            {type === "Return" && <ProductImagesForm />}
+        {type === "Return" && (
+          //@ts-ignore
+          <ProductImagesForm />
+        )}
 
-            <Policies />
+        <Policies />
 
-            <SubmitRequest 
-                type={type}
-                orderId={orderId}
-                packages={order.packages}
-            />
-        </ReduxProvider>
+        <SubmitRequest
+          type={type}
+          orderId={orderId}
+          packages={order.packages}
+        />
+      </ReduxProvider>
     </div>
-  )
-}
+  );
+};

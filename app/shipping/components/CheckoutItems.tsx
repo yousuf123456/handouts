@@ -6,24 +6,43 @@ import {
   setHasBeenFetched,
 } from "@/app/store/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/app/store/store";
-import { CartItemProductType, CombinationsType } from "@/app/types";
+import {
+  CartItemProductType,
+  CombinationsType,
+  VoucherType,
+} from "@/app/types";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { CheckoutItemsList } from "./CheckoutItemsList";
+import { FreeShippingsType } from "../page";
 
 interface CheckoutItemsProps {
-  fromCart: boolean | undefined;
-  product: CartItemProductType[] | null;
+  vouchers: VoucherType[];
   quantity: number | undefined;
+  fromCart: boolean | undefined;
+  freeShippings: FreeShippingsType;
+  product: CartItemProductType[] | null;
   combination: CombinationsType | null | undefined;
+  appliedVouchers: {
+    [key: string]: VoucherType;
+  };
+  setAppliedVouchers: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: VoucherType;
+    }>
+  >;
 }
 
 export const CheckoutItems: React.FC<CheckoutItemsProps> = ({
-  fromCart,
   product,
+  vouchers,
   quantity,
+  fromCart,
   combination,
+  freeShippings,
+  appliedVouchers,
+  setAppliedVouchers,
 }) => {
   const dispatch = useAppDispatch();
   const hasBeenFetched = useAppSelector((state) => state.cart.hasBeenFetched);
@@ -54,12 +73,16 @@ export const CheckoutItems: React.FC<CheckoutItemsProps> = ({
       {isLoading || session.status === "loading" ? (
         <SpinnerLoader />
       ) : (
-        <div className="px-3 py-3 sm:px-8 md:px-16 lg:px-32 xl:px-48">
+        <div className="px-0 py-0 sm:px-8 md:px-16 lg:px-32 xl:px-48">
           <CheckoutItemsList
-            products={product || cartItems}
             fromCart={fromCart}
+            vouchers={vouchers}
             quantity={quantity}
             combination={combination}
+            freeShippings={freeShippings}
+            products={product || cartItems}
+            appliedVouchers={appliedVouchers}
+            setAppliedVouchers={setAppliedVouchers}
           />
         </div>
       )}

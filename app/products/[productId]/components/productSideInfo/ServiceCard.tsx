@@ -19,7 +19,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         className={cn("h-4 w-4 text-themeSecondary md:h-5 md:w-5", className)}
       />
 
-      <p className="text-xs font-medium capitalize text-black sm:text-sm">
+      <p className="font-roboto text-xs font-medium capitalize text-black sm:text-sm">
         {label}
       </p>
     </div>
