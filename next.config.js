@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: true || process.env.ANALYZE === "true",
+});
+
 const nextConfig = {
   images: {
     domains: [

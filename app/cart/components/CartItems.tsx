@@ -5,6 +5,7 @@ import {
   setCartItems,
   setHasBeenFetched,
 } from "@/app/store/features/cartSlice";
+
 import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import { CartItemsList } from "./CartItemsList";
 import { SpinnerLoader } from "@/app/components/SpinnerLoader";

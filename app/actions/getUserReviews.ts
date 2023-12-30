@@ -13,7 +13,7 @@ const getOffsetPaginationQuery = (params: {
   const { pipeline, ITEMS_PER_PAGE, page } = params;
   const itemsToSkip = ((page || 1) - 1) * ITEMS_PER_PAGE;
 
-  pipeline[2].$facet.docs.push({ $skip: itemsToSkip });
+  pipeline[3].$facet.docs.push({ $skip: itemsToSkip });
 
   return pipeline;
 };

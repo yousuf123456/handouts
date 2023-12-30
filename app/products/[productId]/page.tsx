@@ -9,8 +9,6 @@ import { ProductsFromStoreLoading } from "./components/containers/loadings/Produ
 
 import { NavigationPanel } from "@/app/components/NavigationPanel";
 
-import dynamic from "next/dynamic";
-
 import Reviews from "./components/containers/Reviews";
 import Details from "./components/containers/Details";
 import Questions from "./components/containers/Questions";

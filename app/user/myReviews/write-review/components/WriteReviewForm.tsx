@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import { ProductReview } from "./ProductReview";
-import { StoreReview } from "./StoreReview";
 import { OrderedProductType } from "@/app/types";
 import { LoadingButton } from "@/app/components/LoadingButton";
 import { toast } from "react-hot-toast";
@@ -113,7 +111,7 @@ export const WriteReviewForm: React.FC<WriteReviewFormProps> = ({
       reviewId,
       isHistory,
       ratingData,
-      bucketId: givenReview.bucketId,
+      bucketId: givenReview?.bucketId,
       storeResponseIncrementData,
       orderedProductId: OrderedProduct.id,
       productId: OrderedProduct.product.id,

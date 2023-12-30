@@ -1,7 +1,7 @@
-import React from "react";
-import { Loader2 } from "lucide-react";
 import clsx from "clsx";
+import React from "react";
 import { Button } from "./Button";
+import { Loader2 } from "lucide-react";
 
 type Props = {
   variant?: "default" | "outline" | null | undefined;

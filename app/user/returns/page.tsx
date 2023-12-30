@@ -1,9 +1,9 @@
 import React, { Suspense } from "react";
+
 import { Layout } from "../components/Layout";
-import { Container } from "../components/Container";
-import { Heading } from "@/app/(site)/components/Heading";
 import { Returns } from "./components/Returns";
 import { Loading } from "../components/Loading";
+import { Container } from "../components/Container";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
 
 interface SearchParams {
