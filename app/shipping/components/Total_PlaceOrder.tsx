@@ -161,6 +161,7 @@ export const Total_PlaceOrder: React.FC<Total_PlaceOrderProps> = ({
         boughtFromLocation: res,
       };
 
+      console.log(packagesData);
       axios
         .post("../../api/placeOrder", {
           fromCart,

@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "../../libs/prismadb";
+import { PackageType } from "@/app/types";
 
 export async function POST(req: Request) {
   try {
@@ -13,9 +14,18 @@ export async function POST(req: Request) {
     } = await req.json();
 
     const currentUser = await getCurrentUser({ flushCart: fromCart });
+
     if (!currentUser || !currentUser.id) {
       return new NextResponse("Unauthorized User", { status: 401 });
     }
+
+    packagesData.map((Package: any) => {
+      Package.customer = {
+        connect: {
+          id: currentUser.id,
+        },
+      };
+    });
 
     const [createdOrder, updatedProducts] = await prisma.$transaction([
       prisma.order.create({
@@ -32,14 +42,7 @@ export async function POST(req: Request) {
             },
           },
           packages: {
-            create: {
-              ...packagesData,
-              customer: {
-                connect: {
-                  id: currentUser.id,
-                },
-              },
-            },
+            create: packagesData,
           },
           associatedStores: {
             connect: storesAssociatedToOrder,
