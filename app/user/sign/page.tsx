@@ -15,9 +15,7 @@ import { Controller } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
 import { NavigationPanel } from "@/app/components/NavigationPanel";
-import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { getCurrentUser } from "@/app/actions/getCurrentUser";
 
 interface IParams {
   type?: "SIGN IN" | "SIGN UP";
@@ -50,7 +48,6 @@ export default function Sign({ searchParams }: { searchParams: IParams }) {
   );
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
     if (!isRequirementsMatched) {
       return;
     }
@@ -95,12 +92,6 @@ export default function Sign({ searchParams }: { searchParams: IParams }) {
   );
 
   const options = ["Anonymous", "Male", "Female"];
-
-  const sendSms = () => {
-    axios.post(
-      "https://sendpk.com/api/sms.php?api_key=923183920797-d0a8daf2-8643-4a40-ae74-797350d67973&mobile=03183920797&sender=Handouts&message=HelloBro",
-    );
-  };
 
   return (
     <>
