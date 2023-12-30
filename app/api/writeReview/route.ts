@@ -143,6 +143,11 @@ export async function POST(req: Request) {
       orderedProductId: { $oid: orderedProductId },
     };
 
+    const productInformation = {
+      name: product.name,
+      image: product.image,
+    };
+
     const createdReview = await prisma.$runCommandRaw({
       findAndModify: "RatingAndReviewBucket",
 
@@ -164,6 +169,7 @@ export async function POST(req: Request) {
         },
 
         $setOnInsert: {
+          productInformation,
           storeId: { $oid: storeId },
           productId: { $oid: productId },
         },
